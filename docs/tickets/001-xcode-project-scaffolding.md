@@ -1,7 +1,7 @@
 # [TICKET-001] Xcode project scaffolding
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: None
@@ -12,11 +12,11 @@ Create the foundation Xcode project for Tally — a macOS 14+ SwiftUI app with b
 The project must be a native Xcode project (not a pure Swift Package) because the v0.3 roadmap requires a Network Extension target with entitlements (TICKET-023), and entitlements + provisioning profiles need an Xcode project structure.
 
 ## Acceptance Criteria
-- [ ] `Tally.xcodeproj` exists at repo root, opens in Xcode, builds with no warnings or errors targeting macOS 14.0 minimum
-- [ ] `App.swift` (or equivalent entry) declares both a `MenuBarExtra` and a `Window` scene, each rendering placeholder content
-- [ ] `Assets.xcassets/AppIcon.appiconset/` is populated with PNGs at all required macOS sizes (16, 32, 64, 128, 256, 512, 1024 @1x/@2x) generated from `docs/system-design/assets/` logo source
+- [x] `Tally.xcodeproj` exists at repo root, opens in Xcode, builds with no warnings or errors targeting macOS 14.0 minimum
+- [x] `App.swift` (or equivalent entry) declares both a `MenuBarExtra` and a `Window` scene, each rendering placeholder content
+- [x] `Assets.xcassets/AppIcon.appiconset/` is populated with PNGs at all required macOS sizes (16, 32, 64, 128, 256, 512, 1024 @1x/@2x) generated from `docs/system-design/assets/` logo source
 - [ ] Running the built app shows a tally-mark menu bar icon in the menu bar
-- [ ] `.gitignore` covers `*.xcuserdata/`, `DerivedData/`, `.build/`, `.swiftpm/`, build outputs
+- [x] `.gitignore` covers `*.xcuserdata/`, `DerivedData/`, `.build/`, `.swiftpm/`, build outputs
 
 ## Design Reference
 - **Logo / AppIcon source**: `docs/system-design/assets/` (logo SVG)

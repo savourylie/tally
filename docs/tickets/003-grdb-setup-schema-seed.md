@@ -1,10 +1,10 @@
 # [TICKET-003] GRDB setup + schema + seed
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #001
+- Requires: #001 ✅
 
 ## Description
 Add the GRDB SQLite dependency, build a single `DatabaseManager` that opens / migrates the database, define all four tables from PRD §11 (`flow_samples`, `daily_aggregates`, `networks`, `process_categories`) in an initial migration, and seed `process_categories` with the five mappings from PRD §8.

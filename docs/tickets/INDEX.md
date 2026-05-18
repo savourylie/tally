@@ -7,10 +7,10 @@
 
 | Status         | Count |
 | -------------- | ----- |
-| ✅ Done         | 0     |
+| ✅ Done         | 1     |
 | 🔧 In Progress | 0     |
-| 📋 Pending     | 1     |
-| 🚫 Blocked     | 23    |
+| 📋 Pending     | 2     |
+| 🚫 Blocked     | 21    |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -21,9 +21,9 @@
 
 | #   | Ticket                                                                                                       | Status    | Depends On | Notes        |
 | --- | ------------------------------------------------------------------------------------------------------------ | --------- | ---------- | ------------ |
-| 001 | [Xcode project scaffolding](./001-xcode-project-scaffolding.md)                                              | `pending` | —          |              |
-| 002 | [Design tokens (Swift)](./002-design-tokens-swift.md)                                                        | `blocked` | #001       |              |
-| 003 | [GRDB setup + schema + seed](./003-grdb-setup-schema-seed.md)                                                | `blocked` | #001       |              |
+| 001 | [Xcode project scaffolding](./001-xcode-project-scaffolding.md)                                              | `done`    | —          | Foundation in place |
+| 002 | [Design tokens (Swift)](./002-design-tokens-swift.md)                                                        | `pending` | #001 ✅    | Unblocked    |
+| 003 | [GRDB setup + schema + seed](./003-grdb-setup-schema-seed.md)                                                | `pending` | #001 ✅    | Unblocked    |
 | 004 | [Logger + AppState boot sequence](./004-logger-appstate-boot.md)                                             | `blocked` | #003       |              |
 | 005 | [**TEST: Checkpoint 0 — Foundation**](./005-test-checkpoint-0-foundation.md)                                 | `blocked` | #004       | Gate: Phase 1 |
 

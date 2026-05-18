@@ -1,10 +1,10 @@
 # [TICKET-002] Design tokens (Swift)
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #001
+- Requires: #001 ✅
 
 ## Description
 Port every named design token from `docs/system-design/colors_and_type.css` into Swift so the SwiftUI codebase can reference tokens by name (e.g., `Color.tally.accent`, `Font.tally.mega`) instead of inline hex/pt values. Every subsequent UI ticket reads from these tokens — getting them right now prevents drift between the design spec and the implementation later.
