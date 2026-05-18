@@ -1,0 +1,52 @@
+name: Tally
+options:
+  bundleIdPrefix: com.calvinku
+  deploymentTarget:
+    macOS: "14.0"
+  developmentLanguage: en
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_IDENTITY: "-"
+    ENABLE_HARDENED_RUNTIME: YES
+    GENERATE_INFOPLIST_FILE: NO
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_TREAT_WARNINGS_AS_ERRORS: NO
+targets:
+  Tally:
+    type: application
+    platform: macOS
+    sources:
+      - Tally/Sources
+      - Tally/Resources
+    info:
+      path: Tally/Info.plist
+      properties:
+        CFBundleDisplayName: Tally
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        NSPrincipalClass: NSApplication
+        NSHumanReadableCopyright: Copyright © 2026 Calvin Ku. All rights reserved.
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.calvinku.tally
+        PRODUCT_NAME: Tally
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        COMBINE_HIDPI_IMAGES: YES
+schemes:
+  Tally:
+    build:
+      targets:
+        Tally: all
+    run:
+      config: Debug
+    archive:
+      config: Release
