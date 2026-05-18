@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <title>Tally mark</title>
+  <rect x="0" y="0" width="80" height="80" rx="18" fill="#FDF6E8"></rect>
+  <g stroke="#E89B2F" stroke-width="6" stroke-linecap="round" fill="none">
+    <line x1="20" y1="22" x2="20" y2="58"></line>
+    <line x1="32" y1="22" x2="32" y2="58"></line>
+    <line x1="44" y1="22" x2="44" y2="58"></line>
+    <line x1="56" y1="22" x2="56" y2="58"></line>
+    <line x1="14" y1="56" x2="62" y2="24"></line>
+  </g>
+</svg>

@@ -1,0 +1,30 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>Type — Body & callout</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 24px; }
+  .row {
+    display: grid; grid-template-columns: 1fr auto;
+    padding: 8px 0; border-bottom: 1px dashed var(--divider);
+    align-items: baseline; gap: 16px;
+  }
+  .row:last-child { border-bottom: 0; }
+  .meta { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); white-space: nowrap; }
+</style>
+</head><body>
+  <div class="row">
+    <span class="t-body">這個月用了 12.4 GB，還可以用 7.6 GB（到 6 月 1 日重置）</span>
+    <span class="meta">t-body · 13 / 400</span>
+  </div>
+  <div class="row">
+    <span class="t-body-em">你現在用的是 iPhone 的熱點，這裡的流量會算進電信費</span>
+    <span class="meta">t-body-em · 13 / 600</span>
+  </div>
+  <div class="row">
+    <span class="t-callout">以目前的速度，月底大概會用到 18 GB</span>
+    <span class="meta">t-callout · 12 / 400</span>
+  </div>
+  <div class="row">
+    <span class="t-caption">資料正在收集中，數據會在幾分鐘後開始顯示</span>
+    <span class="meta">t-caption · 11 / 400</span>
+  </div>
+</body></html>

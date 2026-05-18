@@ -1,0 +1,58 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>Components — Category icons</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .cell {
+    border: 1px solid var(--border); border-radius: var(--r-8);
+    background: var(--bg-card); padding: 14px 10px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    text-align: center;
+  }
+  .ic {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+  }
+  .name { font-size: 12px; font-weight: 500; color: var(--fg-1); }
+  .sf { font-family: var(--font-mono); font-size: 9.5px; color: var(--fg-3); }
+</style>
+</head><body>
+  <div class="grid">
+    <div class="cell">
+      <div class="ic" style="background:#2D86F0;" data-sf-symbol="icloud.fill">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 18.5a4 4 0 0 0 .5-7.95A6 6 0 0 0 6.7 11 4.5 4.5 0 0 0 7.5 19.95h10z"/></svg>
+      </div>
+      <div class="name">iCloud</div>
+      <div class="sf">icloud.fill</div>
+    </div>
+    <div class="cell">
+      <div class="ic" style="background:#7F58B0;" data-sf-symbol="externaldrive.fill.badge.timemachine">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      </div>
+      <div class="name">Time Machine 備份</div>
+      <div class="sf">externaldrive.…timemachine</div>
+    </div>
+    <div class="cell">
+      <div class="ic" style="background:#3F8C4F;" data-sf-symbol="arrow.down.circle.fill">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 7v8m0 0l-3-3m3 3l3-3" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      </div>
+      <div class="name">軟體更新</div>
+      <div class="sf">arrow.down.circle.fill</div>
+    </div>
+    <div class="cell">
+      <div class="ic" style="background:#5B7AB3;" data-sf-symbol="magnifyingglass">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="M21 21l-4.3-4.3"/></svg>
+      </div>
+      <div class="name">Spotlight 搜尋</div>
+      <div class="sf">magnifyingglass</div>
+    </div>
+    <div class="cell">
+      <div class="ic" style="background:var(--n-600);" data-sf-symbol="gearshape.fill">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm9 4l-2.1-.4-.5-1.2.9-1.9-1.4-1.4-1.9.9-1.2-.5L14.5 6h-5l-.4 2-1.2.5-1.9-.9-1.4 1.4.9 1.9-.5 1.2L3 12.5v2l2 .4.5 1.2-.9 1.9 1.4 1.4 1.9-.9 1.2.5.4 2h5l.4-2 1.2-.5 1.9.9 1.4-1.4-.9-1.9.5-1.2 2-.4z"/></svg>
+      </div>
+      <div class="name">系統其他</div>
+      <div class="sf">gearshape.fill</div>
+    </div>
+  </div>
+</body></html>

@@ -1,0 +1,36 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>Colors — Status</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .pair { border: 1px solid var(--border); border-radius: var(--r-8); padding: 14px; background: var(--bg-card); }
+  .pair h4 { margin: 0 0 10px; font-size: 13px; font-weight: 600; color: var(--fg-1); display: flex; align-items: center; gap: 8px; }
+  .dot { width: 10px; height: 10px; border-radius: 999px; display: inline-block; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 500; }
+  .stack { display: flex; flex-direction: column; gap: 6px; }
+  .msg { font-size: 12px; line-height: 1.5; color: var(--fg-2); }
+</style>
+</head><body>
+  <div class="grid">
+    <div class="pair">
+      <h4><span class="dot" style="background:#2E8B57"></span>success</h4>
+      <div class="stack">
+        <span class="pill" style="background:#E6F4EA; color:#1E5E3A">這個月才用了 35%</span>
+        <p class="msg">綠燈狀態 — 用量充足，不會發通知。</p>
+      </div>
+    </div>
+    <div class="pair">
+      <h4><span class="dot" style="background:#D48417"></span>warning</h4>
+      <div class="stack">
+        <span class="pill" style="background:#FDF1D6; color:#8A530A">已用 82%，照這個速度會超過上限</span>
+        <p class="msg">80% 通知門檻；同色系，避免和 brand accent 衝突。</p>
+      </div>
+    </div>
+    <div class="pair">
+      <h4><span class="dot" style="background:#C8362B"></span>danger</h4>
+      <div class="stack">
+        <span class="pill" style="background:#FBEAEA; color:#8B221A">超過上限 1.2 GB</span>
+        <p class="msg">破表才出現。永遠搭配人話文案，不是紅色驚嘆號。</p>
+      </div>
+    </div>
+  </div>
+</body></html>

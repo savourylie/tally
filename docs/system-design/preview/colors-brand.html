@@ -1,0 +1,22 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>Colors — Brand amber scale</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  .ramp { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+  .swatch { height: 80px; }
+  .swatch .meta { position:absolute; left: 8px; top: 8px; font-family: var(--font-mono); font-size: 10px; }
+  .swatch .val { position:absolute; left: 8px; bottom: 8px; font-family: var(--font-mono); font-size: 10px; opacity: 0.85; }
+  .accent-note { margin-top: 14px; color: var(--fg-2); font-size: 12px; }
+</style>
+</head><body>
+  <div class="ramp">
+    <div class="swatch" style="background:#FDF6E8"><span class="meta" style="color:#864C07">50</span><span class="val" style="color:#864C07">#FDF6E8</span></div>
+    <div class="swatch" style="background:#FAE9C5"><span class="meta" style="color:#864C07">100</span><span class="val" style="color:#864C07">#FAE9C5</span></div>
+    <div class="swatch" style="background:#F4D38C"><span class="meta" style="color:#864C07">200</span><span class="val" style="color:#864C07">#F4D38C</span></div>
+    <div class="swatch" style="background:#EEBC52"><span class="meta" style="color:#4A2E03">300</span><span class="val" style="color:#4A2E03">#EEBC52</span></div>
+    <div class="swatch" style="background:#E89B2F; outline: 2px solid #1F1C16; outline-offset: -2px"><span class="meta" style="color:#fff">400★</span><span class="val" style="color:#fff">#E89B2F</span></div>
+    <div class="swatch" style="background:#D4811B"><span class="meta" style="color:#fff">500</span><span class="val" style="color:#fff">#D4811B</span></div>
+    <div class="swatch" style="background:#B0660E"><span class="meta" style="color:#fff">600</span><span class="val" style="color:#fff">#B0660E</span></div>
+    <div class="swatch" style="background:#864C07"><span class="meta" style="color:#fff">700</span><span class="val" style="color:#fff">#864C07</span></div>
+  </div>
+  <p class="accent-note"><strong style="color:#1F1C16">★ <code style="font-family:var(--font-mono)">--brand-400 / --accent</code></strong> &mdash; the single brand color. Used on primary CTAs, progress fill, menu bar icon when over budget.</p>
+</body></html>

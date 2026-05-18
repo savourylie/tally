@@ -1,0 +1,46 @@
+/* Preview-card chrome: minimal scaffold around each design-system card.
+   Cards are ~700px wide and content-height. No outer borders/titles —
+   the design-system tab adds the asset name. */
+
+@import url("../colors_and_type.css");
+
+html, body { background: var(--bg-app); }
+body {
+  padding: 24px;
+  font-family: var(--font-text);
+  color: var(--fg-1);
+}
+.row { display: flex; gap: 16px; align-items: stretch; }
+.col { display: flex; flex-direction: column; gap: 12px; }
+.cluster { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* Generic swatch */
+.swatch {
+  width: 100%;
+  height: 56px;
+  border-radius: var(--r-8);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.swatch-label {
+  position: absolute; left: 8px; bottom: 6px;
+  font-family: var(--font-mono); font-size: 10px;
+  background: rgba(255,255,255,0.78); color: var(--fg-1);
+  padding: 1px 6px; border-radius: 4px;
+  letter-spacing: 0;
+}
+.swatch-label.on-dark { background: rgba(0,0,0,0.55); color: #fff; }
+
+.token-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--divider);
+  font-size: var(--fs-callout);
+}
+.token-row:last-child { border-bottom: 0; }
+.token-name { font-family: var(--font-mono); color: var(--fg-2); }
+.token-value { font-family: var(--font-mono); color: var(--fg-3); }

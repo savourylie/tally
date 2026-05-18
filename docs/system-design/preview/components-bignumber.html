@@ -1,0 +1,40 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>Components — Big number block</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .hero {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--r-12); padding: 22px 26px;
+  }
+  .row1 { display: flex; align-items: baseline; gap: 14px; }
+  .lbl { color: var(--fg-3); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+  .num { font-family: var(--font-display); font-size: 64px; font-weight: 600; line-height: 1; letter-spacing: -0.022em; font-variant-numeric: tabular-nums; color: var(--fg-1); }
+  .unit { font-family: var(--font-display); font-size: 28px; font-weight: 500; color: var(--fg-2); }
+  .remain { margin-left: auto; text-align: right; }
+  .remain-num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 18px; color: var(--fg-1); }
+  .remain-cap { font-size: 11px; color: var(--fg-3); }
+  .track { margin-top: 18px; height: 8px; background: var(--n-150); border-radius: 999px; overflow: hidden; border: 1px solid var(--border); }
+  .fill { height: 100%; background: var(--accent); width: 62%; border-radius: 999px; }
+  .net { margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 999px; font-size: 12px; color: var(--fg-2); }
+  .net svg { color: var(--success); }
+</style>
+</head><body>
+  <div class="hero">
+    <div class="row1">
+      <div>
+        <div class="lbl">這個月用了</div>
+        <div><span class="num">12.4</span> <span class="unit">GB</span></div>
+      </div>
+      <div class="remain">
+        <div class="remain-cap">還可以用</div>
+        <div class="remain-num">7.6 GB</div>
+        <div class="remain-cap">到 6 月 1 日重置</div>
+      </div>
+    </div>
+    <div class="track"><div class="fill"></div></div>
+    <div class="net">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12.5a9 9 0 0 1 14 0"/><path d="M8.5 16a4 4 0 0 1 7 0"/><circle cx="12" cy="19" r="1.2" fill="currentColor"/></svg>
+      你現在連在 <strong style="color:var(--fg-1);">家裡的 Wi-Fi</strong>
+    </div>
+  </div>
+</body></html>

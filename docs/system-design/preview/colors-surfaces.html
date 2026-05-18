@@ -1,0 +1,53 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>Colors — Surfaces</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  .stage { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .frame { border-radius: var(--r-10); border: 1px solid var(--border); overflow: hidden; }
+  .frame .sb { display: grid; grid-template-columns: 110px 1fr; height: 180px; }
+  .frame.dark { border-color: #34302A; }
+  .sb > .sidebar { padding: 12px 10px; font-size: 11px; }
+  .sb > .content { padding: 14px; }
+  .card-inset {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 6px; padding: 8px 10px; font-size: 11px; color: var(--fg-2);
+    margin-bottom: 8px;
+  }
+  .row { display: flex; align-items: center; gap: 6px; padding: 4px 6px; border-radius: 5px; font-size: 11px; }
+  .row.active { background: var(--bg-selected); color: var(--brand-700); }
+
+  /* dark variant */
+  .frame.dark { background: #1B1814; color: #F2EFE8; }
+  .frame.dark .sidebar { background: #221E18; color: #BDB6A6; }
+  .frame.dark .content { background: #1B1814; }
+  .frame.dark .card-inset { background: #26221B; border-color: #34302A; color: #BDB6A6; }
+  .frame.dark .row.active { background: rgba(232,155,47,0.16); color: #EEBC52; }
+</style>
+</head><body>
+  <div class="stage">
+    <div class="frame" style="background: var(--bg-app);">
+      <div class="sb">
+        <div class="sidebar" style="background: var(--bg-sidebar); border-right: 1px solid var(--border);">
+          <div class="row active">總覽</div>
+          <div class="row">設定</div>
+        </div>
+        <div class="content">
+          <div class="card-inset">bg-card on bg-app</div>
+          <div class="card-inset" style="background: var(--bg-card-alt);">bg-card-alt (zebra)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="frame dark">
+      <div class="sb">
+        <div class="sidebar">
+          <div class="row active">總覽</div>
+          <div class="row">設定</div>
+        </div>
+        <div class="content">
+          <div class="card-inset">bg-card · dark</div>
+          <div class="card-inset" style="background:#2A261F;">bg-card-alt · dark</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body></html>

@@ -1,0 +1,300 @@
+/* ============================================================
+   Tally — colors_and_type.css
+   The single source of truth for Tally's color + type tokens.
+   Loaded by every preview card and the macOS UI kit.
+
+   Design philosophy:
+   - Native macOS Sonoma+ feel
+   - Warm amber accent (single brand color)
+   - Warm-neutral grey ramp (slightly cream, not cool)
+   - System fonts only (SF Pro Display / Text, SF Mono, PingFang TC)
+   - Light + dark are first-class peers
+   ============================================================ */
+
+/* -- Color tokens ------------------------------------------- */
+
+:root {
+  /* Brand — single warm amber, used sparingly */
+  --brand-50:  #FDF6E8;
+  --brand-100: #FAE9C5;
+  --brand-200: #F4D38C;
+  --brand-300: #EEBC52;
+  --brand-400: #E89B2F;   /* PRIMARY accent */
+  --brand-500: #D4811B;
+  --brand-600: #B0660E;
+  --brand-700: #864C07;
+
+  --accent:        var(--brand-400);
+  --accent-hover:  var(--brand-500);
+  --accent-press:  var(--brand-600);
+  --accent-soft:   var(--brand-50);
+  --accent-on:     #FFFFFF;     /* text/icon color on top of --accent */
+
+  /* Status */
+  --success-soft: #E6F4EA;
+  --success:      #2E8B57;
+  --success-strong:#1E5E3A;
+
+  --warning-soft: #FDF1D6;
+  --warning:      #D48417;       /* same family as brand, intentional */
+  --warning-strong:#8A530A;
+
+  --danger-soft:  #FBEAEA;
+  --danger:       #C8362B;
+  --danger-strong:#8B221A;
+
+  /* Warm-neutral ramp (slightly cream — not cool grey) */
+  --n-0:  #FFFFFF;
+  --n-25: #FCFBF8;
+  --n-50: #FAF9F7;   /* app bg */
+  --n-100:#F4F2EC;   /* sidebar bg */
+  --n-150:#EDEAE3;
+  --n-200:#E8E5DE;   /* default border */
+  --n-300:#D8D3C8;
+  --n-400:#BAB3A4;
+  --n-500:#8E8779;
+  --n-600:#6B6557;
+  --n-700:#4A453A;
+  --n-800:#2E2A22;
+  --n-900:#1F1C16;
+  --n-950:#15130F;
+
+  /* Surfaces */
+  --bg-app:      var(--n-50);
+  --bg-sidebar:  var(--n-100);
+  --bg-card:     var(--n-0);
+  --bg-card-alt: var(--n-25);
+  --bg-popover:  rgba(252, 251, 248, 0.92);  /* approximates macOS .menu material */
+  --bg-hover:    rgba(0, 0, 0, 0.04);
+  --bg-press:    rgba(0, 0, 0, 0.07);
+  --bg-selected: var(--brand-50);
+
+  /* Foregrounds */
+  --fg-1: var(--n-900);   /* primary text */
+  --fg-2: var(--n-700);   /* secondary */
+  --fg-3: var(--n-500);   /* tertiary / hints */
+  --fg-4: var(--n-400);   /* disabled */
+  --fg-inv: var(--n-0);   /* on dark surfaces */
+
+  /* Borders & dividers */
+  --border:        var(--n-200);
+  --border-strong: var(--n-300);
+  --divider:       var(--n-150);
+
+  /* Focus / selection */
+  --focus-ring: var(--brand-400);
+
+  /* Shadows — used ONLY for popover + onboarding modal */
+  --shadow-popover: 0 12px 32px -8px rgba(0, 0, 0, 0.18),
+                    0 2px 6px -2px rgba(0, 0, 0, 0.10);
+  --shadow-modal:   0 24px 64px -16px rgba(0, 0, 0, 0.28),
+                    0 4px 12px -4px rgba(0, 0, 0, 0.12);
+}
+
+/* Dark mode — first-class peer */
+:root[data-theme="dark"],
+.tally-dark {
+  --bg-app:      #1B1814;
+  --bg-sidebar:  #221E18;
+  --bg-card:     #26221B;
+  --bg-card-alt: #2A261F;
+  --bg-popover:  rgba(38, 34, 27, 0.92);
+  --bg-hover:    rgba(255, 255, 255, 0.05);
+  --bg-press:    rgba(255, 255, 255, 0.08);
+  --bg-selected: rgba(232, 155, 47, 0.16);
+
+  --fg-1: #F2EFE8;
+  --fg-2: #BDB6A6;
+  --fg-3: #8E8779;
+  --fg-4: #6B6557;
+  --fg-inv: #1B1814;
+
+  --border:        #34302A;
+  --border-strong: #45403A;
+  --divider:       #2D2922;
+
+  --accent-soft:   rgba(232, 155, 47, 0.16);
+
+  --success-soft:  rgba(46, 139, 87, 0.18);
+  --warning-soft:  rgba(212, 132, 23, 0.18);
+  --danger-soft:   rgba(200, 54, 43, 0.18);
+
+  --shadow-popover: 0 12px 32px -8px rgba(0, 0, 0, 0.55),
+                    0 2px 6px -2px rgba(0, 0, 0, 0.35);
+  --shadow-modal:   0 24px 64px -16px rgba(0, 0, 0, 0.65),
+                    0 4px 12px -4px rgba(0, 0, 0, 0.40);
+}
+
+/* -- Type tokens -------------------------------------------- */
+
+:root {
+  /* Stacks */
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                  "PingFang TC", "Helvetica Neue", system-ui, sans-serif;
+  --font-text:    -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                  "PingFang TC", "Helvetica Neue", system-ui, sans-serif;
+  --font-mono:    "SF Mono", ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
+
+  /* Sizes — modeled on Apple HIG */
+  --fs-mega:    64px;   /* THE big number on Overview */
+  --fs-display: 34px;   /* secondary big number, e.g. popover */
+  --fs-title-1: 22px;
+  --fs-title-2: 17px;   /* section headers */
+  --fs-title-3: 15px;
+  --fs-body:    13px;   /* macOS default UI size */
+  --fs-callout: 12px;
+  --fs-caption: 11px;
+  --fs-micro:   10px;   /* sparingly — tiny labels */
+
+  /* Weights */
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+
+  /* Line heights */
+  --lh-tight: 1.15;
+  --lh-snug:  1.30;
+  --lh-base:  1.45;
+
+  /* Tracking */
+  --tracking-mega:  -0.022em;
+  --tracking-tight: -0.012em;
+  --tracking-base:  -0.005em;
+  --tracking-caps:  0.06em;
+}
+
+/* -- Reset + base ------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--bg-app);
+  color: var(--fg-1);
+  font-family: var(--font-text);
+  font-size: var(--fs-body);
+  line-height: var(--lh-base);
+  letter-spacing: var(--tracking-base);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* -- Semantic type classes ---------------------------------- */
+
+.t-mega {
+  font-family: var(--font-display);
+  font-size: var(--fs-mega);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-mega);
+  font-variant-numeric: tabular-nums;
+}
+
+.t-display {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+.t-title-1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-title-1);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-tight);
+}
+
+.t-title-2 {
+  font-family: var(--font-text);
+  font-size: var(--fs-title-2);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+}
+
+.t-title-3 {
+  font-family: var(--font-text);
+  font-size: var(--fs-title-3);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+}
+
+.t-body {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-regular);
+}
+
+.t-body-em {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+}
+
+.t-callout {
+  font-size: var(--fs-callout);
+  color: var(--fg-2);
+}
+
+.t-caption {
+  font-size: var(--fs-caption);
+  color: var(--fg-3);
+  line-height: var(--lh-snug);
+}
+
+.t-micro-caps {
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps);
+  color: var(--fg-3);
+}
+
+.t-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.t-num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--tracking-tight);
+}
+
+/* -- Spacing tokens (utility) ------------------------------- */
+
+:root {
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3:  12px;
+  --s-4:  16px;
+  --s-5:  20px;
+  --s-6:  24px;
+  --s-8:  32px;
+  --s-10: 40px;
+  --s-12: 48px;
+  --s-16: 64px;
+}
+
+/* -- Radii -------------------------------------------------- */
+
+:root {
+  --r-2: 2px;
+  --r-4: 4px;
+  --r-6: 6px;   /* buttons, inputs */
+  --r-8: 8px;   /* cards */
+  --r-10: 10px; /* popover, window-rounded surface */
+  --r-12: 12px; /* the hero Overview card */
+  --r-full: 9999px;
+}
+
+/* -- Motion tokens ------------------------------------------ */
+
+:root {
+  --ease-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --ease-decel:    cubic-bezier(0.32, 0.72, 0, 1);
+  --dur-hover:     150ms;
+  --dur-state:     200ms;
+  --dur-popover:   280ms;
+  --dur-view:      320ms;
+}

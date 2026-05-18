@@ -1,0 +1,24 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>Motion</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 24px; }
+  .row { display: grid; grid-template-columns: 130px 1fr 90px; gap: 16px; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--divider); }
+  .row:last-child { border-bottom: 0; }
+  .name { font-family: var(--font-mono); font-size: 11px; color: var(--fg-2); }
+  .val { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); text-align: right; }
+  .track { position: relative; height: 8px; background: var(--n-150); border-radius: 4px; overflow: hidden; }
+  .dot { position: absolute; top: -3px; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); }
+  @keyframes std    { from {left:0} to {left: calc(100% - 14px)} }
+  .a-std    { animation: std 1.4s var(--ease-standard) infinite alternate; }
+  .a-decel  { animation: std 1.4s var(--ease-decel)    infinite alternate; }
+  .a-hover  { animation: std 0.15s var(--ease-standard) infinite alternate; }
+  .a-state  { animation: std 0.2s  var(--ease-standard) infinite alternate; }
+  .a-pop    { animation: std 0.28s var(--ease-decel)    infinite alternate; }
+</style>
+</head><body>
+  <div class="row"><span class="name">standard</span><div class="track"><div class="dot a-std"></div></div><span class="val">cubic-bezier(.4,0,.2,1)</span></div>
+  <div class="row"><span class="name">decel (popover)</span><div class="track"><div class="dot a-decel"></div></div><span class="val">cubic-bezier(.32,.72,0,1)</span></div>
+  <div class="row"><span class="name">hover</span><div class="track"><div class="dot a-hover"></div></div><span class="val">150 ms</span></div>
+  <div class="row"><span class="name">state change</span><div class="track"><div class="dot a-state"></div></div><span class="val">200 ms</span></div>
+  <div class="row"><span class="name">popover open</span><div class="track"><div class="dot a-pop"></div></div><span class="val">280 ms</span></div>
+</body></html>

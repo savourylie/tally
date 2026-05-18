@@ -1,0 +1,86 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>Components — Form</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px; }
+  .field { display: flex; flex-direction: column; gap: 6px; font-size: 12px; }
+  .field label { color: var(--fg-2); font-size: 11px; }
+  input[type=text], input[type=number], select {
+    font-family: var(--font-text); font-size: 13px;
+    padding: 5px 9px; border-radius: 6px;
+    border: 1px solid var(--border-strong); background: var(--bg-card);
+    color: var(--fg-1); height: 26px;
+  }
+  input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  /* macOS toggle */
+  .toggle { position: relative; width: 36px; height: 22px; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .slider {
+    position: absolute; inset: 0; background: var(--n-300);
+    border-radius: 999px; transition: background var(--dur-hover) var(--ease-standard);
+    cursor: pointer;
+  }
+  .slider::before {
+    content:""; position: absolute; top: 2px; left: 2px;
+    width: 18px; height: 18px; background: #fff;
+    border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    transition: transform var(--dur-state) var(--ease-standard);
+  }
+  .toggle input:checked + .slider { background: var(--accent); }
+  .toggle input:checked + .slider::before { transform: translateX(14px); }
+
+  /* macOS checkbox */
+  .check { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+  .check .box {
+    width: 14px; height: 14px; border: 1px solid var(--border-strong);
+    border-radius: 3px; background: var(--bg-card);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .check.on .box { background: var(--accent); border-color: var(--accent); }
+  .check.on .box::after {
+    content:""; display: block; width: 4px; height: 8px;
+    border: solid #fff; border-width: 0 1.5px 1.5px 0;
+    transform: rotate(45deg) translateY(-1px);
+  }
+
+  .stepper { display: inline-flex; align-items: stretch; border: 1px solid var(--border-strong); border-radius: 6px; overflow: hidden; }
+  .stepper button { background: var(--bg-card); border: 0; width: 24px; cursor: pointer; color: var(--fg-1); font-size: 13px; }
+  .stepper button:hover { background: var(--bg-hover); }
+  .stepper input { border: 0; width: 60px; text-align: center; height: 26px; padding: 0; outline: 0; }
+</style>
+</head><body>
+  <div class="grid">
+    <div class="field">
+      <label>每月可以用多少（GB）</label>
+      <div class="stepper">
+        <button>−</button><input value="20"><button>+</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>每月從幾號開始算</label>
+      <select><option>1 號</option><option>15 號</option><option>每月最後一天</option></select>
+    </div>
+    <div class="field">
+      <label>顯示在 menu bar 的內容</label>
+      <select><option>本月總用量</option><option>剩餘額度</option><option>目前速度</option></select>
+    </div>
+    <div class="field">
+      <label>VPN 設定備註</label>
+      <input type="text" value="家裡的 Wi-Fi">
+    </div>
+
+    <div class="field">
+      <label>開機自動啟動</label>
+      <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+    </div>
+    <div class="field">
+      <label>提醒時機</label>
+      <div style="display:flex; gap:14px;">
+        <span class="check on"><span class="box"></span>80%</span>
+        <span class="check on"><span class="box"></span>95%</span>
+        <span class="check"><span class="box"></span>100%</span>
+      </div>
+    </div>
+  </div>
+</body></html>

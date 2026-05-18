@@ -1,0 +1,24 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>Spacing — Radii</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 24px; }
+  .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+  .box {
+    height: 88px; background: var(--brand-100);
+    border: 1px solid var(--brand-300);
+    display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: 8px;
+    font-family: var(--font-mono); font-size: 11px; color: var(--brand-700);
+  }
+  .lbl { color: var(--fg-3); font-size: 11px; font-family: var(--font-mono); text-align: center; margin-top: 6px;}
+</style>
+</head><body>
+  <div class="grid">
+    <div><div class="box" style="border-radius: 2px;">2 px</div><div class="lbl">--r-2 · sharp</div></div>
+    <div><div class="box" style="border-radius: 4px;">4 px</div><div class="lbl">--r-4 · tags</div></div>
+    <div><div class="box" style="border-radius: 6px;">6 px</div><div class="lbl">--r-6 · buttons</div></div>
+    <div><div class="box" style="border-radius: 8px;">8 px</div><div class="lbl">--r-8 · cards</div></div>
+    <div><div class="box" style="border-radius: 10px;">10 px</div><div class="lbl">--r-10 · popover</div></div>
+    <div><div class="box" style="border-radius: 12px;">12 px</div><div class="lbl">--r-12 · hero</div></div>
+  </div>
+</body></html>

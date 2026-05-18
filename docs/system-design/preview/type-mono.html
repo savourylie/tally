@@ -1,0 +1,22 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>Type — Mono & tabular</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 24px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--divider); }
+  th { color: var(--fg-3); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+  td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; color: var(--fg-1); }
+  .legend { margin-top: 12px; color: var(--fg-3); font-size: 11px; font-family: var(--font-mono); }
+</style>
+</head><body>
+  <table>
+    <thead><tr><th>App</th><th style="text-align:right;">收進</th><th style="text-align:right;">傳出</th><th style="text-align:right;">總計</th></tr></thead>
+    <tbody>
+      <tr><td>Chrome</td><td class="num">3,820 MB</td><td class="num">410 MB</td><td class="num">4.23 GB</td></tr>
+      <tr><td>iCloud</td><td class="num">1,780 MB</td><td class="num">320 MB</td><td class="num">2.10 GB</td></tr>
+      <tr><td>Slack</td><td class="num">980 MB</td><td class="num">112 MB</td><td class="num">1.09 GB</td></tr>
+      <tr><td>軟體更新</td><td class="num">640 MB</td><td class="num">8 MB</td><td class="num">0.65 GB</td></tr>
+    </tbody>
+  </table>
+  <p class="legend">.t-mono · "SF Mono" · tabular-nums &nbsp;|&nbsp; numbers align by column</p>
+</body></html>

@@ -1,0 +1,53 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>Components — Buttons</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+  .row:last-child { margin-bottom: 0; }
+  .lbl { width: 78px; color: var(--fg-3); font-size: 11px; font-family: var(--font-mono); }
+
+  .btn {
+    font-family: var(--font-text); font-size: 13px; font-weight: 500;
+    line-height: 1; padding: 7px 14px; border-radius: 6px;
+    border: 1px solid transparent; cursor: pointer;
+    transition: background var(--dur-hover) var(--ease-standard);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-primary { background: var(--accent); color: var(--accent-on); }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-primary:active { background: var(--accent-press); }
+  .btn-secondary {
+    background: var(--bg-card); color: var(--fg-1);
+    border-color: var(--border);
+  }
+  .btn-secondary:hover { background: var(--bg-hover); }
+  .btn-ghost { background: transparent; color: var(--fg-1); }
+  .btn-ghost:hover { background: var(--bg-hover); }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-small { padding: 4px 10px; font-size: 12px; }
+  .btn[disabled] { opacity: 0.4; cursor: not-allowed; }
+</style>
+</head><body>
+  <div class="row">
+    <span class="lbl">primary</span>
+    <button class="btn btn-primary">繼續</button>
+    <button class="btn btn-primary"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> 確定</button>
+    <button class="btn btn-primary btn-small">儲存</button>
+    <button class="btn btn-primary" disabled>處理中…</button>
+  </div>
+  <div class="row">
+    <span class="lbl">secondary</span>
+    <button class="btn btn-secondary">取消</button>
+    <button class="btn btn-secondary">回到上一步</button>
+    <button class="btn btn-secondary btn-small">了解</button>
+  </div>
+  <div class="row">
+    <span class="lbl">ghost</span>
+    <button class="btn btn-ghost">略過</button>
+    <button class="btn btn-ghost btn-small">重置</button>
+  </div>
+  <div class="row">
+    <span class="lbl">danger</span>
+    <button class="btn btn-danger btn-small">清除所有資料</button>
+  </div>
+</body></html>

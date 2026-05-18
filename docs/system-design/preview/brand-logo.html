@@ -1,0 +1,37 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>Brand — Logo</title>
+<link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 28px; }
+  .stage {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .panel {
+    border: 1px solid var(--border); border-radius: var(--r-10);
+    padding: 28px; display: flex; align-items: center; justify-content: center;
+    min-height: 120px;
+  }
+  .panel.dark { background: #1B1814; border-color: #34302A; }
+  .panel.dark img { filter: invert(0); }
+</style>
+</head><body>
+  <div class="stage">
+    <div class="panel">
+      <img src="../assets/logo.svg" alt="Tally" width="200" height="auto">
+    </div>
+    <div class="panel dark">
+      <!-- Dark version: re-render wordmark in light cream -->
+      <svg viewBox="0 0 240 80" width="200" height="auto" aria-label="Tally">
+        <g stroke="#E89B2F" stroke-width="6" stroke-linecap="round" fill="none">
+          <line x1="14" y1="22" x2="14" y2="58"/>
+          <line x1="28" y1="22" x2="28" y2="58"/>
+          <line x1="42" y1="22" x2="42" y2="58"/>
+          <line x1="56" y1="22" x2="56" y2="58"/>
+          <line x1="6"  y1="56" x2="64" y2="24"/>
+        </g>
+        <text x="86" y="52"
+              font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif"
+              font-size="40" font-weight="600" letter-spacing="-1" fill="#F2EFE8">Tally</text>
+      </svg>
+    </div>
+  </div>
+</body></html>
