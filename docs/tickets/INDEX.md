@@ -7,10 +7,10 @@
 
 | Status         | Count |
 | -------------- | ----- |
-| ✅ Done         | 3     |
+| ✅ Done         | 4     |
 | 🔧 In Progress | 0     |
 | 📋 Pending     | 1     |
-| 🚫 Blocked     | 20    |
+| 🚫 Blocked     | 19    |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -24,8 +24,8 @@
 | 001 | [Xcode project scaffolding](./001-xcode-project-scaffolding.md)                                              | `done`    | —          | Foundation in place |
 | 002 | [Design tokens (Swift)](./002-design-tokens-swift.md)                                                        | `done`    | #001 ✅    | Tokens shipped |
 | 003 | [GRDB setup + schema + seed](./003-grdb-setup-schema-seed.md)                                                | `done`    | #001 ✅    | Schema + seed in place |
-| 004 | [Logger + AppState boot sequence](./004-logger-appstate-boot.md)                                             | `pending` | #003 ✅    | Unblocked — #003 done |
-| 005 | [**TEST: Checkpoint 0 — Foundation**](./005-test-checkpoint-0-foundation.md)                                 | `blocked` | #004       | Gate: Phase 1 |
+| 004 | [Logger + AppState boot sequence](./004-logger-appstate-boot.md)                                             | `done`    | #003 ✅    | Logger + AppState wired |
+| 005 | [**TEST: Checkpoint 0 — Foundation**](./005-test-checkpoint-0-foundation.md)                                 | `pending` | #004 ✅    | Gate: Phase 1 — Unblocked, #004 done |
 
 ## Phase 2 — Data Pipeline + Menu Bar Popover (Sprint 1)
 

@@ -1,10 +1,10 @@
 # [TICKET-005] TEST: Checkpoint 0 — Foundation
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #004
+- Requires: #004 ✅
 
 ## Description
 This is the first gate. Phase 1 (TICKET-001 through TICKET-004) built the project scaffold, design tokens, persistence, and the app-level state machine. Before any data pipeline or UI work begins, we verify these foundations land cleanly together — a broken token system or migration bug discovered later wastes a sprint's worth of UI debugging.

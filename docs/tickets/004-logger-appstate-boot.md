@@ -1,7 +1,7 @@
 # [TICKET-004] Logger + AppState boot sequence
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #003 ✅
@@ -12,11 +12,11 @@ Wire up structured logging and a single root `AppState` that owns the applicatio
 Logging uses Apple's `os.Logger` so output is filterable in Console.app and survives release builds. Every subsystem (DB, collector, aggregator, store, UI, notifications, NE) gets a named category up front; later tickets just reference `Log.collector`, `Log.store`, etc.
 
 ## Acceptance Criteria
-- [ ] `Log.swift` exposes named `Logger` instances under subsystem `app.tally` with categories: `db`, `collector`, `agg`, `store`, `ui`, `notif`, `ne`
-- [ ] `AppState` is constructed once in `TallyApp.init()` and injected into both the `MenuBarExtra` and `Window` scenes (via `@Environment` or `@State` on the App struct)
-- [ ] `AppState` exposes `database: DatabaseManager` (from TICKET-003) and placeholder slots for `usageStore` and `collector` (set to optionals or stubbed types that TICKET-006/009 will fill in)
-- [ ] Launching the app logs a single ordered boot sequence visible in Console.app: `[db] opened`, `[db] migrations done`, `[store] init`, `[collector] starting`
-- [ ] No global singletons leak: every subsystem receives its `DatabaseManager` through `AppState`, not by importing a shared instance
+- [x] `Log.swift` exposes named `Logger` instances under subsystem `app.tally` with categories: `db`, `collector`, `agg`, `store`, `ui`, `notif`, `ne`
+- [x] `AppState` is constructed once in `TallyApp.init()` and injected into both the `MenuBarExtra` and `Window` scenes (via `@Environment` or `@State` on the App struct)
+- [x] `AppState` exposes `database: DatabaseManager` (from TICKET-003) and placeholder slots for `usageStore` and `collector` (set to optionals or stubbed types that TICKET-006/009 will fill in)
+- [x] Launching the app logs a single ordered boot sequence visible in Console.app: `[db] opened`, `[db] migrations done`, `[store] init`, `[collector] starting`
+- [x] No global singletons leak: every subsystem receives its `DatabaseManager` through `AppState`, not by importing a shared instance
 
 ## Implementation Notes
 - **Files to create**: `App/TallyApp.swift` (replacing the scaffolded `App.swift` from TICKET-001), `App/AppState.swift`, `Logging/Log.swift`
