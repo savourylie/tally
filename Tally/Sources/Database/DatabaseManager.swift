@@ -2,17 +2,9 @@ import Foundation
 import GRDB
 
 final class DatabaseManager: @unchecked Sendable {
-    static let shared: DatabaseManager = {
-        do {
-            return try DatabaseManager()
-        } catch {
-            fatalError("Failed to initialize DatabaseManager: \(error)")
-        }
-    }()
-
     let dbPool: DatabasePool
 
-    private init() throws {
+    init() throws {
         let fileManager = FileManager.default
         let appSupport = try fileManager.url(
             for: .applicationSupportDirectory,
@@ -28,7 +20,9 @@ final class DatabaseManager: @unchecked Sendable {
 
         let databaseURL = tallyDirectory.appendingPathComponent("tally.sqlite")
         dbPool = try DatabasePool(path: databaseURL.path)
+        Log.db.info("[db] opened path=\(databaseURL.path, privacy: .public)")
 
         try Migrations.makeMigrator().migrate(dbPool)
+        Log.db.info("[db] migrations done")
     }
 }
