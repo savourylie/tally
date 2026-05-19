@@ -16,6 +16,10 @@ settings:
     GENERATE_INFOPLIST_FILE: NO
     SWIFT_STRICT_CONCURRENCY: complete
     SWIFT_TREAT_WARNINGS_AS_ERRORS: NO
+packages:
+  GRDB:
+    url: https://github.com/groue/GRDB.swift
+    from: 7.0.0
 targets:
   Tally:
     type: application
@@ -23,6 +27,8 @@ targets:
     sources:
       - Tally/Sources
       - Tally/Resources
+    dependencies:
+      - package: GRDB
     info:
       path: Tally/Info.plist
       properties:
