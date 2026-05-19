@@ -1,7 +1,7 @@
 # [TICKET-002] Design tokens (Swift)
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #001 ✅
@@ -12,11 +12,11 @@ Port every named design token from `docs/system-design/colors_and_type.css` into
 The CSS file defines colors (brand ramp, status, neutrals, surface tiers, foreground tiers, borders), typography (font stacks, type scale, weights, line heights, letter-spacing), spacing scale, border radii, motion durations + easings, and shadow definitions. Each lands in a separate Swift file grouped under `DesignTokens/`.
 
 ## Acceptance Criteria
-- [ ] All color tokens from `colors_and_type.css` exist as `Color` extensions and resolve to the documented hex values in both light and dark mode (dark mode uses the `:root[data-theme="dark"]` block in the CSS source)
-- [ ] All typography tokens exist as `Font` extensions: `mega` (64), `display` (34), `title1` (22), `title2` (17), `title3` (15), `body` (13), `callout` (12), `caption` (11) — using SF Pro Display / SF Pro Text / SF Mono per the CSS `--font-*` stacks
-- [ ] Spacing scale (`s1`–`s16` → 4 / 8 / 12 / 16 / 20 / 24 / 32 / 40 / 48 / 64 pt) exists as `CGFloat` constants
-- [ ] Radius tokens (`r6`, `r8`, `r10`, `r12`) exist as `CGFloat` constants
-- [ ] Motion tokens exist: durations (`hover` 150ms, `state` 200ms, `popover` 280ms, `view` 320ms) and easings (`standard` cubic-bezier(0.4, 0, 0.2, 1), `decel` cubic-bezier(0.32, 0.72, 0, 1))
+- [x] All color tokens from `colors_and_type.css` exist as `Color` extensions and resolve to the documented hex values in both light and dark mode (dark mode uses the `:root[data-theme="dark"]` block in the CSS source)
+- [x] All typography tokens exist as `Font` extensions: `mega` (64), `display` (34), `title1` (22), `title2` (17), `title3` (15), `body` (13), `callout` (12), `caption` (11) — using SF Pro Display / SF Pro Text / SF Mono per the CSS `--font-*` stacks
+- [x] Spacing scale (`s1`–`s16` → 4 / 8 / 12 / 16 / 20 / 24 / 32 / 40 / 48 / 64 pt) exists as `CGFloat` constants
+- [x] Radius tokens (`r6`, `r8`, `r10`, `r12`) exist as `CGFloat` constants
+- [x] Motion tokens exist: durations (`hover` 150ms, `state` 200ms, `popover` 280ms, `view` 320ms) and easings (`standard` cubic-bezier(0.4, 0, 0.2, 1), `decel` cubic-bezier(0.32, 0.72, 0, 1))
 - [ ] A SwiftUI `#Preview` file renders a swatch grid showing every color, type sample, spacing rule, and radius — verifiable side-by-side with `docs/system-design/preview/` HTML demos
 
 ## Design Reference

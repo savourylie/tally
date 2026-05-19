@@ -4,7 +4,7 @@
 `blocked`
 
 ## Dependencies
-- Requires: #002, #009
+- Requires: #002 ✅, #009
 
 ## Description
 Build the menu bar popover — the primary surface users interact with. PRD §6.1 demands a 3-second-glance design: "本月用了 X GB，距離上限還有 Y%". The layout follows `docs/system-design/ui_kits/macos_app/Popover.jsx`: hero number on top, progress bar, network line, Top 5 apps list, footer with "打開完整畫面" + gear buttons.

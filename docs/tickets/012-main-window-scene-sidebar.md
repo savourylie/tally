@@ -4,7 +4,7 @@
 `blocked`
 
 ## Dependencies
-- Requires: #002, #011
+- Requires: #002 ✅, #011
 
 ## Description
 Build the main window — a 960×640 non-resizable, draggable `Window` scene with a 200pt sidebar on the left and a 760pt content area on the right. PRD §6.2 specifies the fixed dimensions; PRD §10 specifies lazy lifecycle: "Main window lifecycle：lazy 建立，關掉就釋放，避免常駐記憶體".
