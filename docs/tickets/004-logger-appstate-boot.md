@@ -1,10 +1,10 @@
 # [TICKET-004] Logger + AppState boot sequence
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #003
+- Requires: #003 ✅
 
 ## Description
 Wire up structured logging and a single root `AppState` that owns the application's long-lived dependencies (`DatabaseManager`, the upcoming `UsageStore`, the upcoming collector lifecycle). The menu bar scene and the main window scene must both read from the same `AppState` instance — without this, each scene will end up instantiating its own store and the two surfaces will drift apart.

@@ -1,7 +1,7 @@
 # [TICKET-003] GRDB setup + schema + seed
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #001 ✅
@@ -12,12 +12,12 @@ Add the GRDB SQLite dependency, build a single `DatabaseManager` that opens / mi
 Establishing the schema once, up front, prevents migration churn later: the collector (TICKET-006), aggregator (TICKET-007), store (TICKET-009), and categorizer (TICKET-015) all read or write these tables. The PRD lists the schema explicitly; this ticket implements it 1-to-1 plus the fields each downstream consumer needs.
 
 ## Acceptance Criteria
-- [ ] GRDB.swift is added as a Swift Package dependency to the Tally app target
-- [ ] `DatabaseManager` opens a `DatabasePool` at `~/Library/Application Support/Tally/tally.sqlite` (creating the directory if missing) and is reachable as a singleton or environment value
-- [ ] An initial migration creates `flow_samples`, `daily_aggregates`, `networks`, `process_categories` with the columns documented in PRD §11
-- [ ] `process_categories` is seeded with 5 rows: iCloud, Time Machine 備份, 軟體更新, Spotlight 搜尋, 系統其他 — each with the SF Symbol icon names from PRD §8 and a packed list of `process_identifier` patterns
-- [ ] Schema is verifiable via `sqlite3 tally.sqlite ".schema"` and `SELECT category_name FROM process_categories;` returns the 5 seeded rows
-- [ ] Migrations are idempotent — relaunching the app does not re-run completed migrations or duplicate seed rows
+- [x] GRDB.swift is added as a Swift Package dependency to the Tally app target
+- [x] `DatabaseManager` opens a `DatabasePool` at `~/Library/Application Support/Tally/tally.sqlite` (creating the directory if missing) and is reachable as a singleton or environment value
+- [x] An initial migration creates `flow_samples`, `daily_aggregates`, `networks`, `process_categories` with the columns documented in PRD §11
+- [x] `process_categories` is seeded with 5 rows: iCloud, Time Machine 備份, 軟體更新, Spotlight 搜尋, 系統其他 — each with the SF Symbol icon names from PRD §8 and a packed list of `process_identifier` patterns
+- [x] Schema is verifiable via `sqlite3 tally.sqlite ".schema"` and `SELECT category_name FROM process_categories;` returns the 5 seeded rows
+- [x] Migrations are idempotent — relaunching the app does not re-run completed migrations or duplicate seed rows
 
 ## Implementation Notes
 - **Files to create**: `Database/DatabaseManager.swift`, `Database/Migrations/InitialMigration.swift` (or a single `Migrations.swift` with all migrations registered)
