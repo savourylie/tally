@@ -7,6 +7,7 @@ final class AppState {
     let database: DatabaseManager
     let usageStore: UsageStore?
     let collector: any FlowCollector
+    let aggregator: Aggregator
 
     init() {
         do {
@@ -22,6 +23,10 @@ final class AppState {
         let nettop = NettopCollector(dbPool: database.dbPool)
         self.collector = nettop
         nettop.start()
+
+        let agg = Aggregator(dbPool: database.dbPool)
+        self.aggregator = agg
+        Task { await agg.start() }
     }
 }
 
