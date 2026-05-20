@@ -1,7 +1,7 @@
 # [TICKET-007] Aggregation worker (with helper roll-up + retention)
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #006 ✅
@@ -16,12 +16,12 @@ Two complications in PRD §12:
 Without this aggregator the menu bar popover (TICKET-010) and Overview screen (TICKET-013) would have to scan all of `flow_samples` for every render — quickly unworkable as the database grows.
 
 ## Acceptance Criteria
-- [ ] `Aggregator` runs on a periodic timer (every 5 minutes), idempotently producing `daily_aggregates` rows from `flow_samples`
-- [ ] Idempotency: running the aggregator N times on the same input set produces the same `daily_aggregates` table state (no duplicates, no doubled totals)
-- [ ] Helper processes roll up to their parent bundle: rows from `Google Chrome Helper` are credited to `com.google.Chrome` in `daily_aggregates` (and Safari Web Content → `com.apple.Safari`, Slack Helper → `com.tinyspeck.slackmacgap`, etc.)
-- [ ] Retention pass: rows in `flow_samples` older than 7 days are deleted on each aggregator run; the deletion happens AFTER aggregation so no data is lost
+- [x] `Aggregator` runs on a periodic timer (every 5 minutes), idempotently producing `daily_aggregates` rows from `flow_samples`
+- [x] Idempotency: running the aggregator N times on the same input set produces the same `daily_aggregates` table state (no duplicates, no doubled totals)
+- [x] Helper processes roll up to their parent bundle: rows from `Google Chrome Helper` are credited to `com.google.Chrome` in `daily_aggregates` (and Safari Web Content → `com.apple.Safari`, Slack Helper → `com.tinyspeck.slackmacgap`, etc.)
+- [x] Retention pass: rows in `flow_samples` older than 7 days are deleted on each aggregator run; the deletion happens AFTER aggregation so no data is lost
 - [ ] SQL spot-check passes: `SELECT date, SUM(total_in + total_out) FROM daily_aggregates GROUP BY date` totals approximately match `SELECT date(timestamp, 'unixepoch'), SUM(bytes_in + bytes_out) FROM flow_samples GROUP BY 1` for overlapping date ranges (allowing for retention deletion)
-- [ ] First aggregation after boot completes within 10 seconds of collector startup so the UI doesn't sit in the `.collecting` state needlessly
+- [x] First aggregation after boot completes within 10 seconds of collector startup so the UI doesn't sit in the `.collecting` state needlessly
 
 ## Implementation Notes
 - **Files to create**: `Aggregation/Aggregator.swift`, `Aggregation/HelperProcessResolver.swift`

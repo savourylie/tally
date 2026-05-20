@@ -7,9 +7,9 @@
 
 | Status         | Count |
 | -------------- | ----- |
-| ✅ Done         | 6     |
+| ✅ Done         | 7     |
 | 🔧 In Progress | 0     |
-| 📋 Pending     | 2     |
+| 📋 Pending     | 1     |
 | 🚫 Blocked     | 16    |
 | ⏸️ Deferred    | 0     |
 
@@ -32,9 +32,9 @@
 | #   | Ticket                                                                                                       | Status    | Depends On     | Notes        |
 | --- | ------------------------------------------------------------------------------------------------------------ | --------- | -------------- | ------------ |
 | 006 | [`nettop` collector + FlowCollector protocol](./006-nettop-collector-flow-protocol.md)                       | `done`    | #005 ✅       | Collector + protocol shipped |
-| 007 | [Aggregation worker (helper roll-up + retention)](./007-aggregation-worker.md)                               | `pending` | #006 ✅       | Unblocked — #006 done |
+| 007 | [Aggregation worker (helper roll-up + retention)](./007-aggregation-worker.md)                               | `done`    | #006 ✅       | Aggregator + helper roll-up + retention shipped |
 | 008 | [App metadata service (NSWorkspace)](./008-app-metadata-service.md)                                          | `pending` | #005 ✅       | Unblocked — #005 done |
-| 009 | [UsageStore (@Observable)](./009-usage-store.md)                                                             | `blocked` | #007, #008     |              |
+| 009 | [UsageStore (@Observable)](./009-usage-store.md)                                                             | `blocked` | #007 ✅, #008  |              |
 | 010 | [Menu bar popover view + bindings](./010-menu-bar-popover.md)                                                | `blocked` | #002 ✅, #009 |              |
 | 011 | [**TEST: Checkpoint 1 — Menu Bar Popover End-to-End**](./011-test-checkpoint-1-menu-bar-popover.md)          | `blocked` | #010           | Gate: Phase 2 |
 

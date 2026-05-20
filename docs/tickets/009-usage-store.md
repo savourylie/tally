@@ -4,7 +4,7 @@
 `blocked`
 
 ## Dependencies
-- Requires: #007, #008
+- Requires: #007 ✅, #008
 
 ## Description
 The `UsageStore` is the single source of truth for "what does the user see right now". The menu bar popover and the main window both subscribe to one shared instance per PRD §10 ("menu bar 和 main window 共用同一個 store"). It exposes:
