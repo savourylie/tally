@@ -1,7 +1,7 @@
 # [TICKET-005] TEST: Checkpoint 0 — Foundation
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #004 ✅
@@ -14,13 +14,13 @@ This checkpoint executes a small end-to-end smoke test of everything Phase 1 pro
 Passing this checkpoint unlocks Phase 2 (data pipeline + menu bar popover).
 
 ## Acceptance Criteria
-- [ ] **Build**: `Tally.xcodeproj` builds with zero warnings on a clean checkout (`xcodebuild -project Tally.xcodeproj -scheme Tally clean build` succeeds)
-- [ ] **Migrations**: First-launch on a clean Application Support directory produces `tally.sqlite` with all 4 tables; relaunch does not re-run completed migrations
-- [ ] **Seed data**: `SELECT category_name, COUNT(*) FROM process_categories GROUP BY category_name;` returns 5 categories, all expected names
-- [ ] **Design tokens**: Open `TokensPreview.swift` in Xcode → swatch grid renders, hex values visually match `docs/system-design/preview/colors.html`. Toggle macOS dark mode → swatches update
-- [ ] **Boot log**: Console.app filtered `subsystem:app.tally` shows ordered `[db] opened` → `[db] migrations done` → `[store] init` → `[collector] starting`
-- [ ] **Shared AppState**: Menu bar placeholder and main window placeholder both read the same `AppState` instance (verified via temporary `ObjectIdentifier` debug text or equivalent)
-- [ ] **No regressions**: AppIcon and menu bar icon from TICKET-001 still render after the changes in TICKET-002 / TICKET-003 / TICKET-004
+- [x] **Build**: `Tally.xcodeproj` builds with zero warnings on a clean checkout (`xcodebuild -project Tally.xcodeproj -scheme Tally clean build` succeeds)
+- [x] **Migrations**: First-launch on a clean Application Support directory produces `tally.sqlite` with all 4 tables; relaunch does not re-run completed migrations
+- [x] **Seed data**: `SELECT category_name, COUNT(*) FROM process_categories GROUP BY category_name;` returns 5 categories, all expected names
+- [x] **Design tokens**: Open `TokensPreview.swift` in Xcode → swatch grid renders, hex values visually match `docs/system-design/preview/colors.html`. Toggle macOS dark mode → swatches update
+- [x] **Boot log**: Console.app filtered `subsystem:app.tally` shows ordered `[db] opened` → `[db] migrations done` → `[store] init` → `[collector] starting`
+- [x] **Shared AppState**: Menu bar placeholder and main window placeholder both read the same `AppState` instance (verified via temporary `ObjectIdentifier` debug text or equivalent)
+- [x] **No regressions**: AppIcon and menu bar icon from TICKET-001 still render after the changes in TICKET-002 / TICKET-003 / TICKET-004
 
 ## Implementation Notes
 This is a manual test execution ticket — no code changes unless bugs are found during testing.

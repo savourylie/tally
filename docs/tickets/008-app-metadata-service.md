@@ -1,10 +1,10 @@
 # [TICKET-008] App metadata service (NSWorkspace)
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #005
+- Requires: #005 ✅
 
 ## Description
 Build a service that, given a `bundle_id` (or fallback `executable_name`), returns the localized display name and an `NSImage` icon for use in the UI. The PRD design system shows real app icons + names in the popover (TICKET-010) and Overview (TICKET-015) — never raw bundle ids. Looking up app metadata is fast but not free; caching is essential.

@@ -1,10 +1,10 @@
 # [TICKET-006] nettop collector + FlowCollector protocol
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #005
+- Requires: #005 ✅
 
 ## Description
 Build the development-mode data collector that reads per-process byte counters from `nettop -P -x` and writes them to `flow_samples`. The PRD §10 explicitly states "開發初期可用 `nettop -P -x` 跑通 UI/資料 layer，最後再接 NE" — the entire UI and data layer is built and verified on top of `nettop` first, then TICKET-023 replaces this collector with a `NEFilterDataProvider`-backed implementation.
