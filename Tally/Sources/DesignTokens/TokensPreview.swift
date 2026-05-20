@@ -1,5 +1,4 @@
 import SwiftUI
-import AppKit
 
 struct TokensPreviewGrid: View {
     var body: some View {
@@ -72,11 +71,11 @@ struct TokensPreviewGrid: View {
 
                 SectionHeader("Foregrounds (dynamic)")
                 SwatchRow(swatches: [
-                    .init("fg-1",   "dyn", Color.tally.fg1),
-                    .init("fg-2",   "dyn", Color.tally.fg2),
-                    .init("fg-3",   "dyn", Color.tally.fg3),
-                    .init("fg-4",   "dyn", Color.tally.fg4),
-                    .init("fg-inv", "dyn", Color.tally.fgInv),
+                    .init("fg-1",   "dyn", Color.tally.fg1,   textColor: Color.tally.bgApp),
+                    .init("fg-2",   "dyn", Color.tally.fg2,   textColor: Color.tally.bgApp),
+                    .init("fg-3",   "dyn", Color.tally.fg3,   textColor: Color.tally.bgApp),
+                    .init("fg-4",   "dyn", Color.tally.fg4,   textColor: Color.tally.bgApp),
+                    .init("fg-inv", "dyn", Color.tally.fgInv, textColor: Color.tally.fg1),
                 ])
 
                 SectionHeader("Borders & dividers (dynamic)")
@@ -127,11 +126,35 @@ private struct Swatch: Identifiable {
     let hex: String
     let color: Color
     let accent: Bool
-    init(_ label: String, _ hex: String, _ color: Color, accent: Bool = false) {
+    let textColor: Color
+
+    init(
+        _ label: String,
+        _ hex: String,
+        _ color: Color,
+        accent: Bool = false,
+        textColor: Color? = nil
+    ) {
         self.label = label
         self.hex = hex
         self.color = color
         self.accent = accent
+        self.textColor = textColor ?? Self.defaultTextColor(forHex: hex)
+    }
+
+    private static func defaultTextColor(forHex hex: String) -> Color {
+        guard hex.hasPrefix("#"),
+              hex.count == 7,
+              let value = UInt32(hex.dropFirst(), radix: 16)
+        else {
+            return Color.tally.fg1
+        }
+
+        let r = Double((value >> 16) & 0xFF) / 255
+        let g = Double((value >> 8) & 0xFF) / 255
+        let b = Double(value & 0xFF) / 255
+        let luma = 0.2126 * r + 0.7152 * g + 0.0722 * b
+        return luma > 0.55 ? Color.tally.n900 : Color.tally.n0
     }
 }
 
@@ -150,9 +173,9 @@ private struct SwatchRow: View {
                                 .strokeBorder(s.accent ? Color.tally.fg1 : Color.tally.border, lineWidth: s.accent ? 2 : 0.5)
                         )
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(s.label).font(.tally.mono).foregroundStyle(contrastOn(s.color))
+                        Text(s.label).font(.tally.mono).foregroundStyle(s.textColor)
                         Spacer()
-                        Text(s.hex).font(.tally.mono).foregroundStyle(contrastOn(s.color).opacity(0.85))
+                        Text(s.hex).font(.tally.mono).foregroundStyle(s.textColor.opacity(0.85))
                     }
                     .padding(6)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -160,12 +183,6 @@ private struct SwatchRow: View {
                 .frame(height: 64)
             }
         }
-    }
-
-    private func contrastOn(_ color: Color) -> Color {
-        let ns = NSColor(color).usingColorSpace(.sRGB) ?? .white
-        let luma = 0.2126 * ns.redComponent + 0.7152 * ns.greenComponent + 0.0722 * ns.blueComponent
-        return luma > 0.55 ? Color.tally.n900 : Color.tally.n0
     }
 }
 

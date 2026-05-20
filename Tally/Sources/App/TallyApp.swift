@@ -11,7 +11,7 @@ struct TallyApp: App {
         }
         .menuBarExtraStyle(.window)
 
-        Window("Tally", id: "main") {
+        WindowGroup("Tally", id: "main") {
             MainWindowContent()
                 .environment(appState)
         }

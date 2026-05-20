@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MenuBarContent: View {
     @Environment(AppState.self) private var appState
+    @Environment(\.openWindow) private var openWindow
 
     var body: some View {
         VStack(spacing: 12) {
@@ -16,6 +17,9 @@ struct MenuBarContent: View {
             Text("Placeholder — see TICKET-010")
                 .font(.caption)
                 .foregroundStyle(.tertiary)
+            Button("Open Main Window") {
+                openWindow(id: "main")
+            }
         }
         .padding(20)
         .frame(width: 280)
