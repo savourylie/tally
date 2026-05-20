@@ -4,7 +4,7 @@
 `blocked`
 
 ## Dependencies
-- Requires: #008, #014
+- Requires: #008 ✅, #014
 
 ## Description
 The Top 10 apps section sits below the hero card and status line on the Overview screen. Each row is a card showing an app icon, app name, monthly usage in GB, and percentage of total. System processes (the 5 categories from PRD §8) collapse into their friendly names — `mDNSResponder` rows under "系統其他", `bird` under "iCloud", etc. — with the SF Symbol icons from `process_categories.icon_name`.

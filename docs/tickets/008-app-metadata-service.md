@@ -1,7 +1,7 @@
 # [TICKET-008] App metadata service (NSWorkspace)
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #005 ✅
@@ -12,12 +12,12 @@ Build a service that, given a `bundle_id` (or fallback `executable_name`), retur
 For system process categories (PRD §8), the service returns the friendly category name + SF Symbol icon instead of trying to resolve a bundle. The categorizer in TICKET-015 decides whether a row should be presented as an app or as a category — this service serves both kinds of lookups.
 
 ## Acceptance Criteria
-- [ ] `AppMetadataService.metadata(forBundleID:)` returns `AppMetadata { displayName: String, icon: NSImage }` for any installed app
-- [ ] `AppMetadataService.metadata(forCategory:)` returns category metadata using the `process_categories` table seeded in TICKET-003 (display name + SF Symbol `NSImage`)
-- [ ] In-memory cache: repeated lookups for the same key return in < 1ms after the first call
-- [ ] Cache invalidation: `NSWorkspace.shared.notificationCenter` observers for `didLaunchApplicationNotification` / `didTerminateApplicationNotification` evict stale entries
-- [ ] Unknown bundle ids fall back to a placeholder: `displayName = bundle_id` (will be hidden from UI by the categorizer in TICKET-015), `icon = systemImage "questionmark.app.dashed"` — UI tickets must not crash on missing metadata
-- [ ] Icons are returned at 32pt size (HiDPI-aware via `NSImage`'s natural representations); higher-resolution requests in TICKET-015 work without re-fetching
+- [x] `AppMetadataService.metadata(forBundleID:)` returns `AppMetadata { displayName: String, icon: NSImage }` for any installed app
+- [x] `AppMetadataService.metadata(forCategory:)` returns category metadata using the `process_categories` table seeded in TICKET-003 (display name + SF Symbol `NSImage`)
+- [x] In-memory cache: repeated lookups for the same key return in < 1ms after the first call
+- [x] Cache invalidation: `NSWorkspace.shared.notificationCenter` observers for `didLaunchApplicationNotification` / `didTerminateApplicationNotification` evict stale entries
+- [x] Unknown bundle ids fall back to a placeholder: `displayName = bundle_id` (will be hidden from UI by the categorizer in TICKET-015), `icon = systemImage "questionmark.app.dashed"` — UI tickets must not crash on missing metadata
+- [x] Icons are returned at 32pt size (HiDPI-aware via `NSImage`'s natural representations); higher-resolution requests in TICKET-015 work without re-fetching
 
 ## Implementation Notes
 - **Files to create**: `Services/AppMetadataService.swift`, `Services/AppMetadata.swift` (the struct)
