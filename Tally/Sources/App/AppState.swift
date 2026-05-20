@@ -5,10 +5,10 @@ import Observation
 @Observable
 final class AppState {
     let database: DatabaseManager
-    let usageStore: UsageStore?
+    let appMetadata: AppMetadataService
+    let usageStore: UsageStore
     let collector: any FlowCollector
     let aggregator: Aggregator
-    let appMetadata: AppMetadataService
 
     init() {
         do {
@@ -18,10 +18,11 @@ final class AppState {
             fatalError("DatabaseManager init failed: \(error)")
         }
 
-        self.usageStore = nil
-        Log.store.info("[store] init")
-
         self.appMetadata = AppMetadataService(dbPool: database.dbPool)
+
+        let store = UsageStore(dbPool: database.dbPool, metadataService: appMetadata)
+        store.start()
+        self.usageStore = store
 
         let nettop = NettopCollector(dbPool: database.dbPool)
         self.collector = nettop
@@ -32,6 +33,3 @@ final class AppState {
         Task { await agg.start() }
     }
 }
-
-// Stub. Filled by TICKET-009.
-final class UsageStore {}
