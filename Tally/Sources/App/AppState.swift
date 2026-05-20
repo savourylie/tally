@@ -6,7 +6,7 @@ import Observation
 final class AppState {
     let database: DatabaseManager
     let usageStore: UsageStore?
-    let collector: FlowCollector?
+    let collector: any FlowCollector
 
     init() {
         do {
@@ -19,13 +19,11 @@ final class AppState {
         self.usageStore = nil
         Log.store.info("[store] init")
 
-        self.collector = nil
-        Log.collector.info("[collector] starting")
+        let nettop = NettopCollector(dbPool: database.dbPool)
+        self.collector = nettop
+        nettop.start()
     }
 }
 
 // Stub. Filled by TICKET-009.
 final class UsageStore {}
-
-// Stub. Filled by TICKET-006.
-final class FlowCollector {}
