@@ -14,8 +14,10 @@
 		2ED292BD7517A37850790D60 /* MainWindowContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67509AA38E1C4BDCD232E39 /* MainWindowContent.swift */; };
 		305F6F0CBFEB3926A0E80029 /* Motion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DF444DA32A866740EBA4C1 /* Motion.swift */; };
 		41811B7A537DAD09702581A9 /* Radius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD6CB212AB79147F8BCFA9F /* Radius.swift */; };
+		4252CCDB0229EBF034C14998 /* AppMetadataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A65FD57F69F3F6133BAE67 /* AppMetadataService.swift */; };
 		441C57D812CB66D007B37021 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFE3E2027D3912F51ED390E /* AppState.swift */; };
 		553C3B9536FCA39591FA9D71 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D1B06936ED9ECE4A9E91B /* Log.swift */; };
+		620EF0E18C6018F937B7C4BB /* AppMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F1631E7A874C7E38FF4AEE2 /* AppMetadata.swift */; };
 		6792D51E52CA760481911AF6 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B591B5790D2967F89B11EDB0 /* DatabaseManager.swift */; };
 		7B678F900A2BFFE55442F0AB /* Color+Tally.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A55774A8A9811AB49E99A /* Color+Tally.swift */; };
 		7EE695B64A5CC257108CDFF2 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = BE4E3B51910AB7BDB5915F9B /* GRDB */; };
@@ -32,6 +34,7 @@
 
 /* Begin PBXFileReference section */
 		0E15EF1F757708D2142DFA7E /* FlowSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowSample.swift; sourceTree = "<group>"; };
+		0F1631E7A874C7E38FF4AEE2 /* AppMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMetadata.swift; sourceTree = "<group>"; };
 		19900C5C2F15011EA22EB24B /* Aggregator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Aggregator.swift; sourceTree = "<group>"; };
 		3BD6CB212AB79147F8BCFA9F /* Radius.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Radius.swift; sourceTree = "<group>"; };
 		4DCF1A5BC6FA366C4B658D35 /* Tally.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tally.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,6 +48,7 @@
 		A7DF444DA32A866740EBA4C1 /* Motion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Motion.swift; sourceTree = "<group>"; };
 		B591B5790D2967F89B11EDB0 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		C0F318EACFC225101E0676B9 /* Font+Tally.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Tally.swift"; sourceTree = "<group>"; };
+		C5A65FD57F69F3F6133BAE67 /* AppMetadataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMetadataService.swift; sourceTree = "<group>"; };
 		CB3A1B2F0618FB5D667F14E1 /* NettopParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NettopParser.swift; sourceTree = "<group>"; };
 		CC8EAA6BFCE44EDE39A482FA /* Migrations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migrations.swift; sourceTree = "<group>"; };
 		D3A110C2438C4CC68E2AE17B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -77,6 +81,7 @@
 				42FE82ABBFC0F96C2C6189A0 /* Database */,
 				47525913C28601482440956E /* DesignTokens */,
 				B40973B9252877ADED218586 /* Logging */,
+				852919867FC837787246366D /* Services */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -138,6 +143,15 @@
 				CB3A1B2F0618FB5D667F14E1 /* NettopParser.swift */,
 			);
 			path = Collectors;
+			sourceTree = "<group>";
+		};
+		852919867FC837787246366D /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				0F1631E7A874C7E38FF4AEE2 /* AppMetadata.swift */,
+				C5A65FD57F69F3F6133BAE67 /* AppMetadataService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		8DCFE585D34BA298ECDEBEF5 /* App */ = {
@@ -250,6 +264,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B080A25E99A85AFB55EC4FF5 /* Aggregator.swift in Sources */,
+				620EF0E18C6018F937B7C4BB /* AppMetadata.swift in Sources */,
+				4252CCDB0229EBF034C14998 /* AppMetadataService.swift in Sources */,
 				441C57D812CB66D007B37021 /* AppState.swift in Sources */,
 				7B678F900A2BFFE55442F0AB /* Color+Tally.swift in Sources */,
 				6792D51E52CA760481911AF6 /* DatabaseManager.swift in Sources */,

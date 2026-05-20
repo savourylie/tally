@@ -8,6 +8,7 @@ final class AppState {
     let usageStore: UsageStore?
     let collector: any FlowCollector
     let aggregator: Aggregator
+    let appMetadata: AppMetadataService
 
     init() {
         do {
@@ -19,6 +20,8 @@ final class AppState {
 
         self.usageStore = nil
         Log.store.info("[store] init")
+
+        self.appMetadata = AppMetadataService(dbPool: database.dbPool)
 
         let nettop = NettopCollector(dbPool: database.dbPool)
         self.collector = nettop
