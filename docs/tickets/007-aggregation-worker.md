@@ -1,10 +1,10 @@
 # [TICKET-007] Aggregation worker (with helper roll-up + retention)
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #006
+- Requires: #006 ✅
 
 ## Description
 Roll raw `flow_samples` rows up into `daily_aggregates` by `(date, bundle_id | category, network_id)`. The aggregator runs on a schedule (or triggered by collector flushes) and must be idempotent — running it twice produces the same `daily_aggregates` state, not double-counted totals.

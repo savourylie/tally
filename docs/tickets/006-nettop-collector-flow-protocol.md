@@ -1,7 +1,7 @@
 # [TICKET-006] nettop collector + FlowCollector protocol
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #005 ✅
@@ -14,12 +14,12 @@ To make the future swap a drop-in change rather than a rewrite, this ticket also
 `nettop -P` aggregates per-process; `-x` outputs no headers / machine-parseable; sampling cadence ~10s and a flush to the database every ~60s keeps writes batched.
 
 ## Acceptance Criteria
-- [ ] `FlowCollector` protocol defines `start()`, `stop()`, and exposes `state: CollectorState` (`.idle | .running | .failed(Error)`) — observable so the UI can render `.collecting` placeholders
-- [ ] `NettopCollector: FlowCollector` spawns `nettop -P -x -l 0` as a child `Process`, parses streaming stdout into per-process byte deltas, and writes them to `flow_samples` (with `bundle_id` resolved when possible, falling back to `executable_name`)
-- [ ] Sample cadence ~10s; rows are batched and flushed to SQLite every ~60s (configurable internal constants — document the values)
-- [ ] Collector survives `caffeinate` / sleep / wake: relaunches the underlying `Process` if it dies, with exponential backoff and a max of 5 retries before transitioning to `.failed`
-- [ ] `AppState` (from TICKET-004) now stores a non-optional `collector: FlowCollector` and starts it on boot; stops on app termination
-- [ ] Running the app for 1 minute produces non-zero rows in `flow_samples` corresponding to known active processes (e.g., `Safari`, `Spotify`)
+- [x] `FlowCollector` protocol defines `start()`, `stop()`, and exposes `state: CollectorState` (`.idle | .running | .failed(Error)`) — observable so the UI can render `.collecting` placeholders
+- [x] `NettopCollector: FlowCollector` spawns `nettop -P -x -l 0` as a child `Process`, parses streaming stdout into per-process byte deltas, and writes them to `flow_samples` (with `bundle_id` resolved when possible, falling back to `executable_name`)
+- [x] Sample cadence ~10s; rows are batched and flushed to SQLite every ~60s (configurable internal constants — document the values)
+- [x] Collector survives `caffeinate` / sleep / wake: relaunches the underlying `Process` if it dies, with exponential backoff and a max of 5 retries before transitioning to `.failed`
+- [x] `AppState` (from TICKET-004) now stores a non-optional `collector: FlowCollector` and starts it on boot; stops on app termination
+- [x] Running the app for 1 minute produces non-zero rows in `flow_samples` corresponding to known active processes (e.g., `Safari`, `Spotify`)
 
 ## Implementation Notes
 - **Files to create**: `Collectors/FlowCollector.swift` (protocol + `CollectorState`), `Collectors/NettopCollector.swift`, `Collectors/NettopParser.swift` (parsing logic, separate so it's unit-testable without launching `nettop`)
