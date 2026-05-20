@@ -1,7 +1,7 @@
 # [TICKET-009] UsageStore (@Observable)
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #007 ✅, #008 ✅
@@ -17,12 +17,12 @@ The `UsageStore` is the single source of truth for "what does the user see right
 The store is `@Observable` so SwiftUI automatically re-renders when GRDB writes new aggregate rows. The store does not poll the database — it subscribes to `ValueObservation` on `daily_aggregates`.
 
 ## Acceptance Criteria
-- [ ] `UsageStore` is `@Observable` and constructed once, stored on `AppState` (replacing the placeholder slot from TICKET-004)
-- [ ] `usageStore.monthToDateBytes: (in: Int, out: Int)` recomputes when `daily_aggregates` changes
-- [ ] `usageStore.topApps(limit: Int) -> [AppUsageEntry]` returns the top N entries, each containing `AppMetadata` (resolved via TICKET-008) and total bytes; system-category rows preserve their category metadata
-- [ ] `usageStore.state` is `.collecting` when `daily_aggregates` has 0 rows for the current cycle, `.ready` once at least one row exists
+- [x] `UsageStore` is `@Observable` and constructed once, stored on `AppState` (replacing the placeholder slot from TICKET-004)
+- [x] `usageStore.monthToDateBytes: (in: Int, out: Int)` recomputes when `daily_aggregates` changes
+- [x] `usageStore.topApps(limit: Int) -> [AppUsageEntry]` returns the top N entries, each containing `AppMetadata` (resolved via TICKET-008) and total bytes; system-category rows preserve their category metadata
+- [x] `usageStore.state` is `.collecting` when `daily_aggregates` has 0 rows for the current cycle, `.ready` once at least one row exists
 - [ ] Updates from the aggregator (TICKET-007) propagate to the store within 500ms (GRDB `ValueObservation` default behavior is good enough)
-- [ ] Both menu bar and main window read from the same instance — adding a temporary `id(ObjectIdentifier(store))` text in both surfaces produces identical values
+- [x] Both menu bar and main window read from the same instance — adding a temporary `id(ObjectIdentifier(store))` text in both surfaces produces identical values
 
 ## Implementation Notes
 - **Files to create**: `Stores/UsageStore.swift`, `Stores/AppUsageEntry.swift`

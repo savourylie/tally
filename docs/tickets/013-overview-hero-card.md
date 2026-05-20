@@ -4,7 +4,7 @@
 `blocked`
 
 ## Dependencies
-- Requires: #009, #012
+- Requires: #009 ✅, #012
 
 ## Description
 The Overview tab's identity is "the biggest number on screen tells you how much you used this month" (PRD §15: "數字優先"). This ticket builds the hero card: a rounded 12-radius surface with a 64pt mega number, the GB unit, and a "還可以用 X GB" subtext, plus the full-width progress bar.

@@ -7,10 +7,10 @@
 
 | Status         | Count |
 | -------------- | ----- |
-| ✅ Done         | 8     |
+| ✅ Done         | 9     |
 | 🔧 In Progress | 0     |
 | 📋 Pending     | 1     |
-| 🚫 Blocked     | 15    |
+| 🚫 Blocked     | 14    |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -34,8 +34,8 @@
 | 006 | [`nettop` collector + FlowCollector protocol](./006-nettop-collector-flow-protocol.md)                       | `done`    | #005 ✅       | Collector + protocol shipped |
 | 007 | [Aggregation worker (helper roll-up + retention)](./007-aggregation-worker.md)                               | `done`    | #006 ✅       | Aggregator + helper roll-up + retention shipped |
 | 008 | [App metadata service (NSWorkspace)](./008-app-metadata-service.md)                                          | `done`    | #005 ✅       | Metadata service + cache shipped |
-| 009 | [UsageStore (@Observable)](./009-usage-store.md)                                                             | `pending` | #007 ✅, #008 ✅ | Unblocked — #008 done |
-| 010 | [Menu bar popover view + bindings](./010-menu-bar-popover.md)                                                | `blocked` | #002 ✅, #009 |              |
+| 009 | [UsageStore (@Observable)](./009-usage-store.md)                                                             | `done`    | #007 ✅, #008 ✅ | Shared @Observable store shipped |
+| 010 | [Menu bar popover view + bindings](./010-menu-bar-popover.md)                                                | `pending` | #002 ✅, #009 ✅ | Unblocked — #009 done |
 | 011 | [**TEST: Checkpoint 1 — Menu Bar Popover End-to-End**](./011-test-checkpoint-1-menu-bar-popover.md)          | `blocked` | #010           | Gate: Phase 2 |
 
 ## Phase 3 — Main Window + Overview (Sprint 2)
@@ -43,7 +43,7 @@
 | #   | Ticket                                                                                                       | Status    | Depends On     | Notes        |
 | --- | ------------------------------------------------------------------------------------------------------------ | --------- | -------------- | ------------ |
 | 012 | [Main window scene + sidebar](./012-main-window-scene-sidebar.md)                                            | `blocked` | #002 ✅, #011 |              |
-| 013 | [Overview hero card](./013-overview-hero-card.md)                                                            | `blocked` | #009, #012     |              |
+| 013 | [Overview hero card](./013-overview-hero-card.md)                                                            | `blocked` | #009 ✅, #012  |              |
 | 014 | [Overview status line + estimate](./014-overview-status-line-estimate.md)                                    | `blocked` | #013           |              |
 | 015 | [Top 10 apps with system-category grouping](./015-top-10-apps-categories.md)                                 | `blocked` | #008 ✅, #014  |              |
 | 016 | [**TEST: Checkpoint 2 — Overview Screen**](./016-test-checkpoint-2-overview.md)                              | `blocked` | #015           | Gate: Phase 3 |
