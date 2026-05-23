@@ -35,20 +35,21 @@ actor ProcessCategorizer {
 
     func categorize(bundleID: String?, category: String?) -> AppOrCategoryEntry {
         if let bundleID = bundleID, !bundleID.isEmpty {
-            // Check if the bundle ID resolves to a GUI application installed on the system
-            if NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleID) != nil {
-                return .app(bundleID: bundleID)
-            }
-            
-            // Otherwise, treat the bundle ID as a daemon process identifier and try to match it
             let identifier = bundleID
             let baseName = URL(fileURLWithPath: bundleID).lastPathComponent
             
+            // Check category mapping first to capture system processes (daemons)
             if let catName = categoryMap[identifier] {
                 return .category(name: catName)
             } else if let catName = categoryMap[baseName] {
                 return .category(name: catName)
-            } else {
+            }
+            // Otherwise check if it resolves to an installed GUI application
+            else if NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleID) != nil {
+                return .app(bundleID: bundleID)
+            }
+            // Fall back to unmapped logging and system other
+            else {
                 if !unmappedLogged.contains(baseName) {
                     unmappedLogged.insert(baseName)
                     Log.agg.debug("[categorizer] unmapped process: \(baseName, privacy: .public)")

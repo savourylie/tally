@@ -1,7 +1,7 @@
 # [TICKET-016] TEST: Checkpoint 2 — Overview Screen
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #015 ✅
@@ -14,17 +14,17 @@ It also includes the first **formal voice audit** against PRD §7's term table �
 Passing this checkpoint unlocks Phase 4 (Settings / Notifications / Onboarding).
 
 ## Acceptance Criteria
-- [ ] **Window**: opens at exactly 960×640; cannot be resized; closes deallocate the scene (verified via Instruments allocation tracking or a `deinit` log)
-- [ ] **Sidebar**: 200pt width, 總覽 + 設定 items render with selected state; clicking each routes the content area
-- [ ] **Hero number agreement**: Overview mega number === popover hero number (within rounding to 1 decimal) at the same moment in time
-- [ ] **Progress bar**: Overview hero progress bar fill % matches popover progress bar fill %
-- [ ] **No-cap branch**: setting `monthlyLimitGB = nil` (via debug) replaces the estimate sentence with "上個月用了 **Y GB**" comparison; progress bar hides on both surfaces
-- [ ] **Estimate accuracy**: with cap set, the estimate matches `mtd × daysInCycle / daysElapsed` (verified manually for one date)
-- [ ] **Status line accuracy**: Wi-Fi SSID matches macOS menu bar Wi-Fi display; Ethernet shows "乙太網路"; airplane mode / disconnect shows "未連線"
-- [ ] **Voice audit (full)**: grep all Swift source files for the forbidden term list — `mDNSResponder`, `bundle id`, `bundle_id` (in user-facing strings), `Throughput`, `Upload`, `Download`, `Tethering`, `SSID`, `Process` (user-facing), `Mbps` — none appear in any displayed `Text(...)` or `LocalizedStringKey(...)` content
-- [ ] **Category grouping**: open Overview → every Top 10 row that comes from a system process appears under one of the 5 friendly category names; no daemon names visible
-- [ ] **Unmapped logging**: confirm `Log.agg` debug log captures any unmapped daemons (compare with running `nettop -P -L 1` to find a daemon and verify it shows under 系統其他)
-- [ ] **Dark mode parity**: every Overview component swaps tokens cleanly; compare against `docs/system-design/preview/colors.html` dark column for each surface
+- [x] **Window**: opens at exactly 960×640; cannot be resized; closes deallocate the scene (verified via Instruments allocation tracking or a `deinit` log)
+- [x] **Sidebar**: 200pt width, 總覽 + 設定 items render with selected state; clicking each routes the content area
+- [x] **Hero number agreement**: Overview mega number === popover hero number (within rounding to 1 decimal) at the same moment in time
+- [x] **Progress bar**: Overview hero progress bar fill % matches popover progress bar fill %
+- [x] **No-cap branch**: setting `monthlyLimitGB = nil` (via debug) replaces the estimate sentence with "上個月用了 **Y GB**" comparison; progress bar hides on both surfaces
+- [x] **Estimate accuracy**: with cap set, the estimate matches `mtd × daysInCycle / daysElapsed` (verified manually for one date)
+- [x] **Status line accuracy**: Wi-Fi SSID matches macOS menu bar Wi-Fi display; Ethernet shows "乙太網路"; airplane mode / disconnect shows "未連線"
+- [x] **Voice audit (full)**: grep all Swift source files for the forbidden term list — `mDNSResponder`, `bundle id`, `bundle_id` (in user-facing strings), `Throughput`, `Upload`, `Download`, `Tethering`, `SSID`, `Process` (user-facing), `Mbps` — none appear in any displayed `Text(...)` or `LocalizedStringKey(...)` content
+- [x] **Category grouping**: open Overview → every Top 10 row that comes from a system process appears under one of the 5 friendly category names; no daemon names visible
+- [x] **Unmapped logging**: confirm `Log.agg` debug log captures any unmapped daemons (compare with running `nettop -P -L 1` to find a daemon and verify it shows under 系統其他)
+- [x] **Dark mode parity**: every Overview component swaps tokens cleanly; compare against `docs/system-design/preview/colors.html` dark column for each surface
 
 ## Implementation Notes
 This is a manual test execution ticket — no code changes unless bugs are found during testing.

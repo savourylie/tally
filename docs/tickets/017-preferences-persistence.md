@@ -1,10 +1,10 @@
 # [TICKET-017] Preferences persistence (UserDefaults wrapper)
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #016
+- Requires: #016 ✅
 
 ## Description
 Build the typed UserDefaults wrapper that holds every user preference for MVP. This is a foundational layer for Phase 4: the Settings UI (TICKET-018) binds to it, the billing cycle engine (TICKET-019) reads `cycleStartDay` from it, the notification engine (TICKET-020) reads the threshold checkboxes, and the onboarding flow (TICKET-021) writes the cycle / cap / completion fields.

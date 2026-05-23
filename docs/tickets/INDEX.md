@@ -7,10 +7,10 @@
 
 | Status         | Count |
 | -------------- | ----- |
-| ✅ Done         | 15    |
+| ✅ Done         | 16    |
 | 🔧 In Progress | 0     |
 | 📋 Pending     | 1     |
-| 🚫 Blocked     | 8     |
+| 🚫 Blocked     | 7     |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -46,13 +46,13 @@
 | 013 | [Overview hero card](./013-overview-hero-card.md)                                                            | `done`    | #009 ✅, #012 ✅ | Hero card shipped |
 | 014 | [Overview status line + estimate](./014-overview-status-line-estimate.md)                                    | `done`    | #013 ✅        | Status line + estimate shipped |
 | 015 | [Top 10 apps with system-category grouping](./015-top-10-apps-categories.md)                                 | `done`    | #008 ✅, #014 ✅ | Top 10 list + system categories grouping shipped |
-| 016 | [**TEST: Checkpoint 2 — Overview Screen**](./016-test-checkpoint-2-overview.md)                              | `pending` | #015 ✅        | Unblocked — Top 10 grouping done |
+| 016 | [**TEST: Checkpoint 2 — Overview Screen**](./016-test-checkpoint-2-overview.md)                              | `done`    | #015 ✅        | Verified Overview screen end-to-end |
 
 ## Phase 4 — Settings, Cycle Engine, Notifications, Onboarding (Sprint 3)
 
 | #   | Ticket                                                                                                                                | Status    | Depends On     | Notes        |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------------- | ------------ |
-| 017 | [Preferences persistence (UserDefaults)](./017-preferences-persistence.md)                                                            | `blocked` | #016           |              |
+| 017 | [Preferences persistence (UserDefaults)](./017-preferences-persistence.md)                                                            | `pending` | #016 ✅        | Unblocked — Checkpoint 2 done |
 | 018 | [Settings screen UI](./018-settings-screen-ui.md)                                                                                     | `blocked` | #017           |              |
 | 019 | [Billing cycle + monthly reset engine](./019-billing-cycle-engine.md)                                                                 | `blocked` | #017           |              |
 | 020 | [Notification engine](./020-notification-engine.md)                                                                                   | `blocked` | #017, #019     |              |
