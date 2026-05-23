@@ -7,10 +7,10 @@
 
 | Status         | Count |
 | -------------- | ----- |
-| ✅ Done         | 10    |
+| ✅ Done         | 11    |
 | 🔧 In Progress | 0     |
 | 📋 Pending     | 1     |
-| 🚫 Blocked     | 13    |
+| 🚫 Blocked     | 12    |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -36,13 +36,13 @@
 | 008 | [App metadata service (NSWorkspace)](./008-app-metadata-service.md)                                          | `done`    | #005 ✅       | Metadata service + cache shipped |
 | 009 | [UsageStore (@Observable)](./009-usage-store.md)                                                             | `done`    | #007 ✅, #008 ✅ | Shared @Observable store shipped |
 | 010 | [Menu bar popover view + bindings](./010-menu-bar-popover.md)                                                | `done`    | #002 ✅, #009 ✅ | Popover view, bindings, and animation shipped |
-| 011 | [**TEST: Checkpoint 1 — Menu Bar Popover End-to-End**](./011-test-checkpoint-1-menu-bar-popover.md)          | `pending` | #010 ✅        | Unblocked — popover shipped |
+| 011 | [**TEST: Checkpoint 1 — Menu Bar Popover End-to-End**](./011-test-checkpoint-1-menu-bar-popover.md)          | `done`    | #010 ✅        | Phase 2 verified end-to-end |
 
 ## Phase 3 — Main Window + Overview (Sprint 2)
 
 | #   | Ticket                                                                                                       | Status    | Depends On     | Notes        |
 | --- | ------------------------------------------------------------------------------------------------------------ | --------- | -------------- | ------------ |
-| 012 | [Main window scene + sidebar](./012-main-window-scene-sidebar.md)                                            | `blocked` | #002 ✅, #011 |              |
+| 012 | [Main window scene + sidebar](./012-main-window-scene-sidebar.md)                                            | `pending` | #002 ✅, #011 ✅ | Unblocked — checkpoint passed |
 | 013 | [Overview hero card](./013-overview-hero-card.md)                                                            | `blocked` | #009 ✅, #012  |              |
 | 014 | [Overview status line + estimate](./014-overview-status-line-estimate.md)                                    | `blocked` | #013           |              |
 | 015 | [Top 10 apps with system-category grouping](./015-top-10-apps-categories.md)                                 | `blocked` | #008 ✅, #014  |              |

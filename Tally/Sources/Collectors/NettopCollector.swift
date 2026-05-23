@@ -18,6 +18,7 @@ final class NettopCollector: FlowCollector {
 
     private let dbPool: DatabasePool
     private let nettopPath: String
+    private let didFlush: (@Sendable () async -> Void)?
 
     @ObservationIgnored
     private let childPID = OSAllocatedUnfairLock<pid_t>(initialState: 0)
@@ -25,9 +26,14 @@ final class NettopCollector: FlowCollector {
     private var ioTask: Task<Void, Never>?
     private var terminationObserver: NSObjectProtocol?
 
-    init(dbPool: DatabasePool, nettopPath: String = "/usr/bin/nettop") {
+    init(
+        dbPool: DatabasePool,
+        nettopPath: String = "/usr/bin/nettop",
+        didFlush: (@Sendable () async -> Void)? = nil
+    ) {
         self.dbPool = dbPool
         self.nettopPath = nettopPath
+        self.didFlush = didFlush
     }
 
     func start() {
@@ -38,6 +44,7 @@ final class NettopCollector: FlowCollector {
         let dbPool = self.dbPool
         let nettopPath = self.nettopPath
         let childPID = self.childPID
+        let didFlush = self.didFlush
         let reportRunning: @Sendable () async -> Void = { [weak self] in
             await self?.markRunning()
         }
@@ -50,6 +57,7 @@ final class NettopCollector: FlowCollector {
                 dbPool: dbPool,
                 nettopPath: nettopPath,
                 childPID: childPID,
+                didFlush: didFlush,
                 reportRunning: reportRunning,
                 reportFailed: reportFailed
             )
@@ -118,6 +126,7 @@ private func runNettopIOLoop(
     dbPool: DatabasePool,
     nettopPath: String,
     childPID: OSAllocatedUnfairLock<pid_t>,
+    didFlush: (@Sendable () async -> Void)?,
     reportRunning: @Sendable () async -> Void,
     reportFailed: @Sendable (String) async -> Void
 ) async {
@@ -173,12 +182,16 @@ private func runNettopIOLoop(
                         bytesOut: sample.bytesOutDelta
                     ))
                     if buffer.count >= maxBufferedSamples {
-                        await flushBuffer(&buffer, dbPool: dbPool)
+                        if await flushBuffer(&buffer, dbPool: dbPool) {
+                            await didFlush?()
+                        }
                         nextFlushAt = Date().addingTimeInterval(flushIntervalSeconds)
                     }
                 }
                 if now >= nextFlushAt {
-                    await flushBuffer(&buffer, dbPool: dbPool)
+                    if await flushBuffer(&buffer, dbPool: dbPool) {
+                        await didFlush?()
+                    }
                     nextFlushAt = Date().addingTimeInterval(flushIntervalSeconds)
                 }
             }
@@ -193,7 +206,9 @@ private func runNettopIOLoop(
         childPID.withLock { $0 = 0 }
 
         if Task.isCancelled {
-            await flushBuffer(&buffer, dbPool: dbPool)
+            if await flushBuffer(&buffer, dbPool: dbPool) {
+                await didFlush?()
+            }
             return
         }
 
@@ -205,7 +220,9 @@ private func runNettopIOLoop(
             attempt += 1
             Log.collector.warning("[collector] nettop exited without samples; consecutive_failures=\(attempt, privacy: .public)/\(maxRestartAttempts, privacy: .public)")
             if attempt >= maxRestartAttempts {
-                await flushBuffer(&buffer, dbPool: dbPool)
+                if await flushBuffer(&buffer, dbPool: dbPool) {
+                    await didFlush?()
+                }
                 await reportFailed("nettop exited \(attempt) times without producing samples")
                 return
             }
@@ -213,7 +230,9 @@ private func runNettopIOLoop(
         try? await Task.sleep(nanoseconds: backoffNanos(attempt: max(attempt, 1)))
     }
 
-    await flushBuffer(&buffer, dbPool: dbPool)
+    if await flushBuffer(&buffer, dbPool: dbPool) {
+        await didFlush?()
+    }
 }
 
 private func backoffNanos(attempt: Int) -> UInt64 {
@@ -222,8 +241,8 @@ private func backoffNanos(attempt: Int) -> UInt64 {
     return UInt64(secs * 1_000_000_000)
 }
 
-private func flushBuffer(_ buffer: inout [PendingFlowSample], dbPool: DatabasePool) async {
-    guard !buffer.isEmpty else { return }
+private func flushBuffer(_ buffer: inout [PendingFlowSample], dbPool: DatabasePool) async -> Bool {
+    guard !buffer.isEmpty else { return false }
     let toWrite = buffer
     buffer.removeAll(keepingCapacity: true)
     // Run the write in a detached task so cancellation of the IO loop (during shutdown)
@@ -244,7 +263,9 @@ private func flushBuffer(_ buffer: inout [PendingFlowSample], dbPool: DatabasePo
     switch outcome {
     case .success:
         Log.collector.info("[collector] flushed rows=\(toWrite.count, privacy: .public)")
+        return true
     case .failure(let error):
         Log.collector.error("[collector] flush failed rows=\(toWrite.count, privacy: .public) error=\(String(describing: error), privacy: .public)")
+        return false
     }
 }

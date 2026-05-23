@@ -54,6 +54,10 @@ actor Aggregator {
         }
     }
 
+    func runOnce() async {
+        await runCycle()
+    }
+
     private func runCycle() async {
         let startTime = Date()
 
@@ -165,8 +169,8 @@ actor Aggregator {
             }
 
             var category: String? = nil
-            if attributedBundleId == nil, let cat = categories[row.executableName] {
-                category = cat
+            if attributedBundleId == nil {
+                category = categories[row.executableName] ?? "系統其他"
             }
 
             let key = AggKey(

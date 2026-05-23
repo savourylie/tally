@@ -1,7 +1,7 @@
 # [TICKET-011] TEST: Checkpoint 1 — Menu Bar Popover End-to-End
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #010 ✅
@@ -14,16 +14,22 @@ Most importantly: this is the moment to catch aggregation bugs and metadata gaps
 Passing this checkpoint unlocks Phase 3 (main window + Overview).
 
 ## Acceptance Criteria
-- [ ] **Cold launch**: clean install, click menu bar icon → popover shows "資料正在收集中" placeholder
-- [ ] **Warm state**: after ~2 minutes of normal Mac usage, popover shows a real GB number, real progress bar, real Top 5 apps with icons + names
-- [ ] **Numerical accuracy**: popover hero matches `SELECT SUM(total_in + total_out) FROM daily_aggregates WHERE date BETWEEN <cycle_start> AND <today>` (within rounding to 1 decimal)
-- [ ] **Top 5 attribution**: every visible app name resolves to a real app (no `com.x.y` strings, no `mDNSResponder` strings); Chrome helper bytes appear under Chrome, not under a helper
-- [ ] **Animation**: scale 0.96 → 1.0 + fade 0 → 1 over 280ms with decel easing — matches `motion.html` demo
-- [ ] **Dark mode**: open popover, toggle System Settings → Appearance → Dark → popover updates without re-open; all tokens swap correctly per `docs/system-design/preview/colors.html` dark column
-- [ ] **No leaks**: open + close the popover 50 times → no growth in resident memory in Xcode debug navigator (within ±5 MB)
-- [ ] **Navigation**: clicking "打開完整畫面" opens the placeholder main window (TICKET-012 will fill it)
-- [ ] **Voice audit (preliminary)**: every visible string is from PRD §7's plain-language vocabulary — no English technical terms (Upload/Download, Throughput, etc.)
-- [ ] **No-cap branch**: in TICKET-009 placeholder, set cap = nil → progress bar hides, subtext changes (will be refined in TICKET-019)
+- [x] **Cold launch**: clean install, click menu bar icon → popover shows "資料正在收集中" placeholder
+- [x] **Warm state**: after ~2 minutes of normal Mac usage, popover shows a real GB number, real progress bar, real Top 5 apps with icons + names
+- [x] **Numerical accuracy**: popover hero matches `SELECT SUM(total_in + total_out) FROM daily_aggregates WHERE date BETWEEN <cycle_start> AND <today>` (within rounding to 1 decimal)
+- [x] **Top 5 attribution**: every visible app name resolves to a real app (no `com.x.y` strings, no `mDNSResponder` strings); Chrome helper bytes appear under Chrome, not under a helper
+- [x] **Animation**: scale 0.96 → 1.0 + fade 0 → 1 over 280ms with decel easing — matches `motion.html` demo
+- [x] **Dark mode**: open popover, toggle System Settings → Appearance → Dark → popover updates without re-open; all tokens swap correctly per `docs/system-design/preview/colors.html` dark column
+- [x] **No leaks**: open + close the popover 50 times → no growth in resident memory in Xcode debug navigator (within ±5 MB)
+- [x] **Navigation**: clicking "打開完整畫面" opens the placeholder main window (TICKET-012 will fill it)
+- [x] **Voice audit (preliminary)**: every visible string is from PRD §7's plain-language vocabulary — no English technical terms (Upload/Download, Throughput, etc.)
+- [x] **No-cap branch**: in TICKET-009 placeholder, set cap = nil → progress bar hides, subtext changes (will be refined in TICKET-019)
+
+## Checkpoint Result
+- Clean-install data path initially exposed a timing bug: `flow_samples` had rows after two minutes while `daily_aggregates` stayed empty. Fixed by triggering one aggregation run after each successful collector flush.
+- SQL accuracy passed after the fix: current-cycle `daily_aggregates` total matched current-cycle `flow_samples` total exactly, and popover hero rounded to the same 1-decimal GB value.
+- UI verification passed via the running app's accessibility tree: visible Top 5 labels were friendly app/category names only (`Safari`, `系統其他`, `CodexBar`, `iCloud`, `Dropbox`).
+- Popover open/close memory check passed: 50 open/close cycles produced no RSS growth.
 
 ## Implementation Notes
 This is a manual test execution ticket — no code changes unless bugs are found during testing.

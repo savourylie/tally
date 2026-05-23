@@ -24,12 +24,15 @@ final class AppState {
         store.start()
         self.usageStore = store
 
-        let nettop = NettopCollector(dbPool: database.dbPool)
-        self.collector = nettop
-        nettop.start()
-
         let agg = Aggregator(dbPool: database.dbPool)
         self.aggregator = agg
+
+        let nettop = NettopCollector(dbPool: database.dbPool) {
+            await agg.runOnce()
+        }
+        self.collector = nettop
+
         Task { await agg.start() }
+        nettop.start()
     }
 }
