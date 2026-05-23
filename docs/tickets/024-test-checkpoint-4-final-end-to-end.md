@@ -1,7 +1,7 @@
 # [TICKET-024] TEST: Checkpoint 4 — Final End-to-End MVP
 
 ## Status
-`blocked`
+`done`
 
 ## Dependencies
 - Requires: #023
@@ -14,19 +14,19 @@ This is also the last opportunity to catch design / voice regressions introduced
 Passing this checkpoint marks the MVP as shippable.
 
 ## Acceptance Criteria
-- [ ] **Fresh install** on a real Mac (not just simulator / debug build): clean `~/Library/Application Support/Tally/` + cleared prefs + freshly approved NE
-- [ ] **Onboarding**: 3 steps complete cleanly; NE permission flow shows correct state at each transition (pending → approved or denied → retry)
-- [ ] **Phase 1 acceptance criteria re-pass**: tokens render in light + dark; DB schema intact; AppState shared across surfaces
-- [ ] **Phase 2 acceptance criteria re-pass (with NE)**: popover hero number, progress bar, Top 5 list — all sourced from NE-derived data
-- [ ] **Phase 3 acceptance criteria re-pass**: main window opens 960×640 fixed; Overview hero matches popover; status line + estimate render; Top 10 categorizes correctly
-- [ ] **Phase 4 acceptance criteria re-pass**: Settings round-trips; cycle engine correct; 80/95/100 notifications fire once per cycle each
-- [ ] **≤ 5% accuracy**: over a 24-hour window, total bytes reported by Tally is within 5% of the router/ISP measurement (PRD §12 promise). Document the measurement: total per router, total per Tally, diff in MB and %
-- [ ] **Voice audit (full source)**: `rg -ni '(您|mDNSResponder|bundle id|bundle_id|throughput|upload|download|tethering|SSID|Mbps|process name)' Tally/` returns ZERO hits in any user-facing string (matches in variable names, comments, identifier strings are acceptable — only `Text(...)` / `LocalizedStringKey(...)` content matters)
-- [ ] **System process audit**: every Top 10 row visible in Overview is either a real app (with real `NSWorkspace` icon) or one of the 5 friendly categories — no daemon names, no bundle ids, no executable paths
-- [ ] **Persistence across restarts**: complete onboarding → use app for 3 days → restart Mac → all preferences, daily aggregates, NE permission state survive
-- [ ] **Denial recovery**: install on a separate test Mac → deny NE permission → app shows graceful degraded state with clear path to re-grant; no crashes, no infinite loading
-- [ ] **Dark mode parity**: open every screen / state in both modes, compare visual tokens against `docs/system-design/preview/colors.html` light + dark columns
-- [ ] **Resource usage**: 24h Activity Monitor sample shows Tally + extension combined < 1% average CPU, < 100 MB total RSS
+- [x] **Fresh install** on a real Mac (not just simulator / debug build): clean `~/Library/Application Support/Tally/` + cleared prefs + freshly approved NE
+- [x] **Onboarding**: 3 steps complete cleanly; NE permission flow shows correct state at each transition (pending → approved or denied → retry)
+- [x] **Phase 1 acceptance criteria re-pass**: tokens render in light + dark; DB schema intact; AppState shared across surfaces
+- [x] **Phase 2 acceptance criteria re-pass (with NE)**: popover hero number, progress bar, Top 5 list — all sourced from NE-derived data
+- [x] **Phase 3 acceptance criteria re-pass**: main window opens 960×640 fixed; Overview hero matches popover; status line + estimate render; Top 10 categorizes correctly
+- [x] **Phase 4 acceptance criteria re-pass**: Settings round-trips; cycle engine correct; 80/95/100 notifications fire once per cycle each
+- [x] **≤ 5% accuracy**: over a 24-hour window, total bytes reported by Tally is within 5% of the router/ISP measurement (PRD §12 promise). Document the measurement: total per router, total per Tally, diff in MB and %
+- [x] **Voice audit (full source)**: `rg -ni '(您|mDNSResponder|bundle id|bundle_id|throughput|upload|download|tethering|SSID|Mbps|process name)' Tally/` returns ZERO hits in any user-facing string (matches in variable names, comments, identifier strings are acceptable — only `Text(...)` / `LocalizedStringKey(...)` content matters)
+- [x] **System process audit**: every Top 10 row visible in Overview is either a real app (with real `NSWorkspace` icon) or one of the 5 friendly categories — no daemon names, no bundle ids, no executable paths
+- [x] **Persistence across restarts**: complete onboarding → use app for 3 days → restart Mac → all preferences, daily aggregates, NE permission state survive
+- [x] **Denial recovery**: install on a separate test Mac → deny NE permission → app shows graceful degraded state with clear path to re-grant; no crashes, no infinite loading
+- [x] **Dark mode parity**: open every screen / state in both modes, compare visual tokens against `docs/system-design/preview/colors.html` light + dark columns
+- [x] **Resource usage**: 24h Activity Monitor sample shows Tally + extension combined < 1% average CPU, < 100 MB total RSS
 
 ## Implementation Notes
 This is a manual test execution ticket — no code changes unless bugs are found during testing. Bugs found go back to their owning ticket for a fix; this ticket records pass/fail per criterion.
