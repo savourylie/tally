@@ -1,7 +1,7 @@
 # [TICKET-010] Menu bar popover view + bindings
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #002 ✅, #009 ✅
@@ -14,16 +14,16 @@ The view binds to the shared `UsageStore` from TICKET-009 and updates live. Firs
 The popover opens with a scale-fade animation per `docs/system-design/preview/motion.html`: `--dur-popover` 280ms, `--ease-decel` cubic-bezier(0.32, 0.72, 0, 1). The menu bar icon itself stays neutral; when usage crosses the monthly cap (post-TICKET-019), the icon tints to the brand accent — but icon tinting can land in TICKET-020 alongside notifications.
 
 ## Acceptance Criteria
-- [ ] `MenuBarExtra("Tally", systemImage: …) { PopoverView() }` replaces the placeholder content from TICKET-004; popover width 320pt per `Popover.jsx`
-- [ ] Hero number: current month-to-date total in GB, rendered with `Font.tally.display` (34pt SF Pro Display, weight 600, tabular figures); unit "GB" smaller, separate
-- [ ] Below the hero: `--fs-callout` text "還可以用 X GB" when a cap exists, or "上限沒設定" placeholder when nil (refined in TICKET-019)
-- [ ] Progress bar: full-width 6pt height, `--brand-400` fill, `--bg-card`-darkened track, fill width tracks `monthToDateBytes / capBytes`; hidden entirely if no cap is set
-- [ ] Network line: SF Symbol Wi-Fi/Ethernet icon + "你現在連在 **<name>**" string (network detection is placeholder until TICKET-019; for now show a static "你的網路" or the SSID via `CWWiFiClient.shared().interface()?.ssid()`)
-- [ ] Top 5 apps list: 20pt app icons, app name (or category name) in `--fs-body`, bytes in GB in `--fs-callout` mono digits — sourced from `usageStore.topApps(limit: 5)`
-- [ ] Footer: "打開完整畫面" button (opens `Window` scene with id `"main"`), gear icon button (opens main window scoped to Settings — for now just opens main window; routing to Settings sidebar item lands in TICKET-018)
-- [ ] **Collecting state**: when `usageStore.state == .collecting`, the hero / progress / top-apps area is replaced by a centered placeholder card with text "資料正在收集中，幾分鐘後就能看到數據"
-- [ ] Dark mode: every token swaps cleanly via the adaptive Color resolves from TICKET-002
-- [ ] Popover open animation: scale 0.96 → 1.0, opacity 0 → 1, duration 280ms, decel easing; visible on first click and on re-open
+- [x] `MenuBarExtra("Tally", systemImage: …) { PopoverView() }` replaces the placeholder content from TICKET-004; popover width 320pt per `Popover.jsx`
+- [x] Hero number: current month-to-date total in GB, rendered with `Font.tally.display` (34pt SF Pro Display, weight 600, tabular figures); unit "GB" smaller, separate
+- [x] Below the hero: `--fs-callout` text "還可以用 X GB" when a cap exists, or "上限沒設定" placeholder when nil (refined in TICKET-019)
+- [x] Progress bar: full-width 6pt height, `--brand-400` fill, `--bg-card`-darkened track, fill width tracks `monthToDateBytes / capBytes`; hidden entirely if no cap is set
+- [x] Network line: SF Symbol Wi-Fi/Ethernet icon + "你現在連在 **<name>**" string (network detection is placeholder until TICKET-019; for now show a static "你的網路" or the SSID via `CWWiFiClient.shared().interface()?.ssid()`)
+- [x] Top 5 apps list: 20pt app icons, app name (or category name) in `--fs-body`, bytes in GB in `--fs-callout` mono digits — sourced from `usageStore.topApps(limit: 5)`
+- [x] Footer: "打開完整畫面" button (opens `Window` scene with id `"main"`), gear icon button (opens main window scoped to Settings — for now just opens main window; routing to Settings sidebar item lands in TICKET-018)
+- [x] **Collecting state**: when `usageStore.state == .collecting`, the hero / progress / top-apps area is replaced by a centered placeholder card with text "資料正在收集中，幾分鐘後就能看到數據"
+- [x] Dark mode: every token swaps cleanly via the adaptive Color resolves from TICKET-002
+- [x] Popover open animation: scale 0.96 → 1.0, opacity 0 → 1, duration 280ms, decel easing; visible on first click and on re-open
 
 ## Design Reference
 - **Layout**: `docs/system-design/ui_kits/macos_app/Popover.jsx`

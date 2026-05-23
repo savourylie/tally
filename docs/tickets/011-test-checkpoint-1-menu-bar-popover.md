@@ -1,10 +1,10 @@
 # [TICKET-011] TEST: Checkpoint 1 — Menu Bar Popover End-to-End
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #010
+- Requires: #010 ✅
 
 ## Description
 Phase 2 (TICKET-006 through TICKET-010) built the entire dev-mode data path — `nettop` → `flow_samples` → aggregator → `daily_aggregates` → `UsageStore` → menu bar popover. This checkpoint verifies that path delivers correct, animated, friendly numbers end-to-end, and that the visual matches the design system prototype.
