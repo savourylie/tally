@@ -1,10 +1,10 @@
 # [TICKET-016] TEST: Checkpoint 2 — Overview Screen
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #015
+- Requires: #015 ✅
 
 ## Description
 Phase 3 (TICKET-012 through TICKET-015) built the main window, sidebar, and the full Overview pane. This checkpoint verifies the entire Overview experience: the window opens at the right size, sidebar navigation works, the hero number agrees with the popover, the status line and estimate render correctly, and the Top 10 list categorizes system processes into friendly names without leaking any technical identifiers.

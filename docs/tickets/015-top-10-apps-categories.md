@@ -1,7 +1,7 @@
 # [TICKET-015] Top 10 apps with system-category grouping
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #008 ✅, #014 ✅
@@ -16,15 +16,15 @@ Critically, PRD §15 forbids `mDNSResponder` (and any other technical identifier
 3. Bundles up unmapped daemons into "系統其他" and logs the unmapped names so TICKET-007's helper resolver or this seed table can be extended (PRD §8: "Mapping 不到的 process 統一進「系統其他」並記錄下來方便迭代時補上")
 
 ## Acceptance Criteria
-- [ ] `TopAppsSection` view shows up to 10 rows below the status line, sourced from `usageStore.topApps(limit: 10)` filtered through `ProcessCategorizer`
-- [ ] Each row is a card: 56pt tall, 1pt `--border` stroke, `Radius.r8`, `--bg-card` fill, no shadow
-- [ ] Row layout: 32pt icon (left, with `Spacing.s4` leading padding), app/category name (`Font.tally.body`), spacer, GB value (`Font.tally.callout` mono digits, right-aligned), percentage in `--fg-3` (e.g., "(34%)")
-- [ ] Hover state: 5% background darken using `Color.tally.bgCard` overlay; press state: 4% darker than hover
-- [ ] System processes collapse into 5 category rows: iCloud, Time Machine 備份, 軟體更新, Spotlight 搜尋, 系統其他 — each shown with its SF Symbol icon
-- [ ] Unmapped daemon rows funnel into 系統其他 (do NOT appear as their own rows under any technical name)
-- [ ] Unmapped daemons are logged exactly once per session via `Log.agg` at debug level for future mapping updates
-- [ ] Percentages sum sensibly: the top 10 (including categories) percentages relate to the cycle total — top 10 sum may be ≤ 100% if there's a long tail
-- [ ] Voice + visual audit: no `mDNSResponder`, `bird`, `cloudd`, `bundle.id`, or similar technical strings visible anywhere
+- [x] `TopAppsSection` view shows up to 10 rows below the status line, sourced from `usageStore.topApps(limit: 10)` filtered through `ProcessCategorizer`
+- [x] Each row is a card: 56pt tall, 1pt `--border` stroke, `Radius.r8`, `--bg-card` fill, no shadow
+- [x] Row layout: 32pt icon (left, with `Spacing.s4` leading padding), app/category name (`Font.tally.body`), spacer, GB value (`Font.tally.callout` mono digits, right-aligned), percentage in `--fg-3` (e.g., "(34%)")
+- [x] Hover state: 5% background darken using `Color.tally.bgCard` overlay; press state: 4% darker than hover
+- [x] System processes collapse into 5 category rows: iCloud, Time Machine 備份, 軟體更新, Spotlight 搜尋, 系統其他 — each shown with its SF Symbol icon
+- [x] Unmapped daemon rows funnel into 系統其他 (do NOT appear as their own rows under any technical name)
+- [x] Unmapped daemons are logged exactly once per session via `Log.agg` at debug level for future mapping updates
+- [x] Percentages sum sensibly: the top 10 (including categories) percentages relate to the cycle total — top 10 sum may be ≤ 100% if there's a long tail
+- [x] Voice + visual audit: no `mDNSResponder`, `bird`, `cloudd`, `bundle.id`, or similar technical strings visible anywhere
 
 ## Design Reference
 - **Layout**: `docs/system-design/ui_kits/macos_app/OverviewScreen.jsx` (Top 10 section), `AppRow.jsx` if present

@@ -7,10 +7,10 @@
 
 | Status         | Count |
 | -------------- | ----- |
-| ✅ Done         | 14    |
+| ✅ Done         | 15    |
 | 🔧 In Progress | 0     |
 | 📋 Pending     | 1     |
-| 🚫 Blocked     | 9     |
+| 🚫 Blocked     | 8     |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -45,8 +45,8 @@
 | 012 | [Main window scene + sidebar](./012-main-window-scene-sidebar.md)                                            | `done`    | #002 ✅, #011 ✅ | Main window scene + sidebar shipped |
 | 013 | [Overview hero card](./013-overview-hero-card.md)                                                            | `done`    | #009 ✅, #012 ✅ | Hero card shipped |
 | 014 | [Overview status line + estimate](./014-overview-status-line-estimate.md)                                    | `done`    | #013 ✅        | Status line + estimate shipped |
-| 015 | [Top 10 apps with system-category grouping](./015-top-10-apps-categories.md)                                 | `pending` | #008 ✅, #014 ✅ | Unblocked — estimate shipped |
-| 016 | [**TEST: Checkpoint 2 — Overview Screen**](./016-test-checkpoint-2-overview.md)                              | `blocked` | #015           | Gate: Phase 3 |
+| 015 | [Top 10 apps with system-category grouping](./015-top-10-apps-categories.md)                                 | `done`    | #008 ✅, #014 ✅ | Top 10 list + system categories grouping shipped |
+| 016 | [**TEST: Checkpoint 2 — Overview Screen**](./016-test-checkpoint-2-overview.md)                              | `pending` | #015 ✅        | Unblocked — Top 10 grouping done |
 
 ## Phase 4 — Settings, Cycle Engine, Notifications, Onboarding (Sprint 3)
 
