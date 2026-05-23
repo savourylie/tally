@@ -31,17 +31,32 @@ struct MainWindowScene: View {
 
     @ViewBuilder
     private var content: some View {
-        ZStack {
+        ZStack(alignment: .topLeading) {
             Color.tally.bgApp
 
-            Text(appState.mainWindow.selection.placeholder)
-                .font(.tally.title3)
-                .tracking(Font.tallyTracking.title3)
-                .foregroundStyle(Color.tally.fg2)
+            selectedContent
                 .id(appState.mainWindow.selection)
                 .transition(.opacity.animation(Motion.view))
         }
         .frame(width: MainWindowLayout.contentWidth, height: MainWindowLayout.windowHeight)
+    }
+
+    @ViewBuilder
+    private var selectedContent: some View {
+        switch appState.mainWindow.selection {
+        case .overview:
+            OverviewScreen()
+        case .settings:
+            placeholder(appState.mainWindow.selection.placeholder)
+        }
+    }
+
+    private func placeholder(_ text: String) -> some View {
+        Text(text)
+            .font(.tally.title3)
+            .tracking(Font.tallyTracking.title3)
+            .foregroundStyle(Color.tally.fg2)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     }
 }
 

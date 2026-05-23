@@ -1,7 +1,7 @@
 # [TICKET-013] Overview hero card
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #009 ✅, #012 ✅
@@ -12,14 +12,14 @@ The Overview tab's identity is "the biggest number on screen tells you how much 
 The hero is the first thing the user's eye lands on. Typography, tracking, and alignment must be exact per `docs/system-design/preview/typography.html`. The progress bar shares its visual with the popover's (TICKET-010) — same height, same fill, same track.
 
 ## Acceptance Criteria
-- [ ] `HeroCard` view renders inside the Overview content area, full-width within the 760pt content column minus padding
-- [ ] Mega number: `Font.tally.mega` (64pt SF Pro Display, weight 600, letter-spacing −0.022em, tabular figures); 1-decimal precision (e.g., `12.4`)
-- [ ] Unit "GB" follows the number, baseline-aligned, in `Font.tally.title2` (17pt), `--fg-2` color
-- [ ] Subtext line: `Font.tally.callout` (12pt) — "還可以用 **X.X GB**（到 N 月 N 日重置）" when cap is set; placeholder "（還沒設定上限）" when nil (will be refined in TICKET-014)
-- [ ] Progress bar: 6pt height, full content-width, `Radius.r6` corner, `--brand-400` fill, track in `--bg-subtle` or equivalent; hidden when no cap
-- [ ] Card surface: `--bg-card` fill, `Radius.r12`, 1pt `--border` stroke, no shadow (per design system "borders + radius, no shadows" rule)
-- [ ] Card padding: `Spacing.s5` (20pt) all sides
-- [ ] Collecting state: when `usageStore.state == .collecting`, swap card body for a centered "資料正在收集中" message at `Font.tally.title3` weight 400 — same card frame, no mega number visible
+- [x] `HeroCard` view renders inside the Overview content area, full-width within the 760pt content column minus padding
+- [x] Mega number: `Font.tally.mega` (64pt SF Pro Display, weight 600, letter-spacing −0.022em, tabular figures); 1-decimal precision (e.g., `12.4`)
+- [x] Unit "GB" follows the number, baseline-aligned, in `Font.tally.title2` (17pt), `--fg-2` color
+- [x] Subtext line: `Font.tally.callout` (12pt) — "還可以用 **X.X GB**（到 N 月 N 日重置）" when cap is set; placeholder "（還沒設定上限）" when nil (will be refined in TICKET-014)
+- [x] Progress bar: 6pt height, full content-width, `Radius.r6` corner, `--brand-400` fill, track in `--bg-subtle` or equivalent; hidden when no cap
+- [x] Card surface: `--bg-card` fill, `Radius.r12`, 1pt `--border` stroke, no shadow (per design system "borders + radius, no shadows" rule)
+- [x] Card padding: `Spacing.s5` (20pt) all sides
+- [x] Collecting state: when `usageStore.state == .collecting`, swap card body for a centered "資料正在收集中" message at `Font.tally.title3` weight 400 — same card frame, no mega number visible
 
 ## Design Reference
 - **Layout**: `docs/system-design/ui_kits/macos_app/OverviewScreen.jsx` (hero section)
