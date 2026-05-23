@@ -6,7 +6,7 @@ struct TallyApp: App {
 
     var body: some Scene {
         MenuBarExtra("Tally", image: "MenuBarIcon") {
-            MenuBarContent()
+            PopoverView()
                 .environment(appState)
         }
         .menuBarExtraStyle(.window)
@@ -18,3 +18,4 @@ struct TallyApp: App {
         .windowResizability(.contentSize)
     }
 }
+

@@ -20,8 +20,10 @@ final class UsageStore {
     private(set) var state: State = .collecting
     private(set) var monthToDateBytes: BytePair = .zero
     private(set) var topEntries: [AppUsageEntry] = []
-    // TODO TICKET-019: real network detection. For now this is a fixed placeholder.
+    // TODO TICKET-019: real network detection and monthly cap. For now these are placeholders.
     private(set) var currentNetworkDisplay: String = "Wi-Fi"
+    var monthlyCapBytes: Int64? = 20 * 1024 * 1024 * 1024
+
 
     @ObservationIgnored private let dbPool: DatabasePool
     @ObservationIgnored private let metadataService: AppMetadataService
