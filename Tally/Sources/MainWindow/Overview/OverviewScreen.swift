@@ -5,12 +5,21 @@ struct OverviewScreen: View {
 
     var body: some View {
         let store = appState.usageStore
+        let totalBytes = store.monthToDateBytes.bytesIn + store.monthToDateBytes.bytesOut
 
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: Spacing.s4) {
             HeroCard(
                 state: store.state,
                 monthToDateBytes: store.monthToDateBytes,
                 monthlyCapBytes: store.monthlyCapBytes
+            )
+
+            StatusLine(connection: store.currentNetwork)
+
+            EstimateSentence(
+                monthToDateBytes: totalBytes,
+                monthlyCapBytes: store.monthlyCapBytes,
+                previousCycleTotalBytes: store.previousCycleTotalBytes
             )
 
             Spacer(minLength: 0)

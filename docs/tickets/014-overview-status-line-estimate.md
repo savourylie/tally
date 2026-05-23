@@ -1,10 +1,10 @@
 # [TICKET-014] Overview status line + estimate sentence
 
 ## Status
-`blocked`
+`done`
 
 ## Dependencies
-- Requires: #013
+- Requires: #013 ✅
 
 ## Description
 Two textual sentences live below the hero card and above the Top 10 apps list:
@@ -16,14 +16,14 @@ Two textual sentences live below the hero card and above the Top 10 apps list:
 3. **No-limit fallback branch** (PRD §6.3): "若使用者沒設上限：改顯示『上個月用了 Y GB』當作比較基準" — when `monthlyLimitGB` is nil, the estimate sentence is replaced with this last-cycle comparison. Last-cycle math is also placeholder until TICKET-019; for MVP use "calendar previous month total" as a working approximation.
 
 ## Acceptance Criteria
-- [ ] `StatusLine` view shows Wi-Fi/Ethernet SF Symbol + "你現在連在 **<network name>**" — friendly name resolved per below
-- [ ] Wi-Fi name from `CWWiFiClient.shared().interface()?.ssid()` when active; "乙太網路" when on Ethernet; "未連線" when offline. Hotspot detection deferred to v0.2 (PRD §13)
-- [ ] `EstimateSentence` view shows "以目前的速度，月底大概會用到 **X.X GB**" when `monthlyLimitGB` is set (or even if unset, it can still render — see the next criterion)
-- [ ] **No-limit fallback**: when `monthlyLimitGB == nil`, swap the estimate sentence for "上個月用了 **Y.Y GB**"
-- [ ] Sentence typography: `Font.tally.body` for the narrative text, `Font.tally.body.bold()` for the GB number; vertical rhythm follows `Spacing.s4` between hero card, status line, and estimate
-- [ ] Linear extrapolation matches: `mtd × (daysInCycle / daysElapsed)` rounded to 1 decimal — covered by a unit test on `EstimateCalculator`
-- [ ] Days-elapsed handles the first day of a cycle (avoid divide-by-zero — return MTD when `daysElapsed == 0`)
-- [ ] Voice strings exactly match PRD §7 examples — "你現在連在" (not "您"), "以目前的速度" (not "in current speed"), "月底大概會用到" (not "estimated end-of-month")
+- [x] `StatusLine` view shows Wi-Fi/Ethernet SF Symbol + "你現在連在 **<network name>**" — friendly name resolved per below
+- [x] Wi-Fi name from `CWWiFiClient.shared().interface()?.ssid()` when active; "乙太網路" when on Ethernet; "未連線" when offline. Hotspot detection deferred to v0.2 (PRD §13)
+- [x] `EstimateSentence` view shows "以目前的速度，月底大概會用到 **X.X GB**" when `monthlyLimitGB` is set (or even if unset, it can still render — see the next criterion)
+- [x] **No-limit fallback**: when `monthlyLimitGB == nil`, swap the estimate sentence for "上個月用了 **Y.Y GB**"
+- [x] Sentence typography: `Font.tally.body` for the narrative text, `Font.tally.body.bold()` for the GB number; vertical rhythm follows `Spacing.s4` between hero card, status line, and estimate
+- [x] Linear extrapolation matches: `mtd × (daysInCycle / daysElapsed)` rounded to 1 decimal — covered by a unit test on `EstimateCalculator`
+- [x] Days-elapsed handles the first day of a cycle (avoid divide-by-zero — return MTD when `daysElapsed == 0`)
+- [x] Voice strings exactly match PRD §7 examples — "你現在連在" (not "您"), "以目前的速度" (not "in current speed"), "月底大概會用到" (not "estimated end-of-month")
 
 ## Design Reference
 - **Layout**: `docs/system-design/ui_kits/macos_app/OverviewScreen.jsx` (status + estimate sections)

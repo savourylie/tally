@@ -20,13 +20,18 @@ final class UsageStore {
     private(set) var state: State = .collecting
     private(set) var monthToDateBytes: BytePair = .zero
     private(set) var topEntries: [AppUsageEntry] = []
-    // TODO TICKET-019: real network detection and monthly cap. For now these are placeholders.
-    private(set) var currentNetworkDisplay: String = "Wi-Fi"
+    private(set) var currentNetwork: NetworkConnection = .offline
+    private(set) var previousCycleTotalBytes: Int64 = 0
+    var currentNetworkDisplay: String {
+        currentNetwork.displayName
+    }
+    // TODO TICKET-019: replace this placeholder with persisted user preferences.
     var monthlyCapBytes: Int64? = 20 * 1024 * 1024 * 1024
 
 
     @ObservationIgnored private let dbPool: DatabasePool
     @ObservationIgnored private let metadataService: AppMetadataService
+    @ObservationIgnored private var networkMonitor: NetworkStatusMonitor?
     @ObservationIgnored private var cancellable: AnyDatabaseCancellable?
     @ObservationIgnored private var resolveTask: Task<Void, Never>?
     @ObservationIgnored private var lastResolvedKeys: [AppUsageEntry.Kind] = []
@@ -34,22 +39,28 @@ final class UsageStore {
     init(dbPool: DatabasePool, metadataService: AppMetadataService) {
         self.dbPool = dbPool
         self.metadataService = metadataService
+        self.networkMonitor = NetworkStatusMonitor { [weak self] connection in
+            self?.currentNetwork = connection
+        }
         Log.store.info("[store] init")
     }
 
     deinit {
+        networkMonitor?.cancel()
         resolveTask?.cancel()
         cancellable?.cancel()
     }
 
     func start() {
+        networkMonitor?.start()
         guard cancellable == nil else { return }
         let window = Self.currentCycleWindow()
+        let previousWindow = Self.previousCalendarMonthWindow()
         // TODO TICKET-019: refresh observation on NSCalendarDayChanged so the
         // cycle window advances at midnight without an app restart.
         Log.store.info("[store] start window=\(window.start, privacy: .public)..\(window.end, privacy: .public)")
 
-        let observation = ValueObservation.tracking { db -> [RawTopRow] in
+        let observation = ValueObservation.tracking { db -> RawUsageSnapshot in
             let rows = try Row.fetchAll(db, sql: """
                 SELECT bundle_id, category,
                        SUM(total_in)  AS in_,
@@ -59,7 +70,7 @@ final class UsageStore {
                 GROUP BY bundle_id, category
                 ORDER BY (in_ + out_) DESC
                 """, arguments: [window.start, window.end])
-            return rows.compactMap { row in
+            let rawRows = rows.compactMap { row in
                 let bundleID: String? = row["bundle_id"]
                 let category: String? = row["category"]
                 let inBytes: Int64 = row["in_"] ?? 0
@@ -73,6 +84,17 @@ final class UsageStore {
                     return nil
                 }
             }
+
+            let previousTotal: Int64 = try Int64.fetchOne(db, sql: """
+                SELECT COALESCE(SUM(total_in + total_out), 0)
+                FROM daily_aggregates
+                WHERE date >= ? AND date <= ?
+                """, arguments: [previousWindow.start, previousWindow.end]) ?? 0
+
+            return RawUsageSnapshot(
+                topRows: rawRows,
+                previousCycleTotalBytes: previousTotal
+            )
         }
 
         cancellable = observation.start(
@@ -81,8 +103,8 @@ final class UsageStore {
             onError: { error in
                 Log.store.error("[store] observation error: \(String(describing: error), privacy: .public)")
             },
-            onChange: { [unowned self] rawRows in
-                self.handle(rawRows: rawRows)
+            onChange: { [unowned self] snapshot in
+                self.handle(snapshot: snapshot)
             }
         )
     }
@@ -91,7 +113,8 @@ final class UsageStore {
         Array(topEntries.prefix(limit))
     }
 
-    private func handle(rawRows: [RawTopRow]) {
+    private func handle(snapshot: RawUsageSnapshot) {
+        let rawRows = snapshot.topRows
         var sumIn: Int64 = 0
         var sumOut: Int64 = 0
         for raw in rawRows {
@@ -100,6 +123,7 @@ final class UsageStore {
         }
 
         monthToDateBytes = BytePair(bytesIn: sumIn, bytesOut: sumOut)
+        previousCycleTotalBytes = snapshot.previousCycleTotalBytes
 
         if state == .collecting && !rawRows.isEmpty {
             state = .ready
@@ -169,6 +193,15 @@ final class UsageStore {
                 dateFormatter.string(from: now))
     }
 
+    private static func previousCalendarMonthWindow(now: Date = .now) -> (start: String, end: String) {
+        let cal = Calendar.current
+        let currentStart = cal.date(from: cal.dateComponents([.year, .month], from: now)) ?? now
+        let previousStart = cal.date(byAdding: .month, value: -1, to: currentStart) ?? currentStart
+        let previousEnd = cal.date(byAdding: .day, value: -1, to: currentStart) ?? previousStart
+        return (dateFormatter.string(from: previousStart),
+                dateFormatter.string(from: previousEnd))
+    }
+
     private static let dateFormatter: DateFormatter = {
         let df = DateFormatter()
         df.calendar = Calendar(identifier: .gregorian)
@@ -177,6 +210,11 @@ final class UsageStore {
         df.dateFormat = "yyyy-MM-dd"
         return df
     }()
+}
+
+private struct RawUsageSnapshot: Sendable {
+    let topRows: [RawTopRow]
+    let previousCycleTotalBytes: Int64
 }
 
 private struct RawTopRow: Sendable {

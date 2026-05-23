@@ -19,7 +19,7 @@ struct PopoverView: View {
         let bytes = mockBytes ?? store.monthToDateBytes
         let topEntries = mockTopEntries ?? store.topApps(limit: 5)
         let capBytes = mockCapBytes ?? store.monthlyCapBytes
-        let networkName = mockNetworkName ?? store.currentNetworkDisplay
+        let networkConnection = mockNetworkName.map(NetworkConnection.wifi(name:)) ?? store.currentNetwork
         
         let totalBytes = bytes.bytesIn + bytes.bytesOut
         
@@ -43,7 +43,7 @@ struct PopoverView: View {
                     .padding(.bottom, 8)
                     
                     // Network connection line
-                    NetworkLine(networkName: networkName)
+                    NetworkLine(connection: networkConnection)
                         .padding(.bottom, 14)
                     
                     // Top 5 apps list header

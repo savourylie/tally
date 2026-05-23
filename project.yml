@@ -47,12 +47,27 @@ targets:
         MARKETING_VERSION: "0.1.0"
         CURRENT_PROJECT_VERSION: "1"
         COMBINE_HIDPI_IMAGES: YES
+  TallyTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - TallyTests
+      - Tally/Sources/Cycle/EstimateCalculator.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.calvinku.tally.tests
+        GENERATE_INFOPLIST_FILE: YES
 schemes:
   Tally:
     build:
       targets:
         Tally: all
+        TallyTests: [test]
     run:
       config: Debug
+    test:
+      config: Debug
+      targets:
+        - TallyTests
     archive:
       config: Release
