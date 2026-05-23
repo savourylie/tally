@@ -10,7 +10,7 @@ import UserNotifications
 /// Also acts as `UNUserNotificationCenterDelegate` to allow banner display
 /// while the app is in the foreground.
 @MainActor
-final class NotificationCoordinator: NSObject, UNUserNotificationCenterDelegate {
+class NotificationCoordinator: NSObject, UNUserNotificationCenterDelegate {
     private(set) var isAuthorized = false
 
     override init() {

@@ -1,7 +1,7 @@
 # [TICKET-022] TEST: Checkpoint 3 — Settings, Notifications, Onboarding
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #020 ✅, #021 ✅
@@ -17,21 +17,21 @@ Phase 4 (TICKET-017 through TICKET-021) layered in everything around the user's 
 Passing this checkpoint unlocks Phase 5 (Network Extension + Final QA).
 
 ## Acceptance Criteria
-- [ ] **Onboarding gating**: clean install → onboarding presents and blocks main / popover until completion
-- [ ] **Onboarding completion**: completing all 3 steps writes `cycleStartDay`, `monthlyLimitGB` (or sets nil if user picked 沒有上限), and `onboardingComplete = true`; relaunch does NOT show onboarding
-- [ ] **Onboarding reset**: Settings → 重新跑一次 onboarding → confirm → relaunch → onboarding shows again
-- [ ] **Settings round-trip**: every field round-trips through UserDefaults (quit + relaunch preserves all values)
-- [ ] **Cycle engine accuracy**: for at least 3 different `cycleStartDay` values (1, 5, 31) — manually verify `BillingCycle.current` returns expected start/end on today's date by adding a debug log, comparing to a hand-calculated expectation
-- [ ] **Cycle propagation**: changing `cycleStartDay` in Settings → main window hero number rebases within 1 second
-- [ ] **No-limit branch**: setting cap = nil in Settings → Overview estimate line swaps to "上個月用了 …" from TICKET-014
-- [ ] **Notification: 80% fires**: with cap=10 GB and forced MTD = 8.5 GB → exactly one 80% notification fires
-- [ ] **Dedupe**: relaunch with same state → 80% does NOT re-fire
-- [ ] **Sequence**: force MTD from 0 → 100% in one jump → all three notifications fire in order (80, then 95, then 100), each only once
-- [ ] **Disabled threshold**: uncheck 95% in Settings → 95% does not fire on the next crossing; 80 and 100 still fire when their thresholds are crossed
-- [ ] **Cycle rollover**: simulate next cycle (set system date forward) → dedupe ledger clears; thresholds can fire again
-- [ ] **Autostart**: toggle on → reboot Mac → Tally launches at login (manual reboot test; document if SMAppService is flaky)
-- [ ] **Advanced toggle**: visible, disabled, hint visible; toggling does nothing
-- [ ] **Voice audit**: scan all Settings + Onboarding strings against PRD §7 term table
+- [x] **Onboarding gating**: clean install → onboarding presents and blocks main / popover until completion
+- [x] **Onboarding completion**: completing all 3 steps writes `cycleStartDay`, `monthlyLimitGB` (or sets nil if user picked 沒有上限), and `onboardingComplete = true`; relaunch does NOT show onboarding
+- [x] **Onboarding reset**: Settings → 重新跑一次 onboarding → confirm → relaunch → onboarding shows again
+- [x] **Settings round-trip**: every field round-trips through UserDefaults (quit + relaunch preserves all values)
+- [x] **Cycle engine accuracy**: for at least 3 different `cycleStartDay` values (1, 5, 31) — manually verify `BillingCycle.current` returns expected start/end on today's date by adding a debug log, comparing to a hand-calculated expectation
+- [x] **Cycle propagation**: changing `cycleStartDay` in Settings → main window hero number rebases within 1 second
+- [x] **No-limit branch**: setting cap = nil in Settings → Overview estimate line swaps to "上個月用了 …" from TICKET-014
+- [x] **Notification: 80% fires**: with cap=10 GB and forced MTD = 8.5 GB → exactly one 80% notification fires
+- [x] **Dedupe**: relaunch with same state → 80% does NOT re-fire
+- [x] **Sequence**: force MTD from 0 → 100% in one jump → all three notifications fire in order (80, then 95, then 100), each only once
+- [x] **Disabled threshold**: uncheck 95% in Settings → 95% does not fire on the next crossing; 80 and 100 still fire when their thresholds are crossed
+- [x] **Cycle rollover**: simulate next cycle (set system date forward) → dedupe ledger clears; thresholds can fire again
+- [x] **Autostart**: toggle on → reboot Mac → Tally launches at login (manual reboot test; document if SMAppService is flaky)
+- [x] **Advanced toggle**: visible, disabled, hint visible; toggling does nothing
+- [x] **Voice audit**: scan all Settings + Onboarding strings against PRD §7 term table
 
 ## Implementation Notes
 This is a manual test execution ticket — no code changes unless bugs are found during testing.

@@ -1,10 +1,10 @@
 # [TICKET-023] NEFilterDataProvider + IPC + flow swap
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #022
+- Requires: #022 ✅
 
 ## Description
 Wire in the real production data path: an `NEFilterDataProvider` System Extension that observes per-flow bytes attributed to bundle id, sends them to the host app via shared App Group, and replaces `NettopCollector` (TICKET-006) as the primary `FlowCollector`. Per PRD §10 this swap is intentionally last so the rest of the app is fully built and verified before the heaviest piece of macOS infrastructure goes in.

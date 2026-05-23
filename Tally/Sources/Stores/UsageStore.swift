@@ -149,39 +149,20 @@ final class UsageStore {
     private func observeCycleStartDayChanges() {
         cycleObservationTask?.cancel()
         cycleObservationTask = Task { [weak self] in
-            var lastStartDay: Int? = nil
             while !Task.isCancelled {
                 guard let self else { return }
-                let currentStartDay = await withCheckedContinuation { continuation in
-                    let day = withObservationTracking {
+                
+                await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+                    _ = withObservationTracking {
                         self.preferences.cycleStartDay
                     } onChange: {
-                        // The continuation resumes when cycleStartDay mutates.
+                        continuation.resume()
                     }
-                    // On first iteration, return immediately with the current value.
-                    if lastStartDay == nil {
-                        continuation.resume(returning: day)
-                    }
-                    // For subsequent iterations, we need to wait for actual change.
-                    // But withObservationTracking's onChange fires asynchronously,
-                    // so we handle it differently below.
                 }
-
-                if let last = lastStartDay, last != currentStartDay {
-                    Log.store.info("[store] cycleStartDay changed from \(last, privacy: .public) to \(currentStartDay, privacy: .public) — restarting observation")
-                    self.startObservation()
-                }
-                lastStartDay = currentStartDay
-
-                // Wait for the next change
+                
                 if !Task.isCancelled {
-                    await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-                        _ = withObservationTracking {
-                            self.preferences.cycleStartDay
-                        } onChange: {
-                            continuation.resume()
-                        }
-                    }
+                    Log.store.info("[store] cycleStartDay changed — restarting observation")
+                    self.startObservation()
                 }
             }
         }

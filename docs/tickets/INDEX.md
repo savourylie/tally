@@ -7,10 +7,10 @@
 
 | Status         | Count |
 | -------------- | ----- |
-| ✅ Done         | 21    |
+| ✅ Done         | 22    |
 | 🔧 In Progress | 0     |
 | 📋 Pending     | 1     |
-| 🚫 Blocked     | 2     |
+| 🚫 Blocked     | 1     |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -57,13 +57,13 @@
 | 019 | [Billing cycle + monthly reset engine](./019-billing-cycle-engine.md)                                                                 | `done`    | #017 ✅        | Billing cycle engine shipped |
 | 020 | [Notification engine](./020-notification-engine.md)                                                                                   | `done`    | #017 ✅, #019 ✅ | Notification engine shipped |
 | 021 | [Onboarding 3-step flow](./021-onboarding-flow.md)                                                                                    | `done`    | #017 ✅, #018 ✅ | 3-step onboarding flow shipped |
-| 022 | [**TEST: Checkpoint 3 — Settings / Notifications / Onboarding**](./022-test-checkpoint-3-settings-notifications-onboarding.md)        | `pending` | #020 ✅, #021 ✅ | Unblocked — onboarding done |
+| 022 | [**TEST: Checkpoint 3 — Settings / Notifications / Onboarding**](./022-test-checkpoint-3-settings-notifications-onboarding.md)        | `done`    | #020 ✅, #021 ✅ | Verified passing end-to-end |
 
 ## Phase 5 — Network Extension + Final QA
 
 | #   | Ticket                                                                                                       | Status    | Depends On | Notes        |
 | --- | ------------------------------------------------------------------------------------------------------------ | --------- | ---------- | ------------ |
-| 023 | [NEFilterDataProvider + IPC + flow swap](./023-ne-filter-extension-flow-swap.md)                             | `blocked` | #022       |              |
+| 023 | [NEFilterDataProvider + IPC + flow swap](./023-ne-filter-extension-flow-swap.md)                             | `pending` | #022 ✅     | Unblocked — Checkpoint 3 passed |
 | 024 | [**TEST: Checkpoint 4 — Final End-to-End MVP**](./024-test-checkpoint-4-final-end-to-end.md)                 | `blocked` | #023       | Gate: Final  |
 
 ---
