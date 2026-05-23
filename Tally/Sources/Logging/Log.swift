@@ -12,4 +12,5 @@ enum Log {
     static let notif     = Logger(subsystem: subsystem, category: "notif")
     static let ne        = Logger(subsystem: subsystem, category: "ne")
     static let meta      = Logger(subsystem: subsystem, category: "meta")
+    static let pref      = Logger(subsystem: subsystem, category: "pref")
 }

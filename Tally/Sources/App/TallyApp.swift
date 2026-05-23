@@ -8,12 +8,14 @@ struct TallyApp: App {
         MenuBarExtra("Tally", image: "MenuBarIcon") {
             PopoverView()
                 .environment(appState)
+                .environment(appState.preferences)
         }
         .menuBarExtraStyle(.window)
 
         Window("Tally", id: "main") {
             MainWindowScene()
                 .environment(appState)
+                .environment(appState.preferences)
         }
         .windowResizability(.contentSize)
         .defaultSize(

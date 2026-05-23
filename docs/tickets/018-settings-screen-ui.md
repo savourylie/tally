@@ -1,10 +1,10 @@
 # [TICKET-018] Settings screen UI
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #017
+- Requires: #017 ✅
 
 ## Description
 Build the Settings pane that appears when the user selects 設定 in the main window sidebar. PRD §6.3 lists exactly what's in MVP Settings:

@@ -52,7 +52,8 @@ targets:
     platform: macOS
     sources:
       - TallyTests
-      - Tally/Sources/Cycle/EstimateCalculator.swift
+    dependencies:
+      - target: Tally
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.calvinku.tally.tests

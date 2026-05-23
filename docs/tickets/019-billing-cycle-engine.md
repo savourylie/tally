@@ -1,10 +1,10 @@
 # [TICKET-019] Billing cycle + monthly reset engine
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #017
+- Requires: #017 ✅
 
 ## Description
 Up to this point, every "monthly total" in the UI has been a placeholder computed as the current calendar month. PRD §6.3 and §9 require the cycle to start on `preferences.cycleStartDay` — for someone with a billing cycle starting on the 5th, "this month" runs from the 5th of last month to the 4th of this month. This engine produces:

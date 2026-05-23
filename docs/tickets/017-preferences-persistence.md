@@ -1,7 +1,7 @@
 # [TICKET-017] Preferences persistence (UserDefaults wrapper)
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #016 ✅
@@ -12,8 +12,8 @@ Build the typed UserDefaults wrapper that holds every user preference for MVP. T
 Splitting persistence from the Settings UI keeps each independently testable, prevents a merge-order trap (onboarding writes prefs before Settings is built), and gives downstream consumers a single observable type rather than scattered `@AppStorage` declarations.
 
 ## Acceptance Criteria
-- [ ] `Preferences` is an `@Observable` class injected via `AppState`
-- [ ] Exposes typed properties matching PRD §6.3 Settings + §9 Onboarding:
+- [x] `Preferences` is an `@Observable` class injected via `AppState`
+- [x] Exposes typed properties matching PRD §6.3 Settings + §9 Onboarding:
   - `cycleStartDay: Int` (1–31, default 1)
   - `monthlyLimitGB: Double?` (nil = "沒有上限")
   - `alertAt80: Bool` (default true)
@@ -22,11 +22,11 @@ Splitting persistence from the Settings UI keeps each independently testable, pr
   - `autostart: Bool` (default false)
   - `advancedMode: Bool` (default false) — placeholder, no behavior wired in MVP
   - `onboardingComplete: Bool` (default false)
-- [ ] All properties round-trip through UserDefaults under the suite name `com.calvinku.Tally.preferences` (or the chosen bundle id + `.preferences`)
-- [ ] All keys use a stable, namespaced format (`pref.cycleStartDay`, `pref.monthlyLimitGB`, …) and are listed in `PreferencesKeys.swift` for migration safety
-- [ ] Changing any property emits a SwiftUI invalidation — bindings in TICKET-018 / TICKET-019 / TICKET-020 see updates without manual refresh
-- [ ] Values survive app relaunch: set a value, quit, relaunch, value persists
-- [ ] First-launch sentinel: when `onboardingComplete == false`, this is detectable by the App for routing (TICKET-021 will do the actual routing)
+- [x] All properties round-trip through UserDefaults under the suite name `com.calvinku.Tally.preferences` (or the chosen bundle id + `.preferences`)
+- [x] All keys use a stable, namespaced format (`pref.cycleStartDay`, `pref.monthlyLimitGB`, …) and are listed in `PreferencesKeys.swift` for migration safety
+- [x] Changing any property emits a SwiftUI invalidation — bindings in TICKET-018 / TICKET-019 / TICKET-020 see updates without manual refresh
+- [x] Values survive app relaunch: set a value, quit, relaunch, value persists
+- [x] First-launch sentinel: when `onboardingComplete == false`, this is detectable by the App for routing (TICKET-021 will do the actual routing)
 
 ## Implementation Notes
 - **Files to create**: `Preferences/Preferences.swift`, `Preferences/PreferencesKeys.swift`

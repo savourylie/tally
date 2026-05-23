@@ -4,7 +4,7 @@
 `blocked`
 
 ## Dependencies
-- Requires: #017, #019
+- Requires: #017 ✅, #019
 
 ## Description
 Schedule and fire local notifications at 80%, 95%, and 100% of the monthly cap. Each threshold can be individually disabled via Settings (TICKET-018); the 100% notification additionally signals "you've hit the cap" copy.

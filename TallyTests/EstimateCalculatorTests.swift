@@ -1,4 +1,5 @@
 import XCTest
+@testable import Tally
 
 final class EstimateCalculatorTests: XCTestCase {
     private let gibibyte = Int64(1_073_741_824)

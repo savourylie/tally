@@ -11,9 +11,11 @@ final class AppState {
     let collector: any FlowCollector
     let aggregator: Aggregator
     let mainWindow: MainWindowSessionState
+    let preferences: Preferences
 
     init() {
         self.mainWindow = MainWindowSessionState()
+        self.preferences = Preferences()
 
         do {
             self.database = try DatabaseManager()
