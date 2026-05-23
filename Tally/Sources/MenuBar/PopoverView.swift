@@ -95,7 +95,8 @@ struct PopoverView: View {
                 Spacer()
                 
                 Button(action: {
-                    openWindow(id: "main") // Settings routing lands in TICKET-018
+                    appState.mainWindow.selection = .settings
+                    openWindow(id: "main")
                 }) {
                     Image(systemName: "gearshape")
                         .font(.system(size: 14))

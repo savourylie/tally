@@ -9,8 +9,11 @@ final class AppState {
     let usageStore: UsageStore
     let collector: any FlowCollector
     let aggregator: Aggregator
+    let mainWindow: MainWindowSessionState
 
     init() {
+        self.mainWindow = MainWindowSessionState()
+
         do {
             self.database = try DatabaseManager()
         } catch {

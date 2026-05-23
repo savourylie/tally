@@ -1,10 +1,10 @@
 # [TICKET-012] Main window scene + sidebar
 
 ## Status
-`blocked`
+`done`
 
 ## Dependencies
-- Requires: #002 ✅, #011
+- Requires: #002 ✅, #011 ✅
 
 ## Description
 Build the main window — a 960×640 non-resizable, draggable `Window` scene with a 200pt sidebar on the left and a 760pt content area on the right. PRD §6.2 specifies the fixed dimensions; PRD §10 specifies lazy lifecycle: "Main window lifecycle：lazy 建立，關掉就釋放，避免常駐記憶體".
@@ -14,13 +14,13 @@ The sidebar exposes two items in MVP: **總覽** (Overview) and **設定** (Sett
 The content area is empty for this ticket (`Text("Overview placeholder")` and `Text("Settings placeholder")`). Subsequent tickets fill in the Overview (TICKET-013/014/015) and Settings (TICKET-018) bodies.
 
 ## Acceptance Criteria
-- [ ] `Window("Tally", id: "main")` in the app scene tree, fixed 960×640 size (`.windowResizability(.contentSize)` with frame modifier) — non-resizable, draggable
-- [ ] On close, the window scene and its view tree deallocate (verified via Instruments / a `deinit` log on the root content view); on reopen (via popover button or `openWindow(id:)`), the scene rebuilds
-- [ ] Menu bar continues to run after main window close — closing main does NOT quit the app (`.windowResizability(.contentSize)` + `.windowToolbarStyle` + no explicit `NSApp.terminate` link)
-- [ ] Sidebar fills 200pt width with `--bg-sidebar` background (`#F4F2EC` light / dark equivalent), uses `NSVisualEffectView` material `.sidebar` for native look
-- [ ] Sidebar items: 總覽 (icon `chart.bar`), 設定 (icon `gearshape`). Selected item has accented background; hover has 5% darken; tap selects
-- [ ] Selected sidebar item drives content area: 總覽 → Overview placeholder, 設定 → Settings placeholder
-- [ ] Selection persists across window close/reopen within a session (in-memory; restoration across app restart is out of MVP scope per PRD §3 implicit)
+- [x] `Window("Tally", id: "main")` in the app scene tree, fixed 960×640 size (`.windowResizability(.contentSize)` with frame modifier) — non-resizable, draggable
+- [x] On close, the window scene and its view tree deallocate (verified via Instruments / a `deinit` log on the root content view); on reopen (via popover button or `openWindow(id:)`), the scene rebuilds
+- [x] Menu bar continues to run after main window close — closing main does NOT quit the app (`.windowResizability(.contentSize)` + `.windowToolbarStyle` + no explicit `NSApp.terminate` link)
+- [x] Sidebar fills 200pt width with `--bg-sidebar` background (`#F4F2EC` light / dark equivalent), uses `NSVisualEffectView` material `.sidebar` for native look
+- [x] Sidebar items: 總覽 (icon `chart.bar`), 設定 (icon `gearshape`). Selected item has accented background; hover has 5% darken; tap selects
+- [x] Selected sidebar item drives content area: 總覽 → Overview placeholder, 設定 → Settings placeholder
+- [x] Selection persists across window close/reopen within a session (in-memory; restoration across app restart is out of MVP scope per PRD §3 implicit)
 
 ## Design Reference
 - **Layout**: `docs/system-design/ui_kits/macos_app/Sidebar.jsx`, `MainWindow.jsx`, `OverviewScreen.jsx` (for placeholder content area shape)

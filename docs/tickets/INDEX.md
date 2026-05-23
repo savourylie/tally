@@ -7,10 +7,10 @@
 
 | Status         | Count |
 | -------------- | ----- |
-| ✅ Done         | 11    |
+| ✅ Done         | 12    |
 | 🔧 In Progress | 0     |
 | 📋 Pending     | 1     |
-| 🚫 Blocked     | 12    |
+| 🚫 Blocked     | 11    |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -42,8 +42,8 @@
 
 | #   | Ticket                                                                                                       | Status    | Depends On     | Notes        |
 | --- | ------------------------------------------------------------------------------------------------------------ | --------- | -------------- | ------------ |
-| 012 | [Main window scene + sidebar](./012-main-window-scene-sidebar.md)                                            | `pending` | #002 ✅, #011 ✅ | Unblocked — checkpoint passed |
-| 013 | [Overview hero card](./013-overview-hero-card.md)                                                            | `blocked` | #009 ✅, #012  |              |
+| 012 | [Main window scene + sidebar](./012-main-window-scene-sidebar.md)                                            | `done`    | #002 ✅, #011 ✅ | Main window scene + sidebar shipped |
+| 013 | [Overview hero card](./013-overview-hero-card.md)                                                            | `pending` | #009 ✅, #012 ✅ | Unblocked — main window shipped |
 | 014 | [Overview status line + estimate](./014-overview-status-line-estimate.md)                                    | `blocked` | #013           |              |
 | 015 | [Top 10 apps with system-category grouping](./015-top-10-apps-categories.md)                                 | `blocked` | #008 ✅, #014  |              |
 | 016 | [**TEST: Checkpoint 2 — Overview Screen**](./016-test-checkpoint-2-overview.md)                              | `blocked` | #015           | Gate: Phase 3 |
