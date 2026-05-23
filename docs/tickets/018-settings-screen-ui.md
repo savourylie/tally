@@ -1,7 +1,7 @@
 # [TICKET-018] Settings screen UI
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #017 ✅
@@ -22,21 +22,21 @@ Plus two extras agreed in the plan:
 Every row binds to the `Preferences` from TICKET-017. The Advanced toggle visually exists but is disabled or has a "v0.3" badge — PRD §7 explicitly reserves the toggle slot in MVP without unlocking anything.
 
 ## Acceptance Criteria
-- [ ] Settings pane fills the 760pt content column with `Spacing.s6` (24pt) padding
-- [ ] Sections rendered top-to-bottom:
+- [x] Settings pane fills the 760pt content column with `Spacing.s6` (24pt) padding
+- [x] Sections rendered top-to-bottom:
   1. 計費週期 (cycle day picker — 1–31 stepper or popup menu)
   2. 流量上限 (numeric input for GB + "沒有上限" toggle that nils the value)
   3. 通知 (three checkboxes for 80% / 95% / 100%)
   4. 開機自動啟動 (single toggle wired to `SMAppService`)
   5. Advanced 模式 (toggle, locked / disabled with a small "之後再開放" hint)
   6. 進階選項 (footer with VPN note + 重新跑一次 onboarding row)
-- [ ] Every row binds to `Preferences` — toggling a checkbox updates UserDefaults immediately
-- [ ] Cycle day input: when user picks 31 and current month has fewer days, show inline hint "若該月沒有 31 號，會用月底最後一天" — TICKET-019 implements the actual logic
-- [ ] Monthly cap: shows "沒有上限" pill when unset; tapping "設定上限" reveals the numeric input
-- [ ] Autostart toggle: wires to `SMAppService.mainApp.register()` / `.unregister()`; on failure shows a small error label "無法設定，請手動到系統設定打開"
-- [ ] Advanced toggle: rendered but `.disabled(true)` (or wrapped in a `Group` with `.allowsHitTesting(false)` + 50% opacity); hint text visible
-- [ ] VPN footnote text matches PRD §12 spirit: "如果開了 VPN，Tally 沒辦法分開算每個 app 的流量" — small, `--fg-3`, end-of-pane
-- [ ] 重新跑一次 onboarding row: a button "重新跑一次 onboarding" that sets `preferences.onboardingComplete = false`. After tapping, on next launch the onboarding modal shows (TICKET-021 wires the actual presentation)
+- [x] Every row binds to `Preferences` — toggling a checkbox updates UserDefaults immediately
+- [x] Cycle day input: when user picks 31 and current month has fewer days, show inline hint "若該月沒有 31 號，會用月底最後一天" — TICKET-019 implements the actual logic
+- [x] Monthly cap: shows "沒有上限" pill when unset; tapping "設定上限" reveals the numeric input
+- [x] Autostart toggle: wires to `SMAppService.mainApp.register()` / `.unregister()`; on failure shows a small error label "無法設定，請手動到系統設定打開"
+- [x] Advanced toggle: rendered but `.disabled(true)` (or wrapped in a `Group` with `.allowsHitTesting(false)` + 50% opacity); hint text visible
+- [x] VPN footnote text matches PRD §12 spirit: "如果開了 VPN，Tally 沒辦法分開算每個 app 的流量" — small, `--fg-3`, end-of-pane
+- [x] 重新跑一次 onboarding row: a button "重新跑一次 onboarding" that sets `preferences.onboardingComplete = false`. After tapping, on next launch the onboarding modal shows (TICKET-021 wires the actual presentation)
 
 ## Design Reference
 - **Layout**: `docs/system-design/ui_kits/macos_app/SettingsScreen.jsx`

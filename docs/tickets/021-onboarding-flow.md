@@ -1,10 +1,10 @@
 # [TICKET-021] Onboarding 3-step flow
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #017 ✅, #018
+- Requires: #017 ✅, #018 ✅
 
 ## Description
 Build the first-launch onboarding flow per PRD §9: a full-screen modal with three sequential steps that runs before the user sees the main window. The flow is gated by `preferences.onboardingComplete`; setting it to false (via TICKET-018's debug row, or by deleting prefs) re-presents on next launch.

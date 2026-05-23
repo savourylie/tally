@@ -47,7 +47,7 @@ struct MainWindowScene: View {
         case .overview:
             OverviewScreen()
         case .settings:
-            placeholder(appState.mainWindow.selection.placeholder)
+            SettingsView()
         }
     }
 
