@@ -51,7 +51,7 @@ final class ThresholdEngine {
             while !Task.isCancelled {
                 guard let self else { return }
                 await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-                    _ = withObservationTracking {
+                    withObservationTracking {
                         // Touch the properties we want to observe
                         _ = self.usageStore.monthToDateBytes
                         _ = self.usageStore.currentCycle

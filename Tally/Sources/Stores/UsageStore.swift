@@ -153,8 +153,8 @@ final class UsageStore {
                 guard let self else { return }
                 
                 await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-                    _ = withObservationTracking {
-                        self.preferences.cycleStartDay
+                    withObservationTracking {
+                        _ = self.preferences.cycleStartDay
                     } onChange: {
                         continuation.resume()
                     }

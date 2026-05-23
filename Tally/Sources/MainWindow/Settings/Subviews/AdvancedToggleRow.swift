@@ -5,7 +5,7 @@ struct AdvancedToggleRow: View {
         HStack(alignment: .firstTextBaseline) {
             VStack(alignment: .leading, spacing: Spacing.s1) {
                 HStack(alignment: .center, spacing: Spacing.s2) {
-                    Text("Advanced 模式")
+                    Text("進階模式")
                         .font(.tally.bodyEm)
                         .tracking(Font.tallyTracking.body)
                         .foregroundStyle(Color.tally.fg1)
@@ -20,7 +20,7 @@ struct AdvancedToggleRow: View {
                         .clipShape(RoundedRectangle(cornerRadius: Radius.r4))
                 }
                 
-                Text("會看到 bundle id、process name、Mbps 等技術細節。")
+                Text("之後會開放更多網路細節，目前先保留一般模式。")
                     .font(.tally.callout)
                     .tracking(Font.tallyTracking.callout)
                     .foregroundStyle(Color.tally.fg3)
