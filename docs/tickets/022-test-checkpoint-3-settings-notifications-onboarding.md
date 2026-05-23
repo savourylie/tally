@@ -1,10 +1,10 @@
 # [TICKET-022] TEST: Checkpoint 3 — Settings, Notifications, Onboarding
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #020 ✅, #021
+- Requires: #020 ✅, #021 ✅
 
 ## Description
 Phase 4 (TICKET-017 through TICKET-021) layered in everything around the user's preferences: persistence, the Settings UI, the billing cycle engine, threshold notifications, and the first-launch onboarding flow. This checkpoint exercises the user's "first day with Tally" experience end-to-end:

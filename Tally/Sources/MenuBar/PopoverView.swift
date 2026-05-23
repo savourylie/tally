@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PopoverView: View {
     @Environment(AppState.self) private var appState
+    @Environment(Preferences.self) private var preferences
     @Environment(\.openWindow) private var openWindow
     
     @State private var isVisible = false
@@ -24,7 +25,42 @@ struct PopoverView: View {
         let totalBytes = bytes.bytesIn + bytes.bytesOut
         
         VStack(spacing: 0) {
-            if state == .collecting {
+            if !preferences.onboardingComplete {
+                VStack(spacing: 12) {
+                    Image(systemName: "lock.shield")
+                        .font(.system(size: 40))
+                        .foregroundStyle(Color.tally.accent)
+                        .padding(.top, 10)
+                    
+                    Text("請先完成設定")
+                        .font(.tally.title2)
+                        .tracking(Font.tallyTracking.title2)
+                        .foregroundStyle(Color.tally.fg1)
+                    
+                    Text("請打開 Tally 主視窗完成首次安裝與流量設定。")
+                        .font(.tally.callout)
+                        .tracking(Font.tallyTracking.callout)
+                        .foregroundStyle(Color.tally.fg3)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 16)
+                    
+                    Button(action: {
+                        openWindow(id: "main")
+                    }) {
+                        Text("開始設定")
+                            .font(.tally.bodyEm)
+                            .tracking(Font.tallyTracking.body)
+                            .foregroundStyle(Color.tally.accentOn)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 8)
+                            .background(Color.tally.accent)
+                            .clipShape(RoundedRectangle(cornerRadius: Radius.r6))
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.top, 6)
+                    .padding(.bottom, 10)
+                }
+            } else if state == .collecting {
                 CollectingPlaceholder()
             } else {
                 VStack(alignment: .leading, spacing: 0) {

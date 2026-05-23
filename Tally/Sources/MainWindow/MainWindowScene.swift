@@ -9,17 +9,26 @@ enum MainWindowLayout {
 
 struct MainWindowScene: View {
     @Environment(AppState.self) private var appState
+    @Environment(Preferences.self) private var preferences
     @State private var lifetimeProbe = MainWindowLifetimeProbe()
 
     var body: some View {
-        HStack(spacing: 0) {
-            Sidebar(selection: appState.mainWindow.selection) { selection in
-                withAnimation(Motion.view) {
-                    appState.mainWindow.selection = selection
-                }
-            }
+        ZStack {
+            if !preferences.onboardingComplete {
+                OnboardingFlow()
+                    .transition(.opacity.combined(with: .scale(scale: 0.98)))
+            } else {
+                HStack(spacing: 0) {
+                    Sidebar(selection: appState.mainWindow.selection) { selection in
+                        withAnimation(Motion.view) {
+                            appState.mainWindow.selection = selection
+                        }
+                    }
 
-            content
+                    content
+                }
+                .transition(.opacity.combined(with: .scale(scale: 0.98)))
+            }
         }
         .frame(width: MainWindowLayout.windowWidth, height: MainWindowLayout.windowHeight)
         .fixedSize()

@@ -109,4 +109,26 @@ final class PreferencesTests: XCTestCase {
         let relaunched2 = Preferences(store: testUserDefaults)
         XCTAssertNil(relaunched2.monthlyLimitGB)
     }
+
+    func testOnboardingCompleteReset() {
+        XCTAssertFalse(preferences.onboardingComplete)
+        
+        // Complete onboarding
+        preferences.cycleStartDay = 5
+        preferences.monthlyLimitGB = 30.0
+        preferences.onboardingComplete = true
+        
+        XCTAssertTrue(preferences.onboardingComplete)
+        XCTAssertEqual(preferences.cycleStartDay, 5)
+        XCTAssertEqual(preferences.monthlyLimitGB, 30.0)
+        
+        // Reset onboarding Complete
+        preferences.onboardingComplete = false
+        XCTAssertFalse(preferences.onboardingComplete)
+        
+        let relaunched = Preferences(store: testUserDefaults)
+        XCTAssertFalse(relaunched.onboardingComplete)
+        XCTAssertEqual(relaunched.cycleStartDay, 5)
+        XCTAssertEqual(relaunched.monthlyLimitGB, 30.0)
+    }
 }

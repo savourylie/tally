@@ -1,7 +1,7 @@
 # [TICKET-021] Onboarding 3-step flow
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #017 ✅, #018 ✅
@@ -34,15 +34,15 @@ Final CTA: "開始用". On tap:
 - Show main window with `usageStore.state == .collecting` → "資料正在收集中，數據會在幾分鐘後開始顯示"
 
 ## Acceptance Criteria
-- [ ] On launch with `preferences.onboardingComplete == false`, the onboarding modal presents full-screen and blocks access to the main window / popover until completed
-- [ ] Each of the three steps renders per the design system (`docs/system-design/ui_kits/macos_app/Onboarding.jsx`)
-- [ ] Step 1: title, non-goals line, "下一步" button advances
-- [ ] Step 2: explanation, expandable "為什麼需要這個權限", "去設定" opens `x-apple.systempreferences:com.apple.preference.security` URL, "已經批准了" advances; VPN limitation note visible
-- [ ] Step 3: cycle day picker + cap input + "我沒有上限" toggle bind to `Preferences`; "開始用" writes prefs, sets `onboardingComplete = true`, dismisses
-- [ ] After completion, popover and main window become accessible; menu bar icon was already visible during onboarding but tap was non-functional (or showed "請先完成設定" — pick one and document)
-- [ ] 重新跑一次 onboarding (TICKET-018) resets `onboardingComplete` → next launch presents onboarding again
-- [ ] All copy from PRD §7 + §9 — no English technical terms, "你" not "您"
-- [ ] Modal cannot be closed via ⌘W / Esc / clicking outside — only via the final button (prevents stranding the user mid-setup)
+- [x] On launch with `preferences.onboardingComplete == false`, the onboarding modal presents full-screen and blocks access to the main window / popover until completed
+- [x] Each of the three steps renders per the design system (`docs/system-design/ui_kits/macos_app/Onboarding.jsx`)
+- [x] Step 1: title, non-goals line, "下一步" button advances
+- [x] Step 2: explanation, expandable "為什麼需要這個權限", "去設定" opens `x-apple.systempreferences:com.apple.preference.security` URL, "已經批准了" advances; VPN limitation note visible
+- [x] Step 3: cycle day picker + cap input + "我沒有上限" toggle bind to `Preferences`; "開始用" writes prefs, sets `onboardingComplete = true`, dismisses
+- [x] After completion, popover and main window become accessible; menu bar icon was already visible during onboarding but tap was non-functional (or showed "請先完成設定" — pick one and document)
+- [x] 重新跑一次 onboarding (TICKET-018) resets `onboardingComplete` → next launch presents onboarding again
+- [x] All copy from PRD §7 + §9 — no English technical terms, "你" not "您"
+- [x] Modal cannot be closed via ⌘W / Esc / clicking outside — only via the final button (prevents stranding the user mid-setup)
 
 ## Design Reference
 - **Layout**: `docs/system-design/ui_kits/macos_app/Onboarding.jsx`

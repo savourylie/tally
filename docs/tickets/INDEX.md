@@ -7,10 +7,10 @@
 
 | Status         | Count |
 | -------------- | ----- |
-| ✅ Done         | 20    |
+| ✅ Done         | 21    |
 | 🔧 In Progress | 0     |
 | 📋 Pending     | 1     |
-| 🚫 Blocked     | 3     |
+| 🚫 Blocked     | 2     |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -56,8 +56,8 @@
 | 018 | [Settings screen UI](./018-settings-screen-ui.md)                                                                                     | `done`    | #017 ✅        | Settings screen UI shipped |
 | 019 | [Billing cycle + monthly reset engine](./019-billing-cycle-engine.md)                                                                 | `done`    | #017 ✅        | Billing cycle engine shipped |
 | 020 | [Notification engine](./020-notification-engine.md)                                                                                   | `done`    | #017 ✅, #019 ✅ | Notification engine shipped |
-| 021 | [Onboarding 3-step flow](./021-onboarding-flow.md)                                                                                    | `pending` | #017 ✅, #018 ✅ | Unblocked — settings done |
-| 022 | [**TEST: Checkpoint 3 — Settings / Notifications / Onboarding**](./022-test-checkpoint-3-settings-notifications-onboarding.md)        | `blocked` | #020 ✅, #021  | Gate: Phase 4 |
+| 021 | [Onboarding 3-step flow](./021-onboarding-flow.md)                                                                                    | `done`    | #017 ✅, #018 ✅ | 3-step onboarding flow shipped |
+| 022 | [**TEST: Checkpoint 3 — Settings / Notifications / Onboarding**](./022-test-checkpoint-3-settings-notifications-onboarding.md)        | `pending` | #020 ✅, #021 ✅ | Unblocked — onboarding done |
 
 ## Phase 5 — Network Extension + Final QA
 
