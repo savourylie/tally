@@ -22,29 +22,38 @@ final class UsageStore {
     private(set) var topEntries: [AppUsageEntry] = []
     private(set) var currentNetwork: NetworkConnection = .offline
     private(set) var previousCycleTotalBytes: Int64 = 0
+    private(set) var currentCycle: BillingCycle?
     var currentNetworkDisplay: String {
         currentNetwork.displayName
     }
-    // TODO TICKET-019: replace this placeholder with persisted user preferences.
-    var monthlyCapBytes: Int64? = 20 * 1024 * 1024 * 1024
 
+    /// Monthly cap in bytes, derived from `Preferences.monthlyLimitGB`.
+    /// Returns `nil` when the user has not set a limit.
+    var monthlyCapBytes: Int64? {
+        guard let gb = preferences.monthlyLimitGB, gb > 0 else { return nil }
+        return Int64(gb * 1_073_741_824)
+    }
 
     @ObservationIgnored private let dbPool: DatabasePool
     @ObservationIgnored private let metadataService: AppMetadataService
     @ObservationIgnored private let categorizer: ProcessCategorizer
+    @ObservationIgnored private let preferences: Preferences
     @ObservationIgnored private var networkMonitor: NetworkStatusMonitor?
     @ObservationIgnored private var cancellable: AnyDatabaseCancellable?
     @ObservationIgnored private var resolveTask: Task<Void, Never>?
     @ObservationIgnored private var lastResolvedKeys: [AppUsageEntry.Kind] = []
+    @ObservationIgnored private var cycleObservationTask: Task<Void, Never>?
 
     init(
         dbPool: DatabasePool,
         metadataService: AppMetadataService,
-        categorizer: ProcessCategorizer
+        categorizer: ProcessCategorizer,
+        preferences: Preferences
     ) {
         self.dbPool = dbPool
         self.metadataService = metadataService
         self.categorizer = categorizer
+        self.preferences = preferences
         self.networkMonitor = NetworkStatusMonitor { [weak self] connection in
             self?.currentNetwork = connection
         }
@@ -55,16 +64,36 @@ final class UsageStore {
         networkMonitor?.cancel()
         resolveTask?.cancel()
         cancellable?.cancel()
+        cycleObservationTask?.cancel()
     }
 
     func start() {
         networkMonitor?.start()
-        guard cancellable == nil else { return }
-        let window = Self.currentCycleWindow()
-        let previousWindow = Self.previousCalendarMonthWindow()
-        // TODO TICKET-019: refresh observation on NSCalendarDayChanged so the
-        // cycle window advances at midnight without an app restart.
-        Log.store.info("[store] start window=\(window.start, privacy: .public)..\(window.end, privacy: .public)")
+        startObservation()
+        observeCycleStartDayChanges()
+    }
+
+    func topApps(limit: Int) -> [AppUsageEntry] {
+        Array(topEntries.prefix(limit))
+    }
+
+    // MARK: - Cycle-Aware Observation
+
+    /// Starts (or restarts) the database observation using the current billing
+    /// cycle derived from `preferences.cycleStartDay`.
+    private func startObservation() {
+        // Cancel any existing observation
+        cancellable?.cancel()
+        cancellable = nil
+
+        let cycle = BillingCycle.current(forStartDay: preferences.cycleStartDay)
+        let previousCycle = BillingCycle.previous(forStartDay: preferences.cycleStartDay)
+        self.currentCycle = cycle
+
+        let window = Self.dateWindow(from: cycle)
+        let previousWindow = Self.dateWindow(from: previousCycle)
+
+        Log.store.info("[store] start cycle window=\(window.start, privacy: .public)..\(window.end, privacy: .public) (startDay=\(self.preferences.cycleStartDay, privacy: .public))")
 
         let observation = ValueObservation.tracking { db -> RawUsageSnapshot in
             let rows = try Row.fetchAll(db, sql: """
@@ -115,8 +144,47 @@ final class UsageStore {
         )
     }
 
-    func topApps(limit: Int) -> [AppUsageEntry] {
-        Array(topEntries.prefix(limit))
+    /// Observe changes to `preferences.cycleStartDay` and restart the DB
+    /// observation whenever it changes. Uses `withObservationTracking` in a loop.
+    private func observeCycleStartDayChanges() {
+        cycleObservationTask?.cancel()
+        cycleObservationTask = Task { [weak self] in
+            var lastStartDay: Int? = nil
+            while !Task.isCancelled {
+                guard let self else { return }
+                let currentStartDay = await withCheckedContinuation { continuation in
+                    let day = withObservationTracking {
+                        self.preferences.cycleStartDay
+                    } onChange: {
+                        // The continuation resumes when cycleStartDay mutates.
+                    }
+                    // On first iteration, return immediately with the current value.
+                    if lastStartDay == nil {
+                        continuation.resume(returning: day)
+                    }
+                    // For subsequent iterations, we need to wait for actual change.
+                    // But withObservationTracking's onChange fires asynchronously,
+                    // so we handle it differently below.
+                }
+
+                if let last = lastStartDay, last != currentStartDay {
+                    Log.store.info("[store] cycleStartDay changed from \(last, privacy: .public) to \(currentStartDay, privacy: .public) — restarting observation")
+                    self.startObservation()
+                }
+                lastStartDay = currentStartDay
+
+                // Wait for the next change
+                if !Task.isCancelled {
+                    await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+                        _ = withObservationTracking {
+                            self.preferences.cycleStartDay
+                        } onChange: {
+                            continuation.resume()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private func handle(snapshot: RawUsageSnapshot) {
@@ -214,22 +282,17 @@ final class UsageStore {
         }
     }
 
-    // MARK: - Cycle window placeholder (TICKET-019 replaces this)
+    // MARK: - Date Window Helpers
 
-    private static func currentCycleWindow(now: Date = .now) -> (start: String, end: String) {
+    /// Convert a `BillingCycle` to a (start, end) string pair for SQL queries.
+    /// `start` is the cycle start date; `end` is the day before `cycle.end`
+    /// (since `cycle.end` is exclusive).
+    private static func dateWindow(from cycle: BillingCycle) -> (start: String, end: String) {
         let cal = Calendar.current
-        let startDate = cal.date(from: cal.dateComponents([.year, .month], from: now)) ?? now
-        return (dateFormatter.string(from: startDate),
-                dateFormatter.string(from: now))
-    }
-
-    private static func previousCalendarMonthWindow(now: Date = .now) -> (start: String, end: String) {
-        let cal = Calendar.current
-        let currentStart = cal.date(from: cal.dateComponents([.year, .month], from: now)) ?? now
-        let previousStart = cal.date(byAdding: .month, value: -1, to: currentStart) ?? currentStart
-        let previousEnd = cal.date(byAdding: .day, value: -1, to: currentStart) ?? previousStart
-        return (dateFormatter.string(from: previousStart),
-                dateFormatter.string(from: previousEnd))
+        // cycle.end is exclusive, so the last included day is end - 1 day
+        let lastDay = cal.date(byAdding: .day, value: -1, to: cycle.end) ?? cycle.end
+        return (dateFormatter.string(from: cycle.start),
+                dateFormatter.string(from: lastDay))
     }
 
     private static let dateFormatter: DateFormatter = {

@@ -26,12 +26,14 @@ enum EstimateCalculator {
         return Int64(projected.rounded())
     }
 
-    static func currentCalendarMonthProgress(
+    /// Compute cycle progress from a `BillingCycle`.
+    static func cycleProgress(
+        cycle: BillingCycle,
         now: Date = .now,
         calendar: Calendar = .current
     ) -> (daysElapsed: Int, daysInCycle: Int) {
-        let day = calendar.component(.day, from: now)
-        let daysInMonth = calendar.range(of: .day, in: .month, for: now)?.count ?? max(day, 1)
-        return (daysElapsed: day, daysInCycle: daysInMonth)
+        let elapsed = cycle.daysElapsed(on: now, calendar: calendar)
+        let total = cycle.daysInCycle
+        return (daysElapsed: elapsed, daysInCycle: total)
     }
 }
