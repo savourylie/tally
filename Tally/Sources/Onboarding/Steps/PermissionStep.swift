@@ -1,7 +1,7 @@
 import SwiftUI
-import AppKit
 
 struct PermissionStep: View {
+    let activator: SystemExtensionActivator
     @State private var isExpanded = false
 
     var body: some View {
@@ -64,29 +64,66 @@ struct PermissionStep: View {
                     )
                     .disclosureGroupStyle(SimpleDisclosureGroupStyle())
                     
-                    // "去設定" action button
-                    Button(action: {
-                        let urlString = "x-apple.systempreferences:com.apple.preference.security?Privacy_Security"
-                        if let url = URL(string: urlString) {
-                            NSWorkspace.shared.open(url)
-                            Log.ui.info("PermissionStep: opened System Settings -> Privacy & Security")
-                        }
-                    }) {
-                        HStack(spacing: Spacing.s2) {
-                            Image(systemName: "gearshape.2")
-                                .font(.system(size: 13, weight: .semibold))
-                            Text("去設定")
-                                .font(.tally.bodyEm)
-                                .tracking(Font.tallyTracking.body)
-                        }
-                        .foregroundStyle(Color.tally.accent)
-                        .padding(.horizontal, Spacing.s4)
-                        .padding(.vertical, Spacing.s2)
-                        .background(Color.tally.accentSoft)
-                        .clipShape(RoundedRectangle(cornerRadius: Radius.r6))
+                    HStack(alignment: .top, spacing: Spacing.s3) {
+                        Image(systemName: statusIconName)
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(statusColor)
+                            .frame(width: 18, height: 18)
+                            .padding(.top, 1)
+                        Text(activator.state.userMessage)
+                            .font(.tally.callout)
+                            .tracking(Font.tallyTracking.callout)
+                            .foregroundStyle(Color.tally.fg2)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
-                    .buttonStyle(.plain)
+                    .padding(Spacing.s3)
+                    .background(Color.tally.bgCardAlt)
+                    .clipShape(RoundedRectangle(cornerRadius: Radius.r8))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: Radius.r8)
+                            .stroke(Color.tally.border, lineWidth: 1)
+                    )
                     .padding(.top, Spacing.s1)
+
+                    HStack(spacing: Spacing.s2) {
+                        Button(action: {
+                            activator.openSecuritySettings()
+                        }) {
+                            HStack(spacing: Spacing.s2) {
+                                Image(systemName: "gearshape.2")
+                                    .font(.system(size: 13, weight: .semibold))
+                                Text("去設定")
+                                    .font(.tally.bodyEm)
+                                    .tracking(Font.tallyTracking.body)
+                            }
+                            .foregroundStyle(Color.tally.accent)
+                            .padding(.horizontal, Spacing.s4)
+                            .padding(.vertical, Spacing.s2)
+                            .background(Color.tally.accentSoft)
+                            .clipShape(RoundedRectangle(cornerRadius: Radius.r6))
+                        }
+                        .buttonStyle(.plain)
+
+                        if activator.state.canRetry {
+                            Button(action: {
+                                activator.requestActivation()
+                            }) {
+                                HStack(spacing: Spacing.s2) {
+                                    Image(systemName: "arrow.clockwise")
+                                        .font(.system(size: 13, weight: .semibold))
+                                    Text("再試一次")
+                                        .font(.tally.bodyEm)
+                                        .tracking(Font.tallyTracking.body)
+                                }
+                                .foregroundStyle(Color.tally.fg2)
+                                .padding(.horizontal, Spacing.s4)
+                                .padding(.vertical, Spacing.s2)
+                                .background(Color.tally.bgHover)
+                                .clipShape(RoundedRectangle(cornerRadius: Radius.r6))
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
                     
                     Spacer(minLength: 8)
                     
@@ -109,6 +146,35 @@ struct PermissionStep: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             
             Spacer(minLength: 0)
+        }
+        .onAppear {
+            activator.requestActivationIfNeeded()
+        }
+    }
+
+    private var statusIconName: String {
+        switch activator.state {
+        case .idle, .activating:
+            return "arrow.triangle.2.circlepath"
+        case .waitingForApproval:
+            return "exclamationmark.triangle.fill"
+        case .enabled:
+            return "checkmark.circle.fill"
+        case .denied, .failed:
+            return "xmark.circle.fill"
+        }
+    }
+
+    private var statusColor: Color {
+        switch activator.state {
+        case .enabled:
+            return Color.tally.success
+        case .waitingForApproval:
+            return Color.tally.warning
+        case .denied, .failed:
+            return Color.tally.danger
+        case .idle, .activating:
+            return Color.tally.accent
         }
     }
 }
@@ -141,7 +207,7 @@ struct SimpleDisclosureGroupStyle: DisclosureGroupStyle {
 }
 
 #Preview {
-    PermissionStep()
+    PermissionStep(activator: SystemExtensionActivator())
         .frame(width: 540, height: 460)
         .background(Color.tally.bgCard)
 }

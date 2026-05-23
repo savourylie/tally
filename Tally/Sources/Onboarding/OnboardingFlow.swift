@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct OnboardingFlow: View {
+    @Environment(AppState.self) private var appState
     @Environment(Preferences.self) private var preferences
     @State private var currentStep = 0
     
@@ -23,7 +24,7 @@ struct OnboardingFlow: View {
                                 removal: .move(edge: .leading).combined(with: .opacity)
                             ))
                     case 1:
-                        PermissionStep()
+                        PermissionStep(activator: appState.systemExtensionActivator)
                             .transition(.asymmetric(
                                 insertion: .move(edge: currentStep > 1 ? .leading : .trailing).combined(with: .opacity),
                                 removal: .move(edge: currentStep > 1 ? .trailing : .leading).combined(with: .opacity)
@@ -74,6 +75,7 @@ struct OnboardingFlow: View {
                             handleNext()
                         }
                         .buttonStyle(TallyPrimaryButtonStyle())
+                        .disabled(isPrimaryButtonDisabled)
                     }
                     .padding(.trailing, 30)
                 }
@@ -98,15 +100,24 @@ struct OnboardingFlow: View {
         case 0:
             return "下一步"
         case 1:
-            return "已經批准了"
+            return appState.systemExtensionActivator.state.isEnabled ? "繼續" : "已經批准了"
         case 2:
             return "開始用"
         default:
             return ""
         }
     }
+
+    private var isPrimaryButtonDisabled: Bool {
+        currentStep == 1 && !appState.systemExtensionActivator.state.isEnabled
+    }
     
     private func handleNext() {
+        if currentStep == 1 && !appState.systemExtensionActivator.state.isEnabled {
+            appState.systemExtensionActivator.requestActivationIfNeeded()
+            return
+        }
+
         if currentStep < 2 {
             withAnimation(Motion.hover) {
                 currentStep += 1
@@ -123,17 +134,20 @@ struct OnboardingFlow: View {
 
 // Custom button styles for unified design tokens
 struct TallyPrimaryButtonStyle: ButtonStyle {
+    @Environment(\.isEnabled) private var isEnabled
     @State private var isHovered = false
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.tally.bodyEm)
             .tracking(Font.tallyTracking.body)
-            .foregroundStyle(Color.tally.accentOn)
+            .foregroundStyle(isEnabled ? Color.tally.accentOn : Color.tally.fg3)
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
             .background(
-                isHovered
+                !isEnabled
+                ? Color.tally.bgHover
+                : isHovered
                 ? (configuration.isPressed ? Color.tally.accentPress : Color.tally.accentHover)
                 : Color.tally.accent
             )
@@ -145,13 +159,14 @@ struct TallyPrimaryButtonStyle: ButtonStyle {
 }
 
 struct TallyGhostButtonStyle: ButtonStyle {
+    @Environment(\.isEnabled) private var isEnabled
     @State private var isHovered = false
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.tally.bodyEm)
             .tracking(Font.tallyTracking.body)
-            .foregroundStyle(isHovered ? Color.tally.fg1 : Color.tally.fg2)
+            .foregroundStyle(!isEnabled ? Color.tally.fg4 : isHovered ? Color.tally.fg1 : Color.tally.fg2)
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
             .background(isHovered ? Color.tally.bgHover : Color.clear)
@@ -164,5 +179,6 @@ struct TallyGhostButtonStyle: ButtonStyle {
 
 #Preview {
     OnboardingFlow()
+        .environment(AppState())
         .environment(Preferences())
 }

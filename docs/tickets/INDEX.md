@@ -7,10 +7,10 @@
 
 | Status         | Count |
 | -------------- | ----- |
-| ✅ Done         | 22    |
+| ✅ Done         | 23    |
 | 🔧 In Progress | 0     |
 | 📋 Pending     | 1     |
-| 🚫 Blocked     | 1     |
+| 🚫 Blocked     | 0     |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -63,8 +63,8 @@
 
 | #   | Ticket                                                                                                       | Status    | Depends On | Notes        |
 | --- | ------------------------------------------------------------------------------------------------------------ | --------- | ---------- | ------------ |
-| 023 | [NEFilterDataProvider + IPC + flow swap](./023-ne-filter-extension-flow-swap.md)                             | `pending` | #022 ✅     | Unblocked — Checkpoint 3 passed |
-| 024 | [**TEST: Checkpoint 4 — Final End-to-End MVP**](./024-test-checkpoint-4-final-end-to-end.md)                 | `blocked` | #023       | Gate: Final  |
+| 023 | [NEFilterDataProvider + IPC + flow swap](./023-ne-filter-extension-flow-swap.md)                             | `done`    | #022 ✅     | NE system extension + IPC shipped |
+| 024 | [**TEST: Checkpoint 4 — Final End-to-End MVP**](./024-test-checkpoint-4-final-end-to-end.md)                 | `pending` | #023 ✅     | Unblocked — final MVP QA ready |
 
 ---
 

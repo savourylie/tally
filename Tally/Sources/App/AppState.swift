@@ -12,12 +12,14 @@ final class AppState {
     let aggregator: Aggregator
     let mainWindow: MainWindowSessionState
     let preferences: Preferences
+    let systemExtensionActivator: SystemExtensionActivator
     let notificationCoordinator: NotificationCoordinator
     let thresholdEngine: ThresholdEngine
 
     init() {
         self.mainWindow = MainWindowSessionState()
         self.preferences = Preferences()
+        self.systemExtensionActivator = SystemExtensionActivator()
 
         do {
             self.database = try DatabaseManager()
@@ -46,10 +48,20 @@ final class AppState {
         let agg = Aggregator(dbPool: database.dbPool)
         self.aggregator = agg
 
-        let nettop = NettopCollector(dbPool: database.dbPool) {
+        let flowCollector: any FlowCollector
+#if DEBUG && USE_NETTOP
+        flowCollector = NettopCollector(dbPool: database.dbPool) {
             await agg.runOnce()
         }
-        self.collector = nettop
+#else
+        flowCollector = NEFlowCollector(
+            dbPool: database.dbPool,
+            allowDevelopmentFallback: isDevelopmentBuild
+        ) {
+            await agg.runOnce()
+        }
+#endif
+        self.collector = flowCollector
 
         // Notification engine
         let coordinator = NotificationCoordinator()
@@ -61,7 +73,7 @@ final class AppState {
         )
 
         Task { await agg.start() }
-        nettop.start()
+        flowCollector.start()
 
         // Request notification authorization and start threshold monitoring
         Task {
@@ -69,4 +81,12 @@ final class AppState {
             self.thresholdEngine.start()
         }
     }
+}
+
+private var isDevelopmentBuild: Bool {
+#if DEBUG
+    true
+#else
+    false
+#endif
 }

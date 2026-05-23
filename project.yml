@@ -29,6 +29,8 @@ targets:
       - Tally/Resources
     dependencies:
       - package: GRDB
+      - target: TallyFilterExtension
+        embed: true
     info:
       path: Tally/Info.plist
       properties:
@@ -47,6 +49,30 @@ targets:
         MARKETING_VERSION: "0.1.0"
         CURRENT_PROJECT_VERSION: "1"
         COMBINE_HIDPI_IMAGES: YES
+        CODE_SIGN_ENTITLEMENTS: Tally/Tally.entitlements
+  TallyFilterExtension:
+    type: system-extension
+    platform: macOS
+    sources:
+      - TallyFilterExtension
+      - Tally/Sources/Shared
+    info:
+      path: TallyFilterExtension/Info.plist
+      properties:
+        CFBundleDisplayName: Tally Filter Extension
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        NetworkExtension:
+          NEProviderClasses:
+            com.apple.networkextension.filter-data: $(PRODUCT_MODULE_NAME).TallyFilterDataProvider
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.calvinku.tally.filter
+        PRODUCT_NAME: TallyFilterExtension
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        CODE_SIGN_ENTITLEMENTS: TallyFilterExtension/TallyFilterExtension.entitlements
   TallyTests:
     type: bundle.unit-test
     platform: macOS
@@ -63,6 +89,7 @@ schemes:
     build:
       targets:
         Tally: all
+        TallyFilterExtension: all
         TallyTests: [test]
     run:
       config: Debug

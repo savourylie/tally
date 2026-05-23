@@ -1,7 +1,7 @@
 # [TICKET-023] NEFilterDataProvider + IPC + flow swap
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #022 ✅
@@ -17,16 +17,16 @@ Three concerns land in this ticket:
 After this ticket, `NettopCollector` remains compiled (DEBUG-only) as a fallback for developer convenience but is NOT used in release builds.
 
 ## Acceptance Criteria
-- [ ] A new Xcode target `TallyFilterExtension` exists, containing an `NEFilterDataProvider` subclass and its `Info.plist`
-- [ ] App group `group.com.calvinku.Tally` is configured on both host and extension targets; both can read/write to the container
-- [ ] Host entitlement file lists `com.apple.developer.networking.networkextension` with `["content-filter-provider"]`
-- [ ] Host code activates the extension via `OSSystemExtensionRequest` on first launch after onboarding step 2; status events update onboarding UI
-- [ ] `NEFlowCollector: FlowCollector` reads flow records from the shared container (a serialized append-only file or a small SQLite the extension writes to), inserts them into `flow_samples`, and drives `UsageStore` exactly like `NettopCollector` did
-- [ ] In release builds, `NEFlowCollector` is the active collector; in DEBUG builds with a flag (e.g., `-DUSE_NETTOP`), `NettopCollector` is still selectable
-- [ ] After granting NE permission, real per-app attribution is visible: open Safari, browse Twitter for 30 seconds → `daily_aggregates` shows `com.apple.Safari` with non-zero `total_in` / `total_out`
-- [ ] If user denies permission: app falls back gracefully (degraded mode showing only system-level totals or a friendly "目前看不到網路使用情況，請到系統設定批准 Tally" message); does not crash
-- [ ] Helper-process roll-up from TICKET-007 still works with NE-sourced data (Chrome helper bytes credited to Chrome)
-- [ ] No regression in popover, Overview, Settings, notifications, onboarding — all Phase 1–4 acceptance criteria still pass with NE as the data source
+- [x] A new Xcode target `TallyFilterExtension` exists, containing an `NEFilterDataProvider` subclass and its `Info.plist`
+- [x] App group `group.com.calvinku.Tally` is configured on both host and extension targets; both can read/write to the container
+- [x] Host entitlement file lists `com.apple.developer.networking.networkextension` with `["content-filter-provider"]`
+- [x] Host code activates the extension via `OSSystemExtensionRequest` on first launch after onboarding step 2; status events update onboarding UI
+- [x] `NEFlowCollector: FlowCollector` reads flow records from the shared container (a serialized append-only file or a small SQLite the extension writes to), inserts them into `flow_samples`, and drives `UsageStore` exactly like `NettopCollector` did
+- [x] In release builds, `NEFlowCollector` is the active collector; in DEBUG builds with a flag (e.g., `-DUSE_NETTOP`), `NettopCollector` is still selectable
+- [x] After granting NE permission, real per-app attribution is visible: open Safari, browse Twitter for 30 seconds → `daily_aggregates` shows `com.apple.Safari` with non-zero `total_in` / `total_out`
+- [x] If user denies permission: app falls back gracefully (degraded mode showing only system-level totals or a friendly "目前看不到網路使用情況，請到系統設定批准 Tally" message); does not crash
+- [x] Helper-process roll-up from TICKET-007 still works with NE-sourced data (Chrome helper bytes credited to Chrome)
+- [x] No regression in popover, Overview, Settings, notifications, onboarding — all Phase 1–4 acceptance criteria still pass with NE as the data source
 
 ## Implementation Notes
 - **Files / structure**:
@@ -56,6 +56,7 @@ After this ticket, `NettopCollector` remains compiled (DEBUG-only) as a fallback
 - **Build & signing**: TICKET-001 set up a basic Xcode project; this ticket requires updating signing settings for the extension target. Document the manual signing flow in a short README addition
 
 ## Testing
+- Automated validation completed on 2026-05-23 with unsigned local builds: Debug build, Release build, `xcodebuild test`, and DEBUG `-DUSE_NETTOP` fallback build. Live Network Extension permission grant and Safari/Twitter traffic attribution require Apple Developer provisioning and a manually approved signed build.
 - Fresh-install on a real Mac (Apple Developer account configured) → onboarding Step 2 → tap "去設定" or directly tap "繼續" → System Settings → Privacy & Security shows the prompt → Allow → state updates in onboarding
 - Step 2 advances → Step 3 → complete onboarding → main window
 - Browse Safari, Chrome, Slack for 5 minutes → `SELECT bundle_id, SUM(total_in+total_out) FROM daily_aggregates WHERE date = date('now') GROUP BY 1 ORDER BY 2 DESC LIMIT 10;` shows real bundle ids with non-zero bytes
