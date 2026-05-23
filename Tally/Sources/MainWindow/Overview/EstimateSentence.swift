@@ -4,6 +4,7 @@ struct EstimateSentence: View {
     let monthToDateBytes: Int64
     let monthlyCapBytes: Int64?
     let previousCycleTotalBytes: Int64
+    let currentCycle: BillingCycle?
     var now: Date = .now
 
     private var displayBytes: Int64 {
@@ -11,7 +12,11 @@ struct EstimateSentence: View {
             return previousCycleTotalBytes
         }
 
-        let progress = EstimateCalculator.currentCalendarMonthProgress(now: now)
+        guard let cycle = currentCycle else {
+            return monthToDateBytes
+        }
+
+        let progress = EstimateCalculator.cycleProgress(cycle: cycle, now: now)
         return EstimateCalculator.projectedTotalBytes(
             mtdBytes: monthToDateBytes,
             daysElapsed: progress.daysElapsed,
@@ -46,7 +51,8 @@ struct EstimateSentence: View {
     EstimateSentence(
         monthToDateBytes: 12 * 1024 * 1024 * 1024,
         monthlyCapBytes: 20 * 1024 * 1024 * 1024,
-        previousCycleTotalBytes: 18 * 1024 * 1024 * 1024
+        previousCycleTotalBytes: 18 * 1024 * 1024 * 1024,
+        currentCycle: BillingCycle.current(forStartDay: 1)
     )
     .padding()
     .background(Color.tally.bgApp)
@@ -56,8 +62,10 @@ struct EstimateSentence: View {
     EstimateSentence(
         monthToDateBytes: 12 * 1024 * 1024 * 1024,
         monthlyCapBytes: nil,
-        previousCycleTotalBytes: 18 * 1024 * 1024 * 1024
+        previousCycleTotalBytes: 18 * 1024 * 1024 * 1024,
+        currentCycle: nil
     )
     .padding()
     .background(Color.tally.bgApp)
 }
+

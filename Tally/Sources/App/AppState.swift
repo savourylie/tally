@@ -12,6 +12,8 @@ final class AppState {
     let aggregator: Aggregator
     let mainWindow: MainWindowSessionState
     let preferences: Preferences
+    let notificationCoordinator: NotificationCoordinator
+    let thresholdEngine: ThresholdEngine
 
     init() {
         self.mainWindow = MainWindowSessionState()
@@ -35,7 +37,8 @@ final class AppState {
         let store = UsageStore(
             dbPool: database.dbPool,
             metadataService: appMetadata,
-            categorizer: categorizer
+            categorizer: categorizer,
+            preferences: preferences
         )
         store.start()
         self.usageStore = store
@@ -48,7 +51,22 @@ final class AppState {
         }
         self.collector = nettop
 
+        // Notification engine
+        let coordinator = NotificationCoordinator()
+        self.notificationCoordinator = coordinator
+        self.thresholdEngine = ThresholdEngine(
+            usageStore: store,
+            preferences: preferences,
+            coordinator: coordinator
+        )
+
         Task { await agg.start() }
         nettop.start()
+
+        // Request notification authorization and start threshold monitoring
+        Task {
+            await coordinator.requestAuthorization()
+            self.thresholdEngine.start()
+        }
     }
 }

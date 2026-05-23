@@ -20,7 +20,8 @@ struct OverviewScreen: View {
                 EstimateSentence(
                     monthToDateBytes: totalBytes,
                     monthlyCapBytes: store.monthlyCapBytes,
-                    previousCycleTotalBytes: store.previousCycleTotalBytes
+                    previousCycleTotalBytes: store.previousCycleTotalBytes,
+                    currentCycle: store.currentCycle
                 )
 
                 TopAppsSection(

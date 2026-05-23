@@ -1,7 +1,7 @@
 # [TICKET-020] Notification engine
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #017 ✅, #019 ✅
@@ -16,19 +16,19 @@ The threshold engine reads `usageStore.monthToDateBytes` + `preferences.monthlyL
 Copy uses PRD §7 plain language: "這個月的流量已經用了 80% 了" (for 80% / 95%); 100% uses a slightly more urgent line.
 
 ## Acceptance Criteria
-- [ ] On app launch, `NotificationCoordinator` requests `UNUserNotificationCenter` authorization for `.alert` + `.sound`; remembers result across runs
-- [ ] `ThresholdEngine` subscribes to `UsageStore` updates; recomputes percentage on every change
-- [ ] When percentage crosses 80 / 95 / 100 *and* the corresponding `preferences.alertAt*` is true *and* the threshold has not yet fired in the current cycle: fires a local notification
-- [ ] Notification content:
+- [x] On app launch, `NotificationCoordinator` requests `UNUserNotificationCenter` authorization for `.alert` + `.sound`; remembers result across runs
+- [x] `ThresholdEngine` subscribes to `UsageStore` updates; recomputes percentage on every change
+- [x] When percentage crosses 80 / 95 / 100 *and* the corresponding `preferences.alertAt*` is true *and* the threshold has not yet fired in the current cycle: fires a local notification
+- [x] Notification content:
   - 80% → "這個月的流量已經用了 80% 了"
   - 95% → "這個月的流量已經用了 95% 了" (or "快用完囉")
   - 100% → "這個月的流量已經用完了"
-- [ ] Per-cycle dedupe: track fired thresholds in UserDefaults keyed by cycle start date (`"pref.notif.fired.<cycleStartISO>.<threshold>" = true`); cleared automatically when cycle rolls over
-- [ ] When cap is unset (`monthlyLimitGB == nil`), no notifications fire (defensive: even if a stale state somehow asks for one)
-- [ ] Manually setting MTD past 80% (via debug toggle) fires exactly one 80% notification within 2 seconds
-- [ ] If all three thresholds are crossed simultaneously (e.g., debug jump from 0 → 100%), all three enabled notifications fire in order (80 first, then 95, then 100) — not deduped against each other
-- [ ] Disabling a threshold in Settings does not retroactively undo a fired notification; it only prevents future fires for that cycle
-- [ ] Menu bar icon (optional polish): when over 100%, tints to `Color.tally.accent` — defer if scope creep
+- [x] Per-cycle dedupe: track fired thresholds in UserDefaults keyed by cycle start date (`"pref.notif.fired.<cycleStartISO>.<threshold>" = true`); cleared automatically when cycle rolls over
+- [x] When cap is unset (`monthlyLimitGB == nil`), no notifications fire (defensive: even if a stale state somehow asks for one)
+- [x] Manually setting MTD past 80% (via debug toggle) fires exactly one 80% notification within 2 seconds
+- [x] If all three thresholds are crossed simultaneously (e.g., debug jump from 0 → 100%), all three enabled notifications fire in order (80 first, then 95, then 100) — not deduped against each other
+- [x] Disabling a threshold in Settings does not retroactively undo a fired notification; it only prevents future fires for that cycle
+- [x] Menu bar icon (optional polish): when over 100%, tints to `Color.tally.accent` — defer if scope creep
 
 ## Implementation Notes
 - **Files to create**: `Notifications/NotificationCoordinator.swift`, `Notifications/ThresholdEngine.swift`, `Notifications/FiredThresholdsLedger.swift`
