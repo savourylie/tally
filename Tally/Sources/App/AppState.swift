@@ -6,6 +6,7 @@ import Observation
 final class AppState {
     let database: DatabaseManager
     let appMetadata: AppMetadataService
+    let processCategorizer: ProcessCategorizer
     let usageStore: UsageStore
     let collector: any FlowCollector
     let aggregator: Aggregator
@@ -22,8 +23,18 @@ final class AppState {
         }
 
         self.appMetadata = AppMetadataService(dbPool: database.dbPool)
+        
+        let categorizer = ProcessCategorizer(dbPool: database.dbPool)
+        self.processCategorizer = categorizer
+        Task {
+            await categorizer.load()
+        }
 
-        let store = UsageStore(dbPool: database.dbPool, metadataService: appMetadata)
+        let store = UsageStore(
+            dbPool: database.dbPool,
+            metadataService: appMetadata,
+            categorizer: categorizer
+        )
         store.start()
         self.usageStore = store
 

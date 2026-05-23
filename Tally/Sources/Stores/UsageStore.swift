@@ -31,14 +31,20 @@ final class UsageStore {
 
     @ObservationIgnored private let dbPool: DatabasePool
     @ObservationIgnored private let metadataService: AppMetadataService
+    @ObservationIgnored private let categorizer: ProcessCategorizer
     @ObservationIgnored private var networkMonitor: NetworkStatusMonitor?
     @ObservationIgnored private var cancellable: AnyDatabaseCancellable?
     @ObservationIgnored private var resolveTask: Task<Void, Never>?
     @ObservationIgnored private var lastResolvedKeys: [AppUsageEntry.Kind] = []
 
-    init(dbPool: DatabasePool, metadataService: AppMetadataService) {
+    init(
+        dbPool: DatabasePool,
+        metadataService: AppMetadataService,
+        categorizer: ProcessCategorizer
+    ) {
         self.dbPool = dbPool
         self.metadataService = metadataService
+        self.categorizer = categorizer
         self.networkMonitor = NetworkStatusMonitor { [weak self] connection in
             self?.currentNetwork = connection
         }
@@ -132,56 +138,80 @@ final class UsageStore {
 
         Log.store.debug("[store] recompute rows=\(rawRows.count, privacy: .public) total_in=\(sumIn, privacy: .public) total_out=\(sumOut, privacy: .public)")
 
-        let incomingKeys = rawRows.map(\.kind)
-        if incomingKeys == lastResolvedKeys {
-            patchExistingEntries(with: rawRows)
-            return
-        }
-
         resolveTask?.cancel()
         let metadataService = self.metadataService
-        let pendingKeys = incomingKeys
+        let categorizer = self.categorizer
         resolveTask = Task { [weak self] in
-            var resolved: [AppUsageEntry] = []
-            resolved.reserveCapacity(rawRows.count)
+            // 1. Categorize all raw rows and sum/aggregate their bytes
+            var aggregated: [AppOrCategoryEntry: BytePair] = [:]
             for raw in rawRows {
                 if Task.isCancelled { return }
-                let meta: AppMetadata
+                
+                let bundleID: String?
+                let category: String?
                 switch raw.kind {
+                case .app(let bid):
+                    bundleID = bid
+                    category = nil
+                case .category(let cat):
+                    bundleID = nil
+                    category = cat
+                }
+                
+                let entry = await categorizer.categorize(bundleID: bundleID, category: category)
+                var current = aggregated[entry] ?? BytePair(bytesIn: 0, bytesOut: 0)
+                current.bytesIn += raw.bytesIn
+                current.bytesOut += raw.bytesOut
+                aggregated[entry] = current
+            }
+            
+            if Task.isCancelled { return }
+            
+            // 2. Sort by total bytes descending
+            let sortedEntries = aggregated.map { (key, value) in
+                (entry: key, bytes: value)
+            }.sorted { 
+                ($0.bytes.bytesIn + $0.bytes.bytesOut) > ($1.bytes.bytesIn + $1.bytes.bytesOut) 
+            }
+            
+            let incomingKeys = sortedEntries.map { pair -> AppUsageEntry.Kind in
+                switch pair.entry {
+                case .app(let bid): return .app(bundleID: bid)
+                case .category(let cat): return .category(name: cat)
+                }
+            }
+            
+            if Task.isCancelled { return }
+            
+            // 3. Resolve metadata and build AppUsageEntry array
+            var resolved: [AppUsageEntry] = []
+            resolved.reserveCapacity(sortedEntries.count)
+            for pair in sortedEntries {
+                if Task.isCancelled { return }
+                let meta: AppMetadata
+                let kind: AppUsageEntry.Kind
+                switch pair.entry {
                 case .app(let bundleID):
                     meta = await metadataService.metadata(forBundleID: bundleID)
+                    kind = .app(bundleID: bundleID)
                 case .category(let name):
                     meta = await metadataService.metadata(forCategory: name)
+                    kind = .category(name: name)
                 }
                 if Task.isCancelled { return }
                 resolved.append(AppUsageEntry(
-                    kind: raw.kind,
-                    bytesIn: raw.bytesIn,
-                    bytesOut: raw.bytesOut,
+                    kind: kind,
+                    bytesIn: pair.bytes.bytesIn,
+                    bytesOut: pair.bytes.bytesOut,
                     metadata: meta
                 ))
             }
+            
             guard let self else { return }
             if Task.isCancelled { return }
             self.topEntries = resolved
-            self.lastResolvedKeys = pendingKeys
+            self.lastResolvedKeys = incomingKeys
         }
-    }
-
-    private func patchExistingEntries(with rawRows: [RawTopRow]) {
-        guard rawRows.count == topEntries.count else { return }
-        var patched: [AppUsageEntry] = []
-        patched.reserveCapacity(rawRows.count)
-        for (i, raw) in rawRows.enumerated() {
-            let existing = topEntries[i]
-            patched.append(AppUsageEntry(
-                kind: raw.kind,
-                bytesIn: raw.bytesIn,
-                bytesOut: raw.bytesOut,
-                metadata: existing.metadata
-            ))
-        }
-        topEntries = patched
     }
 
     // MARK: - Cycle window placeholder (TICKET-019 replaces this)

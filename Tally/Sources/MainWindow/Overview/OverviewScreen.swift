@@ -7,25 +7,30 @@ struct OverviewScreen: View {
         let store = appState.usageStore
         let totalBytes = store.monthToDateBytes.bytesIn + store.monthToDateBytes.bytesOut
 
-        VStack(alignment: .leading, spacing: Spacing.s4) {
-            HeroCard(
-                state: store.state,
-                monthToDateBytes: store.monthToDateBytes,
-                monthlyCapBytes: store.monthlyCapBytes
-            )
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(alignment: .leading, spacing: Spacing.s4) {
+                HeroCard(
+                    state: store.state,
+                    monthToDateBytes: store.monthToDateBytes,
+                    monthlyCapBytes: store.monthlyCapBytes
+                )
 
-            StatusLine(connection: store.currentNetwork)
+                StatusLine(connection: store.currentNetwork)
 
-            EstimateSentence(
-                monthToDateBytes: totalBytes,
-                monthlyCapBytes: store.monthlyCapBytes,
-                previousCycleTotalBytes: store.previousCycleTotalBytes
-            )
+                EstimateSentence(
+                    monthToDateBytes: totalBytes,
+                    monthlyCapBytes: store.monthlyCapBytes,
+                    previousCycleTotalBytes: store.previousCycleTotalBytes
+                )
 
-            Spacer(minLength: 0)
+                TopAppsSection(
+                    entries: store.topApps(limit: 10),
+                    totalCycleBytes: totalBytes
+                )
+            }
+            .padding(.horizontal, Spacing.s8)
+            .padding(.vertical, 28)
         }
-        .padding(.horizontal, Spacing.s8)
-        .padding(.vertical, 28)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 }
