@@ -7,10 +7,10 @@
 
 | Status         | Count |
 | -------------- | ----- |
-| ✅ Done         | 18    |
+| ✅ Done         | 19    |
 | 🔧 In Progress | 0     |
 | 📋 Pending     | 2     |
-| 🚫 Blocked     | 4     |
+| 🚫 Blocked     | 3     |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -54,8 +54,8 @@
 | --- | ------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------------- | ------------ |
 | 017 | [Preferences persistence (UserDefaults)](./017-preferences-persistence.md)                                                            | `done`    | #016 ✅        | Observable preferences wrapper shipped |
 | 018 | [Settings screen UI](./018-settings-screen-ui.md)                                                                                     | `done`    | #017 ✅        | Settings screen UI shipped |
-| 019 | [Billing cycle + monthly reset engine](./019-billing-cycle-engine.md)                                                                 | `pending` | #017 ✅        | Unblocked — preferences done |
-| 020 | [Notification engine](./020-notification-engine.md)                                                                                   | `blocked` | #017 ✅, #019  |              |
+| 019 | [Billing cycle + monthly reset engine](./019-billing-cycle-engine.md)                                                                 | `done`    | #017 ✅        | Billing cycle engine shipped |
+| 020 | [Notification engine](./020-notification-engine.md)                                                                                   | `pending` | #017 ✅, #019 ✅ | Unblocked — billing cycle done |
 | 021 | [Onboarding 3-step flow](./021-onboarding-flow.md)                                                                                    | `pending` | #017 ✅, #018 ✅ | Unblocked — settings done |
 | 022 | [**TEST: Checkpoint 3 — Settings / Notifications / Onboarding**](./022-test-checkpoint-3-settings-notifications-onboarding.md)        | `blocked` | #020, #021     | Gate: Phase 4 |
 

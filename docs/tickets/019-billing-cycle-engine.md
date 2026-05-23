@@ -1,7 +1,7 @@
 # [TICKET-019] Billing cycle + monthly reset engine
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #017 ✅
@@ -22,17 +22,17 @@ Cycle edge cases to handle correctly:
 Once this lands, `UsageStore` (TICKET-009) swaps its placeholder calendar-month math for `CycleAwareUsage` based on this engine, and the threshold engine (TICKET-020) can compute percentages correctly.
 
 ## Acceptance Criteria
-- [ ] `BillingCycle.current(forStartDay:on:)` and `.previous(forStartDay:on:)` produce correct `(start, end)` for these test cases:
+- [x] `BillingCycle.current(forStartDay:on:)` and `.previous(forStartDay:on:)` produce correct `(start, end)` for these test cases:
   - Start day 1, today is the 15th of June → cycle = June 1 → June 30
   - Start day 5, today is the 3rd of June → cycle = May 5 → June 4 (current month is "May's" cycle)
   - Start day 31, current month is February (28 days) → cycle starts Feb 28 (last day, since 31 doesn't exist)
   - Start day 31, current month is April (30 days) → cycle starts April 30 (or March 31 if today is < 30 — confirm behavior)
-- [ ] `daysElapsed(in: cycle, on: today) -> Int` returns ≥ 1 (today counts as day 1, never 0); `daysInCycle(in: cycle) -> Int` returns 28–32 depending on month
-- [ ] `CycleAwareUsage` reads `daily_aggregates` filtered by the current cycle window; replaces the placeholder from TICKET-009 in `UsageStore`'s `monthToDateBytes` and `topApps` queries
-- [ ] `UsageStore.previousCycleTotalBytes` reads from the previous cycle window — used by TICKET-014's no-limit branch
-- [ ] DST: cycle boundaries are at local midnight; springing forward / falling back does not shift cycle by an hour
-- [ ] Unit tests cover all four edge cases above plus a DST date
-- [ ] Changing `preferences.cycleStartDay` while the app is running triggers an immediate `UsageStore` recompute; UI updates within 500ms
+- [x] `daysElapsed(in: cycle, on: today) -> Int` returns ≥ 1 (today counts as day 1, never 0); `daysInCycle(in: cycle) -> Int` returns 28–32 depending on month
+- [x] `CycleAwareUsage` reads `daily_aggregates` filtered by the current cycle window; replaces the placeholder from TICKET-009 in `UsageStore`'s `monthToDateBytes` and `topApps` queries
+- [x] `UsageStore.previousCycleTotalBytes` reads from the previous cycle window — used by TICKET-014's no-limit branch
+- [x] DST: cycle boundaries are at local midnight; springing forward / falling back does not shift cycle by an hour
+- [x] Unit tests cover all four edge cases above plus a DST date
+- [x] Changing `preferences.cycleStartDay` while the app is running triggers an immediate `UsageStore` recompute; UI updates within 500ms
 
 ## Implementation Notes
 - **Files to create**: `Cycle/BillingCycle.swift` (pure value type), `Cycle/CycleAwareUsage.swift` (DB read layer), `CycleTests/BillingCycleTests.swift`
