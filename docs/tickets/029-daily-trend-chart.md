@@ -1,7 +1,7 @@
 # [TICKET-029] Daily trend chart (Swift Charts stacked bars + window picker)
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #025 ✅, #027 ✅
@@ -12,12 +12,12 @@ There is no way to see usage over time today — only point-in-time totals. This
 It uses **Swift Charts**, which is built into SwiftUI and available on the project's macOS 14 deployment target — no new dependency and no `@available` guards. The chart is purely presentational, reading `dailyTrend` and binding the picker to `trendWindow` from #027 (whose data already zero-fills gaps and substitutes a live "today" bar).
 
 ## Acceptance Criteria
-- [ ] `DailyTrendChart` renders one `BarMark` per `DailyUsage`, **stacked** by series (收 / 發) with received = `Color.tally.brand400`, sent = `Color.tally.brand200`
-- [ ] Y values use `ByteFormat.gigabytesValue(...)` (GB, `Double`); Y axis labelled in GB; X axis shows day-of-month marks
-- [ ] A segmented `Picker` ("本期" / "近 30 天") is bound to `store.trendWindow`; switching it updates the bars reactively (data swap handled by #027)
-- [ ] When `dailyTrend` is empty, a muted "資料正在收集中" placeholder shows in the same card frame (mirrors `HeroCard.swift:73-80`)
-- [ ] Chart sits in the standard card chrome (`Color.tally.bgCard`, `Radius.r12`, `Color.tally.border`, `Spacing.s5`) and reads cleanly in light + dark
-- [ ] `#Preview` covers a populated cycle window, a 30-day window, and the empty state with mock `[DailyUsage]`
+- [x] `DailyTrendChart` renders one `BarMark` per `DailyUsage`, **stacked** by series (收 / 發) with received = `Color.tally.brand400`, sent = `Color.tally.brand200`
+- [x] Y values use `ByteFormat.gigabytesValue(...)` (GB, `Double`); Y axis labelled in GB; X axis shows day-of-month marks
+- [x] A segmented `Picker` ("本期" / "近 30 天") is bound to `store.trendWindow`; switching it updates the bars reactively (data swap handled by #027)
+- [x] When `dailyTrend` is empty, a muted "資料正在收集中" placeholder shows in the same card frame (mirrors `HeroCard.swift:73-80`)
+- [x] Chart sits in the standard card chrome (`Color.tally.bgCard`, `Radius.r12`, `Color.tally.border`, `Spacing.s5`) and reads cleanly in light + dark
+- [x] `#Preview` covers a populated cycle window, a 30-day window, and the empty state with mock `[DailyUsage]`
 
 ## Design Reference
 - **Net-new component** — no existing mockup. Follow the established card + token language: `Color.tally.*`, `Font.tally.*`, `Radius.r12`, `Spacing.s5`; legend colors must match TodayCard (#028)
