@@ -21,6 +21,9 @@ build/
 Pods/
 Package.resolved
 
+# Git worktrees (created by /create-worktree)
+.worktrees/
+
 # Misc
 *.moved-aside
 *.pbxuser
