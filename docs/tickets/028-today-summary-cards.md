@@ -1,10 +1,10 @@
 # [TICKET-028] Today card (↓/↑ split) + freshness label + week/month tiles
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #025 ✅, #026 ✅, #027
+- Requires: #025 ✅, #026 ✅, #027 ✅
 
 ## Description
 The hero number answers "how much this month" but never "how much today", and download vs. upload are always merged. This ticket builds the three non-chart presentation pieces of the new Overview section:

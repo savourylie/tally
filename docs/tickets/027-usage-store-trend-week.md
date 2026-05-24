@@ -1,7 +1,7 @@
 # [TICKET-027] UsageStore: week/month totals + daily trend series
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #026 ✅
@@ -14,12 +14,12 @@ It extends the second `ValueObservation` introduced in #026 (same observation bl
 The one correctness hazard: `daily_aggregates` for *today* lags up to 5 minutes, while #026's `todayBytes` is live. To keep the chart consistent with the TodayCard and avoid a visibly stale "today" bar, the trend's today entry is **substituted** with `todayBytes` (replace, never add — adding would double-count since aggregates derive from samples).
 
 ## Acceptance Criteria
-- [ ] New model `DailyUsage: Identifiable, Equatable, Sendable` (`date: Date`, `bytesIn/bytesOut: Int64`, computed `total`) in `Tally/Sources/Stores/DailyUsage.swift`
-- [ ] `UsageStore` gains `private(set) var weekBytes: BytePair`, `private(set) var dailyTrend: [DailyUsage]`, and `var trendWindow: TrendWindow` (enum `.currentCycle` / `.last30Days`, default `.currentCycle`)
-- [ ] Trend query: `SELECT date, SUM(total_in), SUM(total_out) FROM daily_aggregates WHERE date >= ? AND date <= ? GROUP BY date ORDER BY date ASC`, reusing the existing `dateWindow(from:)` + `dateFormatter`; days with no row are zero-filled
-- [ ] Week query sums `daily_aggregates` over `now-6d … today`; "month" reuses the existing `monthToDateBytes` (no new query)
-- [ ] The `dailyTrend` entry for today is replaced by `todayBytes` (substitution, not addition) so it matches the TodayCard
-- [ ] Changing `trendWindow` restarts/refreshes the observation and republishes `dailyTrend`; covered by `UsageStoreQueryTests`
+- [x] New model `DailyUsage: Identifiable, Equatable, Sendable` (`date: Date`, `bytesIn/bytesOut: Int64`, computed `total`) in `Tally/Sources/Stores/DailyUsage.swift`
+- [x] `UsageStore` gains `private(set) var weekBytes: BytePair`, `private(set) var dailyTrend: [DailyUsage]`, and `var trendWindow: TrendWindow` (enum `.currentCycle` / `.last30Days`, default `.currentCycle`)
+- [x] Trend query: `SELECT date, SUM(total_in), SUM(total_out) FROM daily_aggregates WHERE date >= ? AND date <= ? GROUP BY date ORDER BY date ASC`, reusing the existing `dateWindow(from:)` + `dateFormatter`; days with no row are zero-filled
+- [x] Week query sums `daily_aggregates` over `now-6d … today`; "month" reuses the existing `monthToDateBytes` (no new query)
+- [x] The `dailyTrend` entry for today is replaced by `todayBytes` (substitution, not addition) so it matches the TodayCard
+- [x] Changing `trendWindow` restarts/refreshes the observation and republishes `dailyTrend`; covered by `UsageStoreQueryTests`
 
 ## Implementation Notes
 - **Files to modify/create**: `Tally/Sources/Stores/UsageStore.swift`, `Tally/Sources/Stores/DailyUsage.swift`; extend `TallyTests/UsageStoreQueryTests.swift`
