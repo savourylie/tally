@@ -96,6 +96,7 @@
 		C559908BC8CC45249497905D /* TodayCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD49DC89F1AD49EC9D18925B /* TodayCard.swift */; };
 		0D30640910074A0AA321A7FA /* FreshnessLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E9877D726B40E2BAB89C1A /* FreshnessLabel.swift */; };
 		FFC29B4AFB50453FB4EC9034 /* WeekMonthSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94D01B12C624CAC94F685CB /* WeekMonthSummary.swift */; };
+		63BEDD8B11AC4D41ACD421A0 /* DailyTrendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1F2B335908408FAFC31A7B /* DailyTrendChart.swift */; };
 		7F2B99C683624B7FA93E0D05 /* ByteFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F8FBF410BF462F8FC952EE /* ByteFormatTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -220,6 +221,7 @@
 		FD49DC89F1AD49EC9D18925B /* TodayCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCard.swift; sourceTree = "<group>"; };
 		E9E9877D726B40E2BAB89C1A /* FreshnessLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreshnessLabel.swift; sourceTree = "<group>"; };
 		E94D01B12C624CAC94F685CB /* WeekMonthSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekMonthSummary.swift; sourceTree = "<group>"; };
+		DE1F2B335908408FAFC31A7B /* DailyTrendChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTrendChart.swift; sourceTree = "<group>"; };
 		E8F8FBF410BF462F8FC952EE /* ByteFormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteFormatTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -378,6 +380,7 @@
 			isa = PBXGroup;
 			children = (
 				85E9F5B422FCDEC3FFEB0783 /* AppRow.swift */,
+				DE1F2B335908408FAFC31A7B /* DailyTrendChart.swift */,
 				0FF808239EEEFB7DF0D20408 /* EstimateSentence.swift */,
 				E9E9877D726B40E2BAB89C1A /* FreshnessLabel.swift */,
 				F535087740945879E6B2ED52 /* HeroCard.swift */,
@@ -710,6 +713,7 @@
 				B3D515B975F6422AEBE8C373 /* AppRow.swift in Sources */,
 				441C57D812CB66D007B37021 /* AppState.swift in Sources */,
 				9D737CA674487EF5B1691253 /* AppUsageEntry.swift in Sources */,
+				63BEDD8B11AC4D41ACD421A0 /* DailyTrendChart.swift in Sources */,
 				994BBD00E91B0033721A51E6 /* DailyUsage.swift in Sources */,
 				11FDE4869CC6D5A0DEA62145 /* AutostartRow.swift in Sources */,
 				0E0B727CD11D1C871A90B621 /* BillingCycle.swift in Sources */,

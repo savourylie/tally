@@ -19,7 +19,7 @@ final class UsageStore {
 
     /// Selectable window for the daily-trend series. Drives #029's picker
     /// (`CaseIterable`) and, on change, restarts the viz observation.
-    enum TrendWindow: Sendable, Equatable, CaseIterable {
+    enum TrendWindow: Sendable, Equatable, Hashable, CaseIterable {
         case currentCycle
         case last30Days
     }
