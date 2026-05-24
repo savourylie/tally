@@ -1,10 +1,10 @@
 # [TICKET-031] Popover freshness line + sparkline
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #027 ✅, #028
+- Requires: #027 ✅, #028 ✅
 
 ## Description
 The menu-bar popover is the most-glanced surface, so it gets a deliberately light touch from the visualization work: a freshness line so a quick glance reveals whether the number is current, and an optional tiny sparkline that hints at the recent trend without opening the main window. The full charts and split figures stay in the main window (per the agreed scope) to keep the 320pt popover uncluttered.

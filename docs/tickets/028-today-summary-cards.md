@@ -1,7 +1,7 @@
 # [TICKET-028] Today card (↓/↑ split) + freshness label + week/month tiles
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #025 ✅, #026 ✅, #027 ✅
@@ -16,12 +16,12 @@ The hero number answers "how much this month" but never "how much today", and do
 All three are presentation-only, driven by the `@Observable` state added in #026/#027, and follow the established card language (borders + radius, no shadows). The hero number and Top-10 list stay combined — the in/out split is intentionally scoped to Today + the chart only.
 
 ## Acceptance Criteria
-- [ ] `TodayCard` renders a "今天" header and two rows — received (↓, `Color.tally.brand400`) and sent (↑, `Color.tally.fg2`) — each via `ByteFormat.adaptive(...)`, and embeds `FreshnessLabel`
-- [ ] `FreshnessLabel` computes age from `lastSampleTimestamp`: `< ~10s` → `Color.tally.success` dot + "● 即時"; otherwise `Color.tally.fg3` + "更新於 X 分前 / X 秒前"; hidden when the timestamp is `nil`
-- [ ] `FreshnessLabel` wraps its relative time in `TimelineView(.periodic(from:.now, by: 30))` so it refreshes without a manual timer
-- [ ] `WeekMonthSummary` shows 今天 / 本週 / 本月 totals (今天 + 本週 from new state, 本月 from existing `monthToDateBytes`) via `ByteFormat.gigabytes`
-- [ ] Cards use `Color.tally.bgCard`, `RoundedRectangle(cornerRadius: Radius.r12)`, 1pt `Color.tally.border` stroke, `Spacing.s5` padding — matching `HeroCard.swift:35-42`; all three render correctly in light + dark
-- [ ] Each view ships a `#Preview` with mock `BytePair` / timestamp data (live, stale, and nil-freshness cases)
+- [x] `TodayCard` renders a "今天" header and two rows — received (↓, `Color.tally.brand400`) and sent (↑, `Color.tally.fg2`) — each via `ByteFormat.adaptive(...)`, and embeds `FreshnessLabel`
+- [x] `FreshnessLabel` computes age from `lastSampleTimestamp`: `< ~10s` → `Color.tally.success` dot + "● 即時"; otherwise `Color.tally.fg3` + "更新於 X 分前 / X 秒前"; hidden when the timestamp is `nil`
+- [x] `FreshnessLabel` wraps its relative time in `TimelineView(.periodic(from:.now, by: 30))` so it refreshes without a manual timer
+- [x] `WeekMonthSummary` shows 今天 / 本週 / 本月 totals (今天 + 本週 from new state, 本月 from existing `monthToDateBytes`) via `ByteFormat.gigabytes`
+- [x] Cards use `Color.tally.bgCard`, `RoundedRectangle(cornerRadius: Radius.r12)`, 1pt `Color.tally.border` stroke, `Spacing.s5` padding — matching `HeroCard.swift:35-42`; all three render correctly in light + dark
+- [x] Each view ships a `#Preview` with mock `BytePair` / timestamp data (live, stale, and nil-freshness cases)
 
 ## Design Reference
 - **Tokens / type / color**: `docs/system-design/preview/typography.html`, `colors.html`; `Font.tally.*`, `Color.tally.*`, `Radius.r12`, `Spacing.s5`

@@ -4,7 +4,7 @@
 `blocked`
 
 ## Dependencies
-- Requires: #028, #029
+- Requires: #028 ✅, #029
 
 ## Description
 With the components built (#028, #029) and the data published (#026, #027), this ticket assembles them into the Overview pane — the main-window surface chosen as the primary home for the visualization work. It is the integration step that turns the new pieces into a coherent screen.
