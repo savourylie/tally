@@ -1,10 +1,10 @@
 # [TICKET-027] UsageStore: week/month totals + daily trend series
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #026
+- Requires: #026 ✅
 
 ## Description
 This ticket adds the historical data the visualization needs: a "this week" total and a per-day trend series for the bar chart. Both come from `daily_aggregates`, which already stores `total_in`/`total_out` per day, per app/category/network, **indefinitely** — so no schema change is required.

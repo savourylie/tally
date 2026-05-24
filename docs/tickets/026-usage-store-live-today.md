@@ -1,7 +1,7 @@
 # [TICKET-026] UsageStore: live "today" total + freshness timestamp
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #009 ✅
@@ -14,11 +14,11 @@ The app currently surfaces only a month-to-date number, and the user can't tell 
 The work mirrors the existing cycle-aware `ValueObservation` pattern in `UsageStore` (`startObservation()`, lines ~84-145) by adding a **second, independent observation** started in `start()` and cancelled in `deinit`. Crucially, `flow_samples`-derived values must never be summed with `daily_aggregates`-derived values — the latter is *derived from* the former, so adding them double-counts (see #027 for the today-bar substitution that depends on this).
 
 ## Acceptance Criteria
-- [ ] `UsageStore` gains `private(set) var todayBytes: BytePair = .zero` and `private(set) var lastSampleTimestamp: Int64? = nil`, both `@Observable`
-- [ ] A second `ValueObservation` queries `flow_samples` for `SUM(bytes_in)`, `SUM(bytes_out)`, `MAX(timestamp)` where `timestamp >= startOfToday`, with the bound = `Int64(Calendar.current.startOfDay(for: .now).timeIntervalSince1970)`
-- [ ] The observation is started in `start()` and its cancellable torn down in `deinit` alongside the existing `cancellable`
-- [ ] `lastSampleTimestamp` is `nil` when the table has no rows (fresh install) — not `0`
-- [ ] SQL is factored into a `static`/`nonisolated` query function callable from tests via `dbPool.read { … }` without constructing the full `@MainActor` store
+- [x] `UsageStore` gains `private(set) var todayBytes: BytePair = .zero` and `private(set) var lastSampleTimestamp: Int64? = nil`, both `@Observable`
+- [x] A second `ValueObservation` queries `flow_samples` for `SUM(bytes_in)`, `SUM(bytes_out)`, `MAX(timestamp)` where `timestamp >= startOfToday`, with the bound = `Int64(Calendar.current.startOfDay(for: .now).timeIntervalSince1970)`
+- [x] The observation is started in `start()` and its cancellable torn down in `deinit` alongside the existing `cancellable`
+- [x] `lastSampleTimestamp` is `nil` when the table has no rows (fresh install) — not `0`
+- [x] SQL is factored into a `static`/`nonisolated` query function callable from tests via `dbPool.read { … }` without constructing the full `@MainActor` store
 
 ## Implementation Notes
 - **Files to modify**: `Tally/Sources/Stores/UsageStore.swift`; **create** `TallyTests/UsageStoreQueryTests.swift`
