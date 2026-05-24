@@ -92,6 +92,11 @@
 		EA67FA6318A82B5CE6AEE52F /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47260D2BE3B3E56F5FCF9856 /* main.swift */; };
 		EB8B07E96A03DF31F3CA5F8F /* VPNNoteFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA82C4F6EECEC125A0EB900E /* VPNNoteFooter.swift */; };
 		F15E937A1CA42987327DF79E /* Migrations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8EAA6BFCE44EDE39A482FA /* Migrations.swift */; };
+		DCDAB5FB484A436386EBD333 /* ByteFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DC7054F72E41FABA9BFB31 /* ByteFormat.swift */; };
+		C559908BC8CC45249497905D /* TodayCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD49DC89F1AD49EC9D18925B /* TodayCard.swift */; };
+		0D30640910074A0AA321A7FA /* FreshnessLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E9877D726B40E2BAB89C1A /* FreshnessLabel.swift */; };
+		FFC29B4AFB50453FB4EC9034 /* WeekMonthSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94D01B12C624CAC94F685CB /* WeekMonthSummary.swift */; };
+		7F2B99C683624B7FA93E0D05 /* ByteFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F8FBF410BF462F8FC952EE /* ByteFormatTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -211,6 +216,11 @@
 		F6C7F45DA1ABF210B4FFA33C /* NetworkStatusMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkStatusMonitor.swift; sourceTree = "<group>"; };
 		FCB68977EA25FA8646DAC313 /* SidebarSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarSelection.swift; sourceTree = "<group>"; };
 		FDC38CE1825A93A0AA050CBB /* UsageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageStore.swift; sourceTree = "<group>"; };
+		48DC7054F72E41FABA9BFB31 /* ByteFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteFormat.swift; sourceTree = "<group>"; };
+		FD49DC89F1AD49EC9D18925B /* TodayCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCard.swift; sourceTree = "<group>"; };
+		E9E9877D726B40E2BAB89C1A /* FreshnessLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreshnessLabel.swift; sourceTree = "<group>"; };
+		E94D01B12C624CAC94F685CB /* WeekMonthSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekMonthSummary.swift; sourceTree = "<group>"; };
+		E8F8FBF410BF462F8FC952EE /* ByteFormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteFormatTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -280,6 +290,7 @@
 			isa = PBXGroup;
 			children = (
 				5F77CE38DE5596BA9BCAA566 /* BillingCycleTests.swift */,
+				E8F8FBF410BF462F8FC952EE /* ByteFormatTests.swift */,
 				AC6F31C0080553803F161094 /* EstimateCalculatorTests.swift */,
 				F5E1F445CD7B8A9835557B54 /* FiredThresholdsLedgerTests.swift */,
 				F2E760C70C63C2F6CB8E4F26 /* FlowEventLogTests.swift */,
@@ -324,6 +335,7 @@
 		47525913C28601482440956E /* DesignTokens */ = {
 			isa = PBXGroup;
 			children = (
+				48DC7054F72E41FABA9BFB31 /* ByteFormat.swift */,
 				976A55774A8A9811AB49E99A /* Color+Tally.swift */,
 				C0F318EACFC225101E0676B9 /* Font+Tally.swift */,
 				A7DF444DA32A866740EBA4C1 /* Motion.swift */,
@@ -367,11 +379,14 @@
 			children = (
 				85E9F5B422FCDEC3FFEB0783 /* AppRow.swift */,
 				0FF808239EEEFB7DF0D20408 /* EstimateSentence.swift */,
+				E9E9877D726B40E2BAB89C1A /* FreshnessLabel.swift */,
 				F535087740945879E6B2ED52 /* HeroCard.swift */,
 				67F9FF76482271CA0C93AA59 /* OverviewScreen.swift */,
 				2B17B14EBADDBB8C8E7752E3 /* ProgressBar.swift */,
 				276F0C97C5235F9AED6C07E8 /* StatusLine.swift */,
+				FD49DC89F1AD49EC9D18925B /* TodayCard.swift */,
 				70EDFA61D3914ABF1D16A88E /* TopAppsSection.swift */,
+				E94D01B12C624CAC94F685CB /* WeekMonthSummary.swift */,
 			);
 			path = Overview;
 			sourceTree = "<group>";
@@ -669,6 +684,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C6A2DA2C25A81F7F6D0B410 /* BillingCycleTests.swift in Sources */,
+				7F2B99C683624B7FA93E0D05 /* ByteFormatTests.swift in Sources */,
 				B233884AC3BAE1645031603C /* EstimateCalculatorTests.swift in Sources */,
 				841BF2FB13A9A85287ACF3EC /* FiredThresholdsLedgerTests.swift in Sources */,
 				6CB32B1A333A4A9DF38FD894 /* FlowEventLogTests.swift in Sources */,
@@ -697,6 +713,7 @@
 				994BBD00E91B0033721A51E6 /* DailyUsage.swift in Sources */,
 				11FDE4869CC6D5A0DEA62145 /* AutostartRow.swift in Sources */,
 				0E0B727CD11D1C871A90B621 /* BillingCycle.swift in Sources */,
+				DCDAB5FB484A436386EBD333 /* ByteFormat.swift in Sources */,
 				0AE8DECC9065193CDDE9BCF8 /* CapRow.swift in Sources */,
 				6AFEB6E7A375DB271B7172D6 /* CollectingPlaceholder.swift in Sources */,
 				7B678F900A2BFFE55442F0AB /* Color+Tally.swift in Sources */,
@@ -710,6 +727,7 @@
 				3DD9EF32A634699ECF1DC2BA /* FlowEventLog.swift in Sources */,
 				99D04A2326BCDE4CDC8D8B9C /* FlowSample.swift in Sources */,
 				BCF182E791E91A06D431C777 /* Font+Tally.swift in Sources */,
+				0D30640910074A0AA321A7FA /* FreshnessLabel.swift in Sources */,
 				8F656F5B6F0BE32077D5F894 /* HelperProcessResolver.swift in Sources */,
 				8FD56C4DD93F472F0C604DF3 /* HeroCard.swift in Sources */,
 				41635DD15768718FE4918421 /* HeroNumber.swift in Sources */,
@@ -744,12 +762,14 @@
 				C6A9DD9C2735A495A9C29EC8 /* SystemExtensionActivator.swift in Sources */,
 				1CA734978E8814D4EA9080D7 /* TallyApp.swift in Sources */,
 				15E92619895A5E6129038FCF /* ThresholdEngine.swift in Sources */,
+				C559908BC8CC45249497905D /* TodayCard.swift in Sources */,
 				D9802104AA243F4C52FB7BF5 /* TokensPreview.swift in Sources */,
 				3656BC92CE06C69A191974DB /* TopAppRow.swift in Sources */,
 				9AF395480F8851DA3C1DC457 /* TopAppsSection.swift in Sources */,
 				5BB8CE4FF4A731FFACCD0CB9 /* UsageStore.swift in Sources */,
 				EB8B07E96A03DF31F3CA5F8F /* VPNNoteFooter.swift in Sources */,
 				CB23E547CC85AC12FF42D432 /* VisualEffectBackground.swift in Sources */,
+				FFC29B4AFB50453FB4EC9034 /* WeekMonthSummary.swift in Sources */,
 				8CF59095EED0CA840B8F9C26 /* WelcomeStep.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
