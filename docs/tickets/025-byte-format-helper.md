@@ -1,7 +1,7 @@
 # [TICKET-025] Shared byte-formatting helper (ByteFormat)
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: None
@@ -12,11 +12,11 @@ Every new data-visualization view needs to turn an `Int64` byte count into a dis
 This is the foundation ticket for Phase 6: TodayCard, the trend chart, the summary tiles, and the sparkline all call into it. Keeping it first avoids re-deriving the GB/MB thresholds in each subsequent ticket and guarantees the new views match the existing ones exactly.
 
 ## Acceptance Criteria
-- [ ] New `enum ByteFormat` exposes `gigabytes(_ bytes: Int64, decimals: Int = 1) -> String` producing `"%.1f GB"` (matches `HeroCard`/`HeroNumber`)
-- [ ] `adaptive(_ bytes: Int64) -> String` returns `"%.2f GB"` when ≥ 0.01 GB else `"%.1f MB"` — byte-for-byte identical to the current `AppRow.swift` / `TopAppRow.swift` behaviour
-- [ ] `gigabytesValue(_ bytes: Int64) -> Double` returns `Double(bytes) / bytesPerGigabyte` for use as a Swift Charts Y value
-- [ ] The GB divisor reuses the existing `EstimateCalculator.bytesPerGigabyte` constant rather than a new literal
-- [ ] `ByteFormatTests` assert the 0.01 GB GB↔MB switchover, the 1- vs 2-decimal rules, and a zero-byte case
+- [x] New `enum ByteFormat` exposes `gigabytes(_ bytes: Int64, decimals: Int = 1) -> String` producing `"%.1f GB"` (matches `HeroCard`/`HeroNumber`)
+- [x] `adaptive(_ bytes: Int64) -> String` returns `"%.2f GB"` when ≥ 0.01 GB else `"%.1f MB"` — byte-for-byte identical to the current `AppRow.swift` / `TopAppRow.swift` behaviour
+- [x] `gigabytesValue(_ bytes: Int64) -> Double` returns `Double(bytes) / bytesPerGigabyte` for use as a Swift Charts Y value
+- [x] The GB divisor reuses the existing `EstimateCalculator.bytesPerGigabyte` constant rather than a new literal
+- [x] `ByteFormatTests` assert the 0.01 GB GB↔MB switchover, the 1- vs 2-decimal rules, and a zero-byte case
 
 ## Implementation Notes
 - **Files to create**: `Tally/Sources/DesignTokens/ByteFormat.swift` (peer of `Color+Tally.swift`), `TallyTests/ByteFormatTests.swift`

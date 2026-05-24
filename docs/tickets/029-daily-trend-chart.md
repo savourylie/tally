@@ -4,7 +4,7 @@
 `blocked`
 
 ## Dependencies
-- Requires: #025, #027
+- Requires: #025 ✅, #027
 
 ## Description
 There is no way to see usage over time today — only point-in-time totals. This ticket adds the centerpiece of the visualization work: a daily bar chart of network usage, each bar stacked into received (↓) and sent (↑) segments, over a window the user can switch between the current billing cycle and the last 30 days.
