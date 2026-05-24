@@ -19,6 +19,14 @@ final class UsageStore {
 
     private(set) var state: State = .collecting
     private(set) var monthToDateBytes: BytePair = .zero
+    /// Live "today" total read directly from `flow_samples` (not the 5-minute
+    /// `daily_aggregates` roll-up), so it climbs in near-real-time. Never sum
+    /// this with `monthToDateBytes` — aggregates are derived from samples, so
+    /// adding them double-counts.
+    private(set) var todayBytes: BytePair = .zero
+    /// Freshness signal: `MAX(flow_samples.timestamp)` among today's samples.
+    /// `nil` when no samples have landed today (fresh install or no traffic yet).
+    private(set) var lastSampleTimestamp: Int64? = nil
     private(set) var topEntries: [AppUsageEntry] = []
     private(set) var currentNetwork: NetworkConnection = .offline
     private(set) var previousCycleTotalBytes: Int64 = 0
@@ -40,6 +48,7 @@ final class UsageStore {
     @ObservationIgnored private let preferences: Preferences
     @ObservationIgnored private var networkMonitor: NetworkStatusMonitor?
     @ObservationIgnored private var cancellable: AnyDatabaseCancellable?
+    @ObservationIgnored private var todayCancellable: AnyDatabaseCancellable?
     @ObservationIgnored private var resolveTask: Task<Void, Never>?
     @ObservationIgnored private var lastResolvedKeys: [AppUsageEntry.Kind] = []
     @ObservationIgnored private var cycleObservationTask: Task<Void, Never>?
@@ -64,12 +73,14 @@ final class UsageStore {
         networkMonitor?.cancel()
         resolveTask?.cancel()
         cancellable?.cancel()
+        todayCancellable?.cancel()
         cycleObservationTask?.cancel()
     }
 
     func start() {
         networkMonitor?.start()
         startObservation()
+        startTodayObservation()
         observeCycleStartDayChanges()
     }
 
@@ -140,6 +151,37 @@ final class UsageStore {
             },
             onChange: { [unowned self] snapshot in
                 self.handle(snapshot: snapshot)
+            }
+        )
+    }
+
+    // MARK: - Live "Today" Observation
+
+    /// Starts an independent observation of `flow_samples` that surfaces a
+    /// near-live "today" total plus a freshness timestamp. This is deliberately
+    /// separate from `startObservation()` (which reads `daily_aggregates`) so the
+    /// two data sources are never merged — aggregates derive from samples, so
+    /// summing them would double-count.
+    ///
+    /// The today bound is recomputed inside the tracking closure on every change,
+    /// so the window rolls over correctly at local midnight without a timer.
+    private func startTodayObservation() {
+        todayCancellable?.cancel()
+        todayCancellable = nil
+
+        let observation = ValueObservation.tracking { db in
+            try Self.fetchTodaySnapshot(db, startOfToday: Self.startOfTodayTimestamp())
+        }
+
+        todayCancellable = observation.start(
+            in: dbPool,
+            scheduling: .immediate,
+            onError: { error in
+                Log.store.error("[store] today observation error: \(String(describing: error), privacy: .public)")
+            },
+            onChange: { [unowned self] snapshot in
+                self.todayBytes = BytePair(bytesIn: snapshot.bytesIn, bytesOut: snapshot.bytesOut)
+                self.lastSampleTimestamp = snapshot.lastSampleTimestamp
             }
         )
     }
@@ -263,6 +305,44 @@ final class UsageStore {
         }
     }
 
+    // MARK: - Today Query (nonisolated, testable)
+
+    /// Unix-epoch seconds for the start of today in the current calendar/timezone.
+    /// Matches the Aggregator's `unixepoch,'localtime'` convention (no UTC).
+    /// `nonisolated` so it can be called from the off-main observation closure.
+    nonisolated static func startOfTodayTimestamp(
+        now: Date = .now,
+        calendar: Calendar = .current
+    ) -> Int64 {
+        Int64(calendar.startOfDay(for: now).timeIntervalSince1970)
+    }
+
+    /// Sums today's `flow_samples` bytes and finds the freshest sample timestamp.
+    ///
+    /// `SUM`/`MAX` over an empty filtered set return a single all-`NULL` row:
+    /// the sums coalesce to `0`, and `MAX(timestamp)` reads back as `nil` — so a
+    /// fresh install (or no traffic yet today) yields `(0, 0, nil)`, never `0`.
+    ///
+    /// Factored out of the store as a `nonisolated static` so tests can call it
+    /// via `dbPool.read { … }` without constructing the `@MainActor` store.
+    nonisolated static func fetchTodaySnapshot(
+        _ db: Database,
+        startOfToday: Int64
+    ) throws -> TodaySnapshot {
+        let row = try Row.fetchOne(db, sql: """
+            SELECT SUM(bytes_in)  AS in_,
+                   SUM(bytes_out) AS out_,
+                   MAX(timestamp) AS last_ts
+            FROM flow_samples
+            WHERE timestamp >= ?
+            """, arguments: [startOfToday])
+        return TodaySnapshot(
+            bytesIn: row?["in_"] ?? 0,
+            bytesOut: row?["out_"] ?? 0,
+            lastSampleTimestamp: row?["last_ts"]
+        )
+    }
+
     // MARK: - Date Window Helpers
 
     /// Convert a `BillingCycle` to a (start, end) string pair for SQL queries.
@@ -284,6 +364,14 @@ final class UsageStore {
         df.dateFormat = "yyyy-MM-dd"
         return df
     }()
+}
+
+/// Result of `UsageStore.fetchTodaySnapshot`. Internal (not `private`) so
+/// `UsageStoreQueryTests` can read its fields via `@testable import`.
+struct TodaySnapshot: Sendable, Equatable {
+    var bytesIn: Int64
+    var bytesOut: Int64
+    var lastSampleTimestamp: Int64?
 }
 
 private struct RawUsageSnapshot: Sendable {

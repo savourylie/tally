@@ -85,6 +85,7 @@
 		D9802104AA243F4C52FB7BF5 /* TokensPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560CFE66FD4609C9E7036566 /* TokensPreview.swift */; };
 		DE6A99F52B6E154D57405FF9 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B17B14EBADDBB8C8E7752E3 /* ProgressBar.swift */; };
 		DF04D3D695DCCB76F5F42298 /* NEFlowCollectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B37E61EE85FE164712447D1 /* NEFlowCollectorTests.swift */; };
+		A026B011A026B011A026B011 /* UsageStoreQueryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A026F011A026F011A026F011 /* UsageStoreQueryTests.swift */; };
 		D9A7F6C33E194A7CB42E011A /* SystemExtensionActivatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF71B94D9404C2C8D5E83F1 /* SystemExtensionActivatorTests.swift */; };
 		E116762372C91847185E6769 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3A110C2438C4CC68E2AE17B /* Assets.xcassets */; };
 		EA67FA6318A82B5CE6AEE52F /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47260D2BE3B3E56F5FCF9856 /* main.swift */; };
@@ -140,6 +141,7 @@
 		46438C38B7BB28CD86C83812 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		47260D2BE3B3E56F5FCF9856 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		4B37E61EE85FE164712447D1 /* NEFlowCollectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEFlowCollectorTests.swift; sourceTree = "<group>"; };
+		A026F011A026F011A026F011 /* UsageStoreQueryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageStoreQueryTests.swift; sourceTree = "<group>"; };
 		4D82796A75444FE6A7153E87 /* PermissionStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionStep.swift; sourceTree = "<group>"; };
 		4DCF1A5BC6FA366C4B658D35 /* Tally.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tally.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		50002CB8E0263B813D3EB00E /* TallyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TallyApp.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				B033F9B298CAB7AC477961FA /* PreferencesTests.swift */,
 				AAF71B94D9404C2C8D5E83F1 /* SystemExtensionActivatorTests.swift */,
 				A2097844E79371ED62A39768 /* ThresholdEngineTests.swift */,
+				A026F011A026F011A026F011 /* UsageStoreQueryTests.swift */,
 			);
 			path = TallyTests;
 			sourceTree = "<group>";
@@ -670,6 +673,7 @@
 				063DA58B4920693B18C281B2 /* PreferencesTests.swift in Sources */,
 				D9A7F6C33E194A7CB42E011A /* SystemExtensionActivatorTests.swift in Sources */,
 				55C7A0108831FFEB7C5AF9A6 /* ThresholdEngineTests.swift in Sources */,
+				A026B011A026B011A026B011 /* UsageStoreQueryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
