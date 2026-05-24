@@ -60,16 +60,21 @@ targets:
       path: TallyFilterExtension/Info.plist
       properties:
         CFBundleDisplayName: Tally Filter Extension
+        CFBundlePackageType: $(PRODUCT_BUNDLE_PACKAGE_TYPE)
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
         NetworkExtension:
           NEProviderClasses:
             com.apple.networkextension.filter-data: $(PRODUCT_MODULE_NAME).TallyFilterDataProvider
+          NEMachServiceName: group.com.calvinku.Tally.$(PRODUCT_BUNDLE_IDENTIFIER)
+        NSSystemExtensionUsageDescription: Tally uses a Network Extension to measure app network usage.
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.calvinku.tally.filter
-        PRODUCT_NAME: TallyFilterExtension
+        PRODUCT_NAME: com.calvinku.tally.filter
+        PRODUCT_MODULE_NAME: TallyFilterExtension
+        EXECUTABLE_NAME: TallyFilterExtension
         MARKETING_VERSION: "0.1.0"
         CURRENT_PROJECT_VERSION: "1"
         CODE_SIGN_ENTITLEMENTS: TallyFilterExtension/TallyFilterExtension.entitlements

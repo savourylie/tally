@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		01AF5B19E7C46A839583B381 /* NetworkLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E2891FBE36B71F1C9A8ADD /* NetworkLine.swift */; };
 		0348D30FD7577943F76AAA2B /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F620748F3D580D5D04B29579 /* Spacing.swift */; };
-		03B6110370FDFDA87CF28544 /* TallyFilterExtension.systemextension in Embed System Extensions */ = {isa = PBXBuildFile; fileRef = 79ACA45B736E413070064728 /* TallyFilterExtension.systemextension */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		03B6110370FDFDA87CF28544 /* com.calvinku.tally.filter.systemextension in Embed System Extensions */ = {isa = PBXBuildFile; fileRef = 79ACA45B736E413070064728 /* com.calvinku.tally.filter.systemextension */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		049E7093913865F15B29AB99 /* FlowEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC297B717C57A67B06D7D06C /* FlowEvent.swift */; };
 		05331421F798914FF8B27EEF /* TallyFilterDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3843AC2FAF0862DE9A72F3D9 /* TallyFilterDataProvider.swift */; };
 		063DA58B4920693B18C281B2 /* PreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B033F9B298CAB7AC477961FA /* PreferencesTests.swift */; };
@@ -85,6 +85,7 @@
 		D9802104AA243F4C52FB7BF5 /* TokensPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560CFE66FD4609C9E7036566 /* TokensPreview.swift */; };
 		DE6A99F52B6E154D57405FF9 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B17B14EBADDBB8C8E7752E3 /* ProgressBar.swift */; };
 		DF04D3D695DCCB76F5F42298 /* NEFlowCollectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B37E61EE85FE164712447D1 /* NEFlowCollectorTests.swift */; };
+		D9A7F6C33E194A7CB42E011A /* SystemExtensionActivatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF71B94D9404C2C8D5E83F1 /* SystemExtensionActivatorTests.swift */; };
 		E116762372C91847185E6769 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3A110C2438C4CC68E2AE17B /* Assets.xcassets */; };
 		EA67FA6318A82B5CE6AEE52F /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47260D2BE3B3E56F5FCF9856 /* main.swift */; };
 		EB8B07E96A03DF31F3CA5F8F /* VPNNoteFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA82C4F6EECEC125A0EB900E /* VPNNoteFooter.swift */; };
@@ -115,7 +116,7 @@
 			dstPath = "$(SYSTEM_EXTENSIONS_FOLDER_PATH)";
 			dstSubfolderSpec = 16;
 			files = (
-				03B6110370FDFDA87CF28544 /* TallyFilterExtension.systemextension in Embed System Extensions */,
+				03B6110370FDFDA87CF28544 /* com.calvinku.tally.filter.systemextension in Embed System Extensions */,
 			);
 			name = "Embed System Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -157,7 +158,7 @@
 		6D4C9EC69013A2A7ED32AB6F /* SetupStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupStep.swift; sourceTree = "<group>"; };
 		6DDF93A8247CB2D28BAC4C3F /* BillingCycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillingCycle.swift; sourceTree = "<group>"; };
 		70EDFA61D3914ABF1D16A88E /* TopAppsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopAppsSection.swift; sourceTree = "<group>"; };
-		79ACA45B736E413070064728 /* TallyFilterExtension.systemextension */ = {isa = PBXFileReference; explicitFileType = "wrapper.system-extension"; includeInIndex = 0; path = TallyFilterExtension.systemextension; sourceTree = BUILT_PRODUCTS_DIR; };
+		79ACA45B736E413070064728 /* com.calvinku.tally.filter.systemextension */ = {isa = PBXFileReference; explicitFileType = "wrapper.system-extension"; includeInIndex = 0; path = com.calvinku.tally.filter.systemextension; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BFE3E2027D3912F51ED390E /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		81DF6A5B86C223ADD194BF08 /* FlowCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCollector.swift; sourceTree = "<group>"; };
 		84DE81B1213EAE667E475651 /* RerunOnboardingRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RerunOnboardingRow.swift; sourceTree = "<group>"; };
@@ -174,6 +175,7 @@
 		A3F5C2BDE416E3A35C07D751 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A6280AC74BC598149CDB5E84 /* HeroNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroNumber.swift; sourceTree = "<group>"; };
 		A7DF444DA32A866740EBA4C1 /* Motion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Motion.swift; sourceTree = "<group>"; };
+		AAF71B94D9404C2C8D5E83F1 /* SystemExtensionActivatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemExtensionActivatorTests.swift; sourceTree = "<group>"; };
 		AC6F31C0080553803F161094 /* EstimateCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateCalculatorTests.swift; sourceTree = "<group>"; };
 		B033F9B298CAB7AC477961FA /* PreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTests.swift; sourceTree = "<group>"; };
 		B5509A8D5F2AE6FBE37CBA01 /* CollectingPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectingPlaceholder.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 				F2E760C70C63C2F6CB8E4F26 /* FlowEventLogTests.swift */,
 				4B37E61EE85FE164712447D1 /* NEFlowCollectorTests.swift */,
 				B033F9B298CAB7AC477961FA /* PreferencesTests.swift */,
+				AAF71B94D9404C2C8D5E83F1 /* SystemExtensionActivatorTests.swift */,
 				A2097844E79371ED62A39768 /* ThresholdEngineTests.swift */,
 			);
 			path = TallyTests;
@@ -482,7 +485,7 @@
 			isa = PBXGroup;
 			children = (
 				4DCF1A5BC6FA366C4B658D35 /* Tally.app */,
-				79ACA45B736E413070064728 /* TallyFilterExtension.systemextension */,
+				79ACA45B736E413070064728 /* com.calvinku.tally.filter.systemextension */,
 				BD07A89C9EF367D0B3BF4C56 /* TallyTests.xctest */,
 			);
 			name = Products;
@@ -573,8 +576,8 @@
 			name = TallyFilterExtension;
 			packageProductDependencies = (
 			);
-			productName = TallyFilterExtension;
-			productReference = 79ACA45B736E413070064728 /* TallyFilterExtension.systemextension */;
+			productName = "com.calvinku.tally.filter";
+			productReference = 79ACA45B736E413070064728 /* com.calvinku.tally.filter.systemextension */;
 			productType = "com.apple.product-type.system-extension";
 		};
 		A9C692CEE4C99A9267A1F79D /* Tally */ = {
@@ -606,10 +609,9 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 2650;
 				TargetAttributes = {
 					18C27FB10FE5BE0283218A33 = {
-						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 					8F1D8529C159103772436034 = {
@@ -666,6 +668,7 @@
 				6CB32B1A333A4A9DF38FD894 /* FlowEventLogTests.swift in Sources */,
 				DF04D3D695DCCB76F5F42298 /* NEFlowCollectorTests.swift in Sources */,
 				063DA58B4920693B18C281B2 /* PreferencesTests.swift in Sources */,
+				D9A7F6C33E194A7CB42E011A /* SystemExtensionActivatorTests.swift in Sources */,
 				55C7A0108831FFEB7C5AF9A6 /* ThresholdEngineTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -776,6 +779,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -808,11 +812,13 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -834,6 +840,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -851,6 +858,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 92QTH3YBHM;
 				INFOPLIST_FILE = Tally/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -860,6 +868,7 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.calvinku.tally;
 				PRODUCT_NAME = Tally;
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -868,6 +877,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -900,11 +910,13 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -919,6 +931,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -934,6 +947,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 92QTH3YBHM;
 				INFOPLIST_FILE = TallyFilterExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -942,7 +956,10 @@
 				);
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.calvinku.tally.filter;
-				PRODUCT_NAME = TallyFilterExtension;
+				PRODUCT_MODULE_NAME = TallyFilterExtension;
+				PRODUCT_NAME = com.calvinku.tally.filter;
+				EXECUTABLE_NAME = TallyFilterExtension;
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -954,6 +971,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 92QTH3YBHM;
 				INFOPLIST_FILE = TallyFilterExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -962,7 +980,10 @@
 				);
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.calvinku.tally.filter;
-				PRODUCT_NAME = TallyFilterExtension;
+				PRODUCT_MODULE_NAME = TallyFilterExtension;
+				PRODUCT_NAME = com.calvinku.tally.filter;
+				EXECUTABLE_NAME = TallyFilterExtension;
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -976,6 +997,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 92QTH3YBHM;
 				INFOPLIST_FILE = Tally/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -985,6 +1007,7 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.calvinku.tally;
 				PRODUCT_NAME = Tally;
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -993,7 +1016,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = 92QTH3YBHM;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1010,7 +1036,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = 92QTH3YBHM;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

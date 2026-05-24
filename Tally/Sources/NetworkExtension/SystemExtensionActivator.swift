@@ -11,6 +11,10 @@ enum SystemExtensionActivationState: Equatable, Sendable {
     case enabled
     case denied(String)
     case failed(String)
+    // macOS rejects system-extension activation when the host app is outside
+    // /Applications (e.g. Downloads, DerivedData, a mounted DMG). User must
+    // move the app and relaunch; visiting Settings will not help.
+    case needsMoveToApplications(String)
 
     var isEnabled: Bool {
         if case .enabled = self { return true }
@@ -19,7 +23,7 @@ enum SystemExtensionActivationState: Equatable, Sendable {
 
     var canRetry: Bool {
         switch self {
-        case .idle, .denied, .failed:
+        case .idle, .denied, .failed, .needsMoveToApplications(_):
             return true
         case .activating, .waitingForApproval, .enabled:
             return false
@@ -33,10 +37,10 @@ enum SystemExtensionActivationState: Equatable, Sendable {
         case .activating:
             return "正在請 macOS 打開批准流程。"
         case .waitingForApproval:
-            return "請到系統設定批准 Tally。批准後這裡會自動更新。"
+            return "請到『登入項目與擴充功能 → 網路擴充功能』批准 Tally。批准後這裡會自動更新。"
         case .enabled:
             return "已經批准，Tally 可以開始統計每個 app 的流量。"
-        case .denied(let message), .failed(let message):
+        case .denied(let message), .failed(let message), .needsMoveToApplications(let message):
             return message
         }
     }
@@ -45,14 +49,34 @@ enum SystemExtensionActivationState: Equatable, Sendable {
 @Observable
 final class SystemExtensionActivator: NSObject {
     static let extensionBundleIdentifier = "com.calvinku.tally.filter"
+    static let expectedAppBundlePath = "/Applications/Tally.app"
 
     private(set) var state: SystemExtensionActivationState = .idle
 
     @ObservationIgnored private var requestInFlight = false
+    @ObservationIgnored private let appBundleURL: URL
+
+    init(appBundleURL: URL = Bundle.main.bundleURL) {
+        self.appBundleURL = appBundleURL
+        super.init()
+    }
 
     func requestActivation() {
         guard !requestInFlight else { return }
         guard state.canRetry else { return }
+
+        let appBundlePath = appBundleURL.standardizedFileURL.path
+        Log.ne.info(
+            "[ne] preparing system extension activation appBundle=\(appBundlePath, privacy: .public) extension=\(Self.extensionBundleIdentifier, privacy: .public)"
+        )
+
+        if let preflightState = Self.activationPreflightState(forAppBundleURL: appBundleURL) {
+            state = preflightState
+            Log.ne.error(
+                "[ne] system extension activation preflight failed appBundle=\(appBundlePath, privacy: .public) expected=\(Self.expectedAppBundlePath, privacy: .public) extension=\(Self.extensionBundleIdentifier, privacy: .public)"
+            )
+            return
+        }
 
         requestInFlight = true
         state = .activating
@@ -63,7 +87,9 @@ final class SystemExtensionActivator: NSObject {
         )
         request.delegate = self
         OSSystemExtensionManager.shared.submitRequest(request)
-        Log.ne.info("[ne] submitted system extension activation request")
+        Log.ne.info(
+            "[ne] submitted system extension activation request appBundle=\(appBundlePath, privacy: .public) extension=\(Self.extensionBundleIdentifier, privacy: .public)"
+        )
     }
 
     func requestActivationIfNeeded() {
@@ -71,12 +97,51 @@ final class SystemExtensionActivator: NSObject {
         requestActivation()
     }
 
-    func openSecuritySettings() {
-        let urlString = "x-apple.systempreferences:com.apple.preference.security?Privacy_Security"
+    func openExtensionsSettings() {
+        let urlString = "x-apple.systempreferences:com.apple.LoginItems-Settings.extension"
         if let url = URL(string: urlString) {
             NSWorkspace.shared.open(url)
-            Log.ui.info("SystemExtensionActivator: opened System Settings -> Privacy & Security")
+            Log.ui.info("SystemExtensionActivator: opened System Settings -> Login Items & Extensions")
         }
+    }
+
+    func recoverActivation() {
+        if case .waitingForApproval = state {
+            openExtensionsSettings()
+        } else if case .needsMoveToApplications(_) = state {
+            revealAppInFinder()
+        } else if state.canRetry {
+            requestActivation()
+        }
+    }
+
+    func revealAppInFinder() {
+        let appURL = appBundleURL
+        NSWorkspace.shared.activateFileViewerSelecting([appURL])
+        Log.ui.info("SystemExtensionActivator: revealed app in Finder at \(appURL.path, privacy: .public)")
+    }
+
+    static func activationPreflightState(
+        forAppBundleURL appBundleURL: URL
+    ) -> SystemExtensionActivationState? {
+        let appBundlePath = appBundleURL.standardizedFileURL.path
+        guard isSupportedAppBundlePath(appBundlePath) else {
+            return .needsMoveToApplications(moveToApplicationsMessage(for: appBundlePath))
+        }
+        return nil
+    }
+
+    private static func isSupportedAppBundlePath(_ path: String) -> Bool {
+        path == expectedAppBundlePath
+            || path == "/System/Volumes/Data\(expectedAppBundlePath)"
+    }
+
+    private static func moveToApplicationsMessage(for appBundlePath: String) -> String {
+        if appBundlePath.contains("/DerivedData/") {
+            return "Tally 現在是從 Xcode 的 DerivedData 執行，macOS 不會在「網路擴充功能」顯示這個版本。請先關閉目前這個 Tally，然後從 /Applications/Tally.app 重新打開。"
+        }
+
+        return "Tally 現在是從 \(appBundlePath) 執行。請把 Tally 放在 /Applications/Tally.app，並從「應用程式」重新打開；macOS 才會顯示網路權限。"
     }
 
     private func finishEnabled() {
@@ -91,7 +156,7 @@ final class SystemExtensionActivator: NSObject {
             } catch {
                 await MainActor.run {
                     self.requestInFlight = false
-                    self.state = .failed("目前看不到網路使用情況，請確認 Tally 已在系統設定中獲准。")
+                    self.state = .failed("Tally 已送出批准流程，但內容過濾器還沒啟用。請按「再試一次」重新檢查。")
                 }
                 Log.ne.error("[ne] content filter enable failed error=\(String(describing: error), privacy: .public)")
             }
@@ -122,7 +187,7 @@ extension SystemExtensionActivator: OSSystemExtensionRequestDelegate {
             Log.ne.info("[ne] system extension activation will complete after reboot")
         @unknown default:
             requestInFlight = false
-            state = .failed("目前看不到網路使用情況，請重新批准 Tally。")
+            state = .failed("macOS 沒有完成 Tally 的網路權限流程。請按「再試一次」重新送出要求。")
         }
     }
 
@@ -136,16 +201,24 @@ extension SystemExtensionActivator: OSSystemExtensionRequestDelegate {
            let code = OSSystemExtensionError.Code(rawValue: nsError.code) {
             switch code {
             case .requestCanceled, .forbiddenBySystemPolicy:
-                state = .denied("你剛剛沒有批准 Tally。請到系統設定批准後再繼續。")
+                state = .denied("macOS 尚未批准 Tally。請按「再試一次」重新送出網路權限要求。")
             case .authorizationRequired:
                 state = .waitingForApproval
+            case .unsupportedParentBundleLocation:
+                state = .needsMoveToApplications(Self.moveToApplicationsMessage(for: appBundleURL.standardizedFileURL.path))
+            case .extensionNotFound:
+                state = .failed("macOS 找不到 Tally app bundle 裡可註冊的網路擴充功能。請用最新 build 取代 /Applications/Tally.app，重新打開後再按「再試一次」。")
+            case .validationFailed:
+                state = .failed("macOS 找到 Tally 的網路擴充功能，但它的 bundle 設定無法通過驗證。請用最新 build 取代 /Applications/Tally.app，重新打開後再按「再試一次」。")
             default:
-                state = .failed("目前看不到網路使用情況，請重新批准 Tally。")
+                state = .failed("macOS 無法送出 Tally 的網路權限要求。請按「再試一次」。")
             }
         } else {
-            state = .failed("目前看不到網路使用情況，請重新批准 Tally。")
+            state = .failed("macOS 無法送出 Tally 的網路權限要求。請按「再試一次」。")
         }
-        Log.ne.error("[ne] system extension activation failed error=\(String(describing: error), privacy: .public)")
+        Log.ne.error(
+            "[ne] system extension activation failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public) appBundle=\(self.appBundleURL.path, privacy: .public) extension=\(Self.extensionBundleIdentifier, privacy: .public) error=\(String(describing: error), privacy: .public)"
+        )
     }
 
     func request(
