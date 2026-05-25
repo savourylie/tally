@@ -1,10 +1,10 @@
 # [TICKET-032] TEST: Checkpoint 5 — Data Visualization End-to-End
 
 ## Status
-`pending`
+`blocked`
 
 ## Dependencies
-- Requires: #030 ✅, #031 ✅
+- Requires: #030 ✅, #031 ✅, #033 ✅, #034
 
 ## Description
 Phase 6 (TICKET-025 through TICKET-031) added the data-visualization layer: a shared byte formatter, live "today" + freshness + week/trend queries in `UsageStore`, the TodayCard / FreshnessLabel / WeekMonthSummary components, the Swift Charts daily trend chart, the Overview wiring, and the popover freshness line + sparkline. This checkpoint verifies the whole experience hangs together and that the four original user complaints are resolved.
@@ -12,6 +12,9 @@ Phase 6 (TICKET-025 through TICKET-031) added the data-visualization layer: a sh
 It gates closing out the visualization work. The two correctness risks flagged during design get explicit test cases: (1) no double-counting between `flow_samples`-derived and `daily_aggregates`-derived figures, and (2) the trend's "today" bar agreeing with the live TodayCard. It also includes a voice audit, consistent with this project's standing rule that users never see technical identifiers or English networking jargon.
 
 Passing this checkpoint means the data-visualization feature is shippable.
+
+## Bug Findings
+Manual verification on 2026-05-25 found that the live DB had no current-day `flow_samples`: the latest live row was 2026-05-23 15:39 HKT while testing active traffic on 2026-05-25. Chrome traffic, including YouTube playback, was not represented in the app list. This checkpoint is blocked until #033 and #034 restore production live collection and Chrome attribution.
 
 ## Acceptance Criteria
 - [ ] **Today is live**: with active traffic, TodayCard's ↓/↑ figures climb within seconds (not on a 5-min cadence); the freshness label reads "● 即時" while traffic flows
