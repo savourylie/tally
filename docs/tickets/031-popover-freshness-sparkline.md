@@ -1,7 +1,7 @@
 # [TICKET-031] Popover freshness line + sparkline
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #027 ✅, #028 ✅
@@ -12,11 +12,11 @@ The menu-bar popover is the most-glanced surface, so it gets a deliberately ligh
 Both additions reuse what's already built — `FreshnessLabel` from #028 and the `dailyTrend` series from #027 — so this is mostly composition within the existing `PopoverView` layout.
 
 ## Acceptance Criteria
-- [ ] A `FreshnessLabel(lastSampleTimestamp: store.lastSampleTimestamp)` line appears in the popover (under `NetworkLine` or in the footer), styled to fit the 320pt width
-- [ ] A `Sparkline` view renders an axis-less (~28pt tall) `AreaMark`/`LineMark` of per-day `dailyTrend` totals in `Color.tally.brand400`, placed above the top-apps header
-- [ ] The sparkline is gated to `state == .ready` (hidden during `.collecting`)
-- [ ] The popover keeps its fixed 320pt frame; nothing else in the popover layout shifts or regresses
-- [ ] The existing popover `#Preview`s still compile — add a `mockLastSampleTimestamp` (and mock `dailyTrend`) to the preview-mock block
+- [x] A `FreshnessLabel(lastSampleTimestamp: store.lastSampleTimestamp)` line appears in the popover (under `NetworkLine` or in the footer), styled to fit the 320pt width
+- [x] A `Sparkline` view renders an axis-less (~28pt tall) `AreaMark`/`LineMark` of per-day `dailyTrend` totals in `Color.tally.brand400`, placed above the top-apps header
+- [x] The sparkline is gated to `state == .ready` (hidden during `.collecting`)
+- [x] The popover keeps its fixed 320pt frame; nothing else in the popover layout shifts or regresses
+- [x] The existing popover `#Preview`s still compile — add a `mockLastSampleTimestamp` (and mock `dailyTrend`) to the preview-mock block
 
 ## Design Reference
 - **Layout**: existing `PopoverView.swift` (keep the 320pt frame and current ordering)
