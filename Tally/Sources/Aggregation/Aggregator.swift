@@ -168,6 +168,13 @@ actor Aggregator {
                 attributedBundleId = parent
             }
 
+            // Fallback: if bundleId is nil but executableName is Google Chrome or its helper, attribute to Google Chrome
+            if attributedBundleId == nil {
+                if row.executableName == "Google Chrome" || row.executableName == "Google Chrome Helper" {
+                    attributedBundleId = "com.google.Chrome"
+                }
+            }
+
             var category: String? = nil
             if attributedBundleId == nil {
                 category = categories[row.executableName] ?? "系統其他"

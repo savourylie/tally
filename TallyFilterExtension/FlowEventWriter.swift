@@ -2,6 +2,7 @@ import Foundation
 import NetworkExtension
 import os
 import Darwin
+import Security
 
 final class FlowEventWriter {
     private let containerURL: URL
@@ -40,23 +41,57 @@ private struct FlowAttribution {
     let executableName: String
 
     static func resolve(from auditTokenData: Data?) -> FlowAttribution {
-        guard
-            let token = auditToken(from: auditTokenData),
-            let executablePath = executablePath(for: token)
-        else {
+        guard let token = auditToken(from: auditTokenData) else {
             return FlowAttribution(bundleId: nil, executableName: "unknown")
         }
 
-        let executableURL = URL(fileURLWithPath: executablePath)
-        let executableName = executableURL.deletingPathExtension().lastPathComponent
+        let resolvedExecutablePath = executablePath(for: token)
+        let executableURL = resolvedExecutablePath.map { URL(fileURLWithPath: $0) }
+        let executableName = executableURL?.deletingPathExtension().lastPathComponent ?? "unknown"
+
+        // 1. Try to resolve the bundle ID using the Security framework (highly reliable for running processes in sandboxes)
+        if let bundleId = resolveBundleId(from: token) {
+            return FlowAttribution(bundleId: bundleId, executableName: executableName)
+        }
+
+        // 2. Fall back to filesystem inspection (useful if the process has already terminated)
         guard
-            let appURL = enclosingAppBundleURL(for: executableURL),
-            let bundleId = Bundle(url: appURL)?.bundleIdentifier
+            let executablePath = resolvedExecutablePath,
+            let enclosingAppURL = enclosingAppBundleURL(for: URL(fileURLWithPath: executablePath)),
+            let bundleId = Bundle(url: enclosingAppURL)?.bundleIdentifier
         else {
             return FlowAttribution(bundleId: nil, executableName: executableName)
         }
 
         return FlowAttribution(bundleId: bundleId, executableName: executableName)
+    }
+
+    private static func resolveBundleId(from token: audit_token_t) -> String? {
+        var tempToken = token
+        let tokenData = Data(bytes: &tempToken, count: MemoryLayout<audit_token_t>.size)
+        let attributes = [kSecGuestAttributeAudit: tokenData] as CFDictionary
+        
+        var guestCode: SecCode?
+        let copyStatus = SecCodeCopyGuestWithAttributes(nil, attributes, [], &guestCode)
+        guard copyStatus == errSecSuccess, let code = guestCode else {
+            return nil
+        }
+        
+        var staticCode: SecStaticCode?
+        let staticStatus = SecCodeCopyStaticCode(code, [], &staticCode)
+        guard staticStatus == errSecSuccess, let sCode = staticCode else {
+            return nil
+        }
+        
+        var signingInfo: CFDictionary?
+        let infoStatus = SecCodeCopySigningInformation(sCode, SecCSFlags(), &signingInfo)
+        guard infoStatus == errSecSuccess,
+              let info = signingInfo as? [String: Any],
+              let bundleId = info[kSecCodeInfoIdentifier as String] as? String else {
+            return nil
+        }
+        
+        return bundleId
     }
 
     private static func auditToken(from data: Data?) -> audit_token_t? {

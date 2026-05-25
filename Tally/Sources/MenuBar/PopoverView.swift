@@ -65,7 +65,9 @@ struct PopoverView: View {
                     .padding(.bottom, 10)
                 }
             } else if state == .collecting {
-                CollectingPlaceholder()
+                CollectingPlaceholder(
+                    message: store.collectionUnavailableReason ?? "資料正在收集中，幾分鐘後就能看到數據"
+                )
             } else {
                 VStack(alignment: .leading, spacing: 0) {
                     // Hero number MTD + cap remaining info

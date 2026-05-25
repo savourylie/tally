@@ -36,11 +36,20 @@ final class AppState {
             await categorizer.load()
         }
 
+        // TICKET-033: the production NE path starts suspended (collectionHealthy:
+        // false) so historical aggregates never flash as live before the launch-time
+        // health check resolves. The nettop fallback stays healthy by default.
+#if DEBUG && USE_NETTOP
+        let collectionInitiallyHealthy = true
+#else
+        let collectionInitiallyHealthy = false
+#endif
         let store = UsageStore(
             dbPool: database.dbPool,
             metadataService: appMetadata,
             categorizer: categorizer,
-            preferences: preferences
+            preferences: preferences,
+            collectionHealthy: collectionInitiallyHealthy
         )
         store.start()
         self.usageStore = store
@@ -73,7 +82,11 @@ final class AppState {
         )
 
         Task { await agg.start() }
+#if DEBUG && USE_NETTOP
         flowCollector.start()
+#else
+        startProductionCollectorGated()
+#endif
 
         // Request notification authorization and start threshold monitoring
         Task {
@@ -81,6 +94,49 @@ final class AppState {
             self.thresholdEngine.start()
         }
     }
+
+#if !(DEBUG && USE_NETTOP)
+    /// TICKET-033: gate production NE collection on confirmed content-filter health.
+    /// Before onboarding completes the user drives activation through `PermissionStep`,
+    /// so the gate is deferred until then (AC7); afterwards it runs on each launch.
+    private func startProductionCollectorGated() {
+        guard let ne = collector as? NEFlowCollector else {
+            collector.start()
+            return
+        }
+        if preferences.onboardingComplete {
+            runHealthGate(ne)
+        } else {
+            Task { @MainActor in
+                while !preferences.onboardingComplete {
+                    await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+                        withObservationTracking {
+                            _ = preferences.onboardingComplete
+                        } onChange: {
+                            continuation.resume()
+                        }
+                    }
+                }
+                runHealthGate(ne)
+            }
+        }
+    }
+
+    /// Runs the launch-time health check, then either starts polling (healthy) or
+    /// puts both the collector and the store into an explicit non-live state (AC4, AC5).
+    private func runHealthGate(_ ne: NEFlowCollector) {
+        Task { @MainActor in
+            switch await systemExtensionActivator.verifyCollectionHealth() {
+            case .healthy:
+                usageStore.markCollectionHealthy()
+                ne.start()
+            case .unavailable(let reason):
+                ne.markUnavailable(reason)
+                usageStore.markCollectionUnavailable(reason)
+            }
+        }
+    }
+#endif
 }
 
 private var isDevelopmentBuild: Bool {

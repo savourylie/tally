@@ -1,14 +1,18 @@
 import SwiftUI
 
 struct CollectingPlaceholder: View {
+    /// TICKET-033: defaults to the genuine "collecting" copy; `PopoverView` passes
+    /// the honest non-live recovery message when collection is unavailable.
+    var message: String = "資料正在收集中，幾分鐘後就能看到數據"
+
     var body: some View {
         VStack(spacing: Spacing.s3) {
             Spacer()
             Image(systemName: "chart.bar.doc.horizontal")
                 .font(.system(size: 28))
                 .foregroundStyle(Color.tally.brand300)
-            
-            Text("資料正在收集中，幾分鐘後就能看到數據")
+
+            Text(message)
                 .font(.tally.body)
                 .tracking(Font.tallyTracking.body)
                 .foregroundStyle(Color.tally.fg2)

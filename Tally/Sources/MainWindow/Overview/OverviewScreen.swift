@@ -12,7 +12,8 @@ struct OverviewScreen: View {
                 HeroCard(
                     state: store.state,
                     monthToDateBytes: store.monthToDateBytes,
-                    monthlyCapBytes: store.monthlyCapBytes
+                    monthlyCapBytes: store.monthlyCapBytes,
+                    unavailableReason: store.collectionUnavailableReason
                 )
 
                 StatusLine(connection: store.currentNetwork)

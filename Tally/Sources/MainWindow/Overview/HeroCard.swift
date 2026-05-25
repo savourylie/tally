@@ -4,6 +4,9 @@ struct HeroCard: View {
     let state: UsageStore.State
     let monthToDateBytes: UsageStore.BytePair
     let monthlyCapBytes: Int64?
+    /// TICKET-033: when set, the collecting state shows this honest, non-live
+    /// recovery message instead of the generic "資料正在收集中".
+    var unavailableReason: String? = nil
     var now: Date = .now
 
     private var totalBytes: Int64 {
@@ -71,7 +74,7 @@ struct HeroCard: View {
     }
 
     private var collectingBody: some View {
-        Text("資料正在收集中")
+        Text(unavailableReason ?? "資料正在收集中")
             .font(.tally.title3)
             .fontWeight(.regular)
             .tracking(Font.tallyTracking.title3)

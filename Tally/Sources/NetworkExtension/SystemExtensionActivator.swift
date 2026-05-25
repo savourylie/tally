@@ -46,6 +46,13 @@ enum SystemExtensionActivationState: Equatable, Sendable {
     }
 }
 
+/// Outcome of the launch-time content-filter health check (TICKET-033). The
+/// `unavailable` payload is Chinese, technical-id-free copy ready to show users.
+enum CollectionHealth: Equatable, Sendable {
+    case healthy
+    case unavailable(String)
+}
+
 @Observable
 final class SystemExtensionActivator: NSObject {
     static let extensionBundleIdentifier = "com.calvinku.tally.filter"
@@ -97,6 +104,54 @@ final class SystemExtensionActivator: NSObject {
         requestActivation()
     }
 
+    /// Launch-time collection-health check (TICKET-033). Loads the live
+    /// `NEFilterManager` configuration, confirms our provider is the enabled one
+    /// (AC1), and — when the filter is off but the app sits in /Applications —
+    /// idempotently re-enables it (AC2). From an unsupported location with no
+    /// enabled filter it surfaces the existing move-to-Applications path (AC3).
+    /// Drives `state` so onboarding/recovery UI stays consistent. Callers should
+    /// only invoke this after onboarding completes; during onboarding the user
+    /// drives activation through `PermissionStep`.
+    @MainActor
+    func verifyCollectionHealth() async -> CollectionHealth {
+        let inputs: (isEnabled: Bool, providerBundleID: String?)
+        do {
+            inputs = try await ContentFilterConfigurator.currentHealthInputs()
+        } catch {
+            Log.ne.error("[ne] health load failed error=\(String(describing: error), privacy: .public)")
+            inputs = (false, nil)
+        }
+
+        let decision = Self.collectionHealth(
+            enabledProviderBundleID: inputs.providerBundleID,
+            isEnabled: inputs.isEnabled,
+            forAppBundleURL: appBundleURL
+        )
+
+        switch decision {
+        case .healthy:
+            state = .enabled
+            return .healthy
+        case .unavailable(let message):
+            // Unsupported location and not already enabled → move-to-Applications (AC3).
+            if Self.activationPreflightState(forAppBundleURL: appBundleURL) != nil {
+                state = .needsMoveToApplications(message)
+                return decision
+            }
+            // In /Applications but disabled/misconfigured → idempotent re-enable (AC2).
+            do {
+                try await ContentFilterConfigurator.enable()
+                state = .enabled
+                Log.ne.info("[ne] content filter health re-enable succeeded")
+                return .healthy
+            } catch {
+                Log.ne.error("[ne] content filter health re-enable failed error=\(String(describing: error), privacy: .public)")
+                state = .failed(message)
+                return .unavailable(message)
+            }
+        }
+    }
+
     func openExtensionsSettings() {
         let urlString = "x-apple.systempreferences:com.apple.LoginItems-Settings.extension"
         if let url = URL(string: urlString) {
@@ -129,6 +184,28 @@ final class SystemExtensionActivator: NSObject {
             return .needsMoveToApplications(moveToApplicationsMessage(for: appBundlePath))
         }
         return nil
+    }
+
+    /// Pure health decision for the launch-time check (TICKET-033). Factored out
+    /// like `activationPreflightState` so it is unit-testable without touching
+    /// `NEFilterManager`. `enabledProviderBundleID` is the bundle id of the
+    /// currently-enabled filter provider (nil when nothing is enabled).
+    static func collectionHealth(
+        enabledProviderBundleID: String?,
+        isEnabled: Bool,
+        forAppBundleURL appBundleURL: URL
+    ) -> CollectionHealth {
+        // AC1: live only when a filter is enabled AND it is our provider.
+        if isEnabled, enabledProviderBundleID == extensionBundleIdentifier {
+            return .healthy
+        }
+        // AC3: not enabled from an unsupported location → move-to-Applications copy.
+        if activationPreflightState(forAppBundleURL: appBundleURL) != nil {
+            return .unavailable(moveToApplicationsMessage(for: appBundleURL.standardizedFileURL.path))
+        }
+        // In /Applications but disabled/misconfigured → caller attempts re-enable (AC2);
+        // this copy is shown only if that re-enable fails (AC6 — no technical ids).
+        return .unavailable("Tally 目前沒有在統計網路使用情況。請打開主視窗重新批准網路權限。")
     }
 
     private static func isSupportedAppBundlePath(_ path: String) -> Bool {
@@ -250,6 +327,18 @@ private enum ContentFilterConfigurator {
         manager.isEnabled = true
 
         try await save(manager)
+    }
+
+    /// Reads the live filter state for the launch-time health check. Kept here so
+    /// it can reach the file-private `load`; returns the enabled provider bundle id
+    /// (nil when the filter is off) plus the enabled flag.
+    static func currentHealthInputs() async throws -> (isEnabled: Bool, providerBundleID: String?) {
+        let manager = NEFilterManager.shared()
+        try await load(manager)
+        let providerID = manager.isEnabled
+            ? manager.providerConfiguration?.filterDataProviderBundleIdentifier
+            : nil
+        return (manager.isEnabled, providerID)
     }
 
     private static func load(_ manager: NEFilterManager) async throws {

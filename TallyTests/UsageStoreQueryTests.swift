@@ -227,4 +227,124 @@ final class UsageStoreQueryTests: XCTestCase {
         XCTAssertEqual(week.bytesIn, 100 + 7)
         XCTAssertEqual(week.bytesOut, 50 + 3)
     }
+
+    // MARK: - Collection Health (TICKET-033)
+
+    /// The readiness rule promotes to `.ready` only with data AND confirmed health.
+    func testShouldBecomeReadyWhenHealthyWithRows() {
+        XCTAssertTrue(UsageStore.shouldBecomeReady(currentState: .collecting, hasRows: true, collectionHealthy: true))
+    }
+
+    /// AC5 core: historical rows must NOT promote to ready while collection is down.
+    func testShouldNotBecomeReadyWhenUnhealthyWithRows() {
+        XCTAssertFalse(UsageStore.shouldBecomeReady(currentState: .collecting, hasRows: true, collectionHealthy: false))
+    }
+
+    func testShouldNotBecomeReadyWhenHealthyWithoutRows() {
+        XCTAssertFalse(UsageStore.shouldBecomeReady(currentState: .collecting, hasRows: false, collectionHealthy: true))
+    }
+
+    func testShouldNotBecomeReadyWhenAlreadyReady() {
+        XCTAssertFalse(UsageStore.shouldBecomeReady(currentState: .ready, hasRows: true, collectionHealthy: true))
+    }
+
+    /// Minimal store construction (no `start()`, so no observations run) to verify
+    /// the public health flags AppState toggles and the UI reads.
+    @MainActor
+    private func makeStore(collectionHealthy: Bool) -> UsageStore {
+        UsageStore(
+            dbPool: dbPool,
+            metadataService: AppMetadataService(dbPool: dbPool),
+            categorizer: ProcessCategorizer(dbPool: dbPool),
+            preferences: Preferences(),
+            collectionHealthy: collectionHealthy
+        )
+    }
+
+    @MainActor
+    func testMarkCollectionUnavailableSetsFlagAndReason() {
+        let store = makeStore(collectionHealthy: true)
+
+        store.markCollectionUnavailable("目前沒有在統計網路使用情況")
+
+        XCTAssertFalse(store.collectionHealthy)
+        XCTAssertEqual(store.collectionUnavailableReason, "目前沒有在統計網路使用情況")
+    }
+
+    @MainActor
+    func testMarkCollectionHealthyClearsFlagAndReason() {
+        let store = makeStore(collectionHealthy: false)
+        store.markCollectionUnavailable("暫時無法統計")
+
+        store.markCollectionHealthy()
+
+        XCTAssertTrue(store.collectionHealthy)
+        XCTAssertNil(store.collectionUnavailableReason)
+    }
+
+    func testHelperProcessResolverChromeRollup() async {
+        let resolver = HelperProcessResolver()
+        let result1 = await resolver.parentBundle(forHelper: "com.google.Chrome.helper.renderer")
+        let result2 = await resolver.parentBundle(forHelper: "com.google.Chrome.helper")
+        XCTAssertEqual(result1, "com.google.Chrome")
+        XCTAssertEqual(result2, "com.google.Chrome")
+    }
+
+    func testChromeHelperAggregationRollup() async throws {
+        // Insert a flow sample with bundle_id = "com.google.Chrome.helper.renderer"
+        let timestamp = Int64(Date().timeIntervalSince1970)
+        try await dbPool.write { db in
+            let sample = FlowSample(
+                id: nil,
+                timestamp: timestamp,
+                bundleId: "com.google.Chrome.helper.renderer",
+                executableName: "Google Chrome Helper",
+                bytesIn: 1_000,
+                bytesOut: 500,
+                networkId: nil
+            )
+            try sample.insert(db)
+        }
+
+        // Run Aggregator
+        let aggregator = Aggregator(dbPool: dbPool)
+        await aggregator.runOnce()
+
+        // Verify the daily_aggregates contains a com.google.Chrome entry
+        let aggs = try await dbPool.read { db in
+            try Row.fetchAll(db, sql: "SELECT * FROM daily_aggregates WHERE bundle_id = 'com.google.Chrome'")
+        }
+        XCTAssertEqual(aggs.count, 1)
+        XCTAssertEqual(aggs[0]["total_in"], 1_000)
+        XCTAssertEqual(aggs[0]["total_out"], 500)
+    }
+
+    func testChromeNilBundleIdAggregationFallback() async throws {
+        // Insert a flow sample with bundle_id = nil and executable_name = "Google Chrome Helper"
+        let timestamp = Int64(Date().timeIntervalSince1970)
+        try await dbPool.write { db in
+            let sample = FlowSample(
+                id: nil,
+                timestamp: timestamp,
+                bundleId: nil,
+                executableName: "Google Chrome Helper",
+                bytesIn: 2_000,
+                bytesOut: 1_000,
+                networkId: nil
+            )
+            try sample.insert(db)
+        }
+
+        // Run Aggregator
+        let aggregator = Aggregator(dbPool: dbPool)
+        await aggregator.runOnce()
+
+        // Verify the daily_aggregates contains a com.google.Chrome entry
+        let aggs = try await dbPool.read { db in
+            try Row.fetchAll(db, sql: "SELECT * FROM daily_aggregates WHERE bundle_id = 'com.google.Chrome'")
+        }
+        XCTAssertEqual(aggs.count, 1)
+        XCTAssertEqual(aggs[0]["total_in"], 2_000)
+        XCTAssertEqual(aggs[0]["total_out"], 1_000)
+    }
 }

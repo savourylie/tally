@@ -103,6 +103,17 @@ final class NEFlowCollector: FlowCollector {
         state = .idle
     }
 
+    /// TICKET-033: called by `AppState` instead of `start()` when the content
+    /// filter is confirmed unhealthy, so the collector reports `.failed(reason)`
+    /// rather than silently idling on stale data. Tears down any poll task that
+    /// somehow started, then leaves the failed state in place (so it is not reset
+    /// to `.idle` by `stop()`).
+    func markUnavailable(_ reason: String) {
+        stop()
+        state = .failed(reason)
+        Log.collector.error("[collector] NE unavailable reason=\(reason, privacy: .public)")
+    }
+
     @discardableResult
     func consumePendingEventsOnce() async throws -> Int {
         let containerURL = try appGroupURL ?? TallyAppGroup.containerURL(

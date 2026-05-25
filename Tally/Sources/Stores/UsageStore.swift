@@ -25,6 +25,14 @@ final class UsageStore {
     }
 
     private(set) var state: State = .collecting
+    /// TICKET-033: gates the `.collecting → .ready` promotion. While false (set by
+    /// `AppState` when the production NE content filter is not confirmed healthy),
+    /// historical `daily_aggregates` must not make the UI look live. Defaults true
+    /// so the nettop/dev paths and direct test construction are unaffected.
+    private(set) var collectionHealthy: Bool
+    /// Chinese, technical-id-free recovery copy shown in the non-live placeholder
+    /// when collection is unavailable; nil when healthy.
+    private(set) var collectionUnavailableReason: String? = nil
     private(set) var monthToDateBytes: BytePair = .zero
     /// Live "today" total read directly from `flow_samples` (not the 5-minute
     /// `daily_aggregates` roll-up), so it climbs in near-real-time. Never sum
@@ -68,6 +76,10 @@ final class UsageStore {
     @ObservationIgnored private var vizCancellable: AnyDatabaseCancellable?
     @ObservationIgnored private var resolveTask: Task<Void, Never>?
     @ObservationIgnored private var lastResolvedKeys: [AppUsageEntry.Kind] = []
+    /// TICKET-033: whether the latest top-apps snapshot had any aggregate rows.
+    /// Lets `markCollectionHealthy()` promote to `.ready` immediately when data
+    /// already exists, instead of waiting for the next DB write.
+    @ObservationIgnored private var latestHasRows: Bool = false
     @ObservationIgnored private var cycleObservationTask: Task<Void, Never>?
     @ObservationIgnored private var trendWindowObservationTask: Task<Void, Never>?
 
@@ -75,12 +87,14 @@ final class UsageStore {
         dbPool: DatabasePool,
         metadataService: AppMetadataService,
         categorizer: ProcessCategorizer,
-        preferences: Preferences
+        preferences: Preferences,
+        collectionHealthy: Bool = true
     ) {
         self.dbPool = dbPool
         self.metadataService = metadataService
         self.categorizer = categorizer
         self.preferences = preferences
+        self.collectionHealthy = collectionHealthy
         self.networkMonitor = NetworkStatusMonitor { [weak self] connection in
             self?.currentNetwork = connection
         }
@@ -106,6 +120,45 @@ final class UsageStore {
 
     func topApps(limit: Int) -> [AppUsageEntry] {
         Array(topEntries.prefix(limit))
+    }
+
+    // MARK: - Collection Health (TICKET-033)
+
+    /// Pure readiness rule: only promote `.collecting → .ready` when there is data
+    /// AND collection is confirmed healthy. Gating on `collectionHealthy` is what
+    /// stops historical `daily_aggregates` from rendering as live when the NE
+    /// content filter is down (the #032 bug). `nonisolated static` so it is
+    /// unit-testable without constructing the `@MainActor` store.
+    nonisolated static func shouldBecomeReady(
+        currentState: State,
+        hasRows: Bool,
+        collectionHealthy: Bool
+    ) -> Bool {
+        currentState == .collecting && hasRows && collectionHealthy
+    }
+
+    /// Called by `AppState` when the production content filter is not confirmed
+    /// healthy. Keeps the UI in a non-live state and supplies the Chinese recovery
+    /// copy. If we had already promoted to `.ready` on stale data with no live
+    /// samples today, demote back so we never present stale data as live (AC5).
+    func markCollectionUnavailable(_ reason: String) {
+        collectionHealthy = false
+        collectionUnavailableReason = reason
+        if state == .ready, lastSampleTimestamp == nil {
+            state = .collecting
+        }
+        Log.store.info("[store] collection unavailable")
+    }
+
+    /// Called by `AppState` once the content filter is confirmed healthy. Clears
+    /// the non-live reason and promotes to `.ready` if data already exists.
+    func markCollectionHealthy() {
+        collectionHealthy = true
+        collectionUnavailableReason = nil
+        if Self.shouldBecomeReady(currentState: state, hasRows: latestHasRows, collectionHealthy: true) {
+            state = .ready
+            Log.store.info("[store] ready")
+        }
     }
 
     // MARK: - Cycle-Aware Observation
@@ -295,7 +348,8 @@ final class UsageStore {
         monthToDateBytes = BytePair(bytesIn: sumIn, bytesOut: sumOut)
         previousCycleTotalBytes = snapshot.previousCycleTotalBytes
 
-        if state == .collecting && !rawRows.isEmpty {
+        latestHasRows = !rawRows.isEmpty
+        if Self.shouldBecomeReady(currentState: state, hasRows: latestHasRows, collectionHealthy: collectionHealthy) {
             state = .ready
             Log.store.info("[store] ready")
         }

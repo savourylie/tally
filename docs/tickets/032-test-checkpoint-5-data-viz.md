@@ -1,10 +1,10 @@
 # [TICKET-032] TEST: Checkpoint 5 — Data Visualization End-to-End
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #030 ✅, #031 ✅, #033 ✅, #034
+- Requires: #030 ✅, #031 ✅, #033 ✅, #034 ✅
 
 ## Description
 Phase 6 (TICKET-025 through TICKET-031) added the data-visualization layer: a shared byte formatter, live "today" + freshness + week/trend queries in `UsageStore`, the TodayCard / FreshnessLabel / WeekMonthSummary components, the Swift Charts daily trend chart, the Overview wiring, and the popover freshness line + sparkline. This checkpoint verifies the whole experience hangs together and that the four original user complaints are resolved.

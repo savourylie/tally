@@ -1,7 +1,7 @@
 # [TICKET-034] Chrome attribution + realtime NE flow rows
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #033 ✅
@@ -12,14 +12,14 @@ After collection health is explicit, verify and fix the realtime production NE f
 This ticket keeps the production Network Extension path as the source of truth. The extension should produce `flow_samples` within seconds while traffic is active, and aggregation should credit Chrome helper traffic to `com.google.Chrome` instead of `系統其他`.
 
 ## Acceptance Criteria
-- [ ] Watching YouTube in Chrome from `/Applications/Tally.app` creates new `flow_samples` rows within seconds
-- [ ] The TodayCard ↓/↑ figures climb while Chrome traffic is active, and the freshness label reads `● 即時`
-- [ ] Today's trend bar matches the TodayCard total because both use live `flow_samples`
-- [ ] `TallyFilterDataProvider` preserves statistics-report metering for allowed flows and records only positive byte deltas
-- [ ] Chrome helper/process traffic resolves to `com.google.Chrome` before aggregation
-- [ ] After aggregation, `daily_aggregates` includes a non-zero `com.google.Chrome` row for the test date
-- [ ] Chrome appears in the top-app list whenever its aggregate total is high enough to be in the visible list
-- [ ] System or daemon traffic that cannot be mapped still falls back to existing categories without leaking technical identifiers in UI strings
+- [x] Watching YouTube in Chrome from `/Applications/Tally.app` creates new `flow_samples` rows within seconds
+- [x] The TodayCard ↓/↑ figures climb while Chrome traffic is active, and the freshness label reads `● 即時`
+- [x] Today's trend bar matches the TodayCard total because both use live `flow_samples`
+- [x] `TallyFilterDataProvider` preserves statistics-report metering for allowed flows and records only positive byte deltas
+- [x] Chrome helper/process traffic resolves to `com.google.Chrome` before aggregation
+- [x] After aggregation, `daily_aggregates` includes a non-zero `com.google.Chrome` row for the test date
+- [x] Chrome appears in the top-app list whenever its aggregate total is high enough to be in the visible list
+- [x] System or daemon traffic that cannot be mapped still falls back to existing categories without leaking technical identifiers in UI strings
 
 ## Implementation Notes
 - Audit `TallyFilterDataProvider.handleNewFlow(_:)` and `handle(_:)` against macOS `NEFilterReport` behavior; keep `.statisticsReportFrequency = .low` unless testing proves a different supported frequency is needed.
