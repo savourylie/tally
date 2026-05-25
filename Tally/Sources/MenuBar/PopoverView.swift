@@ -13,6 +13,8 @@ struct PopoverView: View {
     var mockTopEntries: [AppUsageEntry]? = nil
     var mockCapBytes: Int64? = nil
     var mockNetworkName: String? = nil
+    var mockLastSampleTimestamp: Int64? = nil
+    var mockDailyTrend: [DailyUsage]? = nil
     
     var body: some View {
         let store = appState.usageStore
@@ -21,6 +23,8 @@ struct PopoverView: View {
         let topEntries = mockTopEntries ?? store.topApps(limit: 5)
         let capBytes = mockCapBytes ?? store.monthlyCapBytes
         let networkConnection = mockNetworkName.map(NetworkConnection.wifi(name:)) ?? store.currentNetwork
+        let lastSampleTimestamp = mockLastSampleTimestamp ?? store.lastSampleTimestamp
+        let dailyTrend = mockDailyTrend ?? store.dailyTrend
         
         let totalBytes = bytes.bytesIn + bytes.bytesOut
         
@@ -78,10 +82,19 @@ struct PopoverView: View {
                     )
                     .padding(.bottom, 8)
                     
-                    // Network connection line
-                    NetworkLine(connection: networkConnection)
-                        .padding(.bottom, 14)
+                    // Network connection line + freshness ("● 即時 / 更新於 X 前")
+                    VStack(alignment: .leading, spacing: 3) {
+                        NetworkLine(connection: networkConnection)
+                        FreshnessLabel(lastSampleTimestamp: lastSampleTimestamp)
+                    }
+                    .padding(.bottom, 14)
                     
+                    // Recent-usage sparkline — quiet glanceable trend (ready state only)
+                    if !dailyTrend.isEmpty {
+                        Sparkline(trend: dailyTrend)
+                            .padding(.bottom, 10)
+                    }
+
                     // Top 5 apps list header
                     Text("這個月用最多的")
                         .font(.tally.micro)
@@ -184,6 +197,19 @@ struct HoverBackground: View {
 
 // MARK: - Previews
 
+private func popoverMockTrend() -> [DailyUsage] {
+    let cal = Calendar.current
+    let today = cal.startOfDay(for: .now)
+    return (0..<14).map { offset in
+        let date = cal.date(byAdding: .day, value: -(13 - offset), to: today) ?? today
+        return DailyUsage(
+            date: date,
+            bytesIn: Int64(300_000_000 + (offset % 7) * 180_000_000),
+            bytesOut: Int64(40_000_000 + (offset % 5) * 30_000_000)
+        )
+    }
+}
+
 #Preview("Ready State (5 Apps)") {
     let mockApps = [
         AppUsageEntry(
@@ -223,7 +249,9 @@ struct HoverBackground: View {
         mockBytes: UsageStore.BytePair(bytesIn: 8_700_000_000, bytesOut: 1_800_000_000),
         mockTopEntries: mockApps,
         mockCapBytes: 20 * 1024 * 1024 * 1024,
-        mockNetworkName: "家裡的 Wi-Fi"
+        mockNetworkName: "家裡的 Wi-Fi",
+        mockLastSampleTimestamp: Int64(Date.now.timeIntervalSince1970) - 60,
+        mockDailyTrend: popoverMockTrend()
     )
     .padding()
     .environment(AppState())
@@ -244,7 +272,9 @@ struct HoverBackground: View {
         mockBytes: UsageStore.BytePair(bytesIn: 4_200_000_000, bytesOut: 800_000_000),
         mockTopEntries: mockApps,
         mockCapBytes: nil,
-        mockNetworkName: "家裡的 Wi-Fi"
+        mockNetworkName: "家裡的 Wi-Fi",
+        mockLastSampleTimestamp: Int64(Date.now.timeIntervalSince1970) - 60,
+        mockDailyTrend: popoverMockTrend()
     )
     .padding()
     .environment(AppState())

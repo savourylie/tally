@@ -28,6 +28,7 @@
 		2FC4623DC2F05BAB8B5A9E54 /* FlowEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC297B717C57A67B06D7D06C /* FlowEvent.swift */; };
 		305F6F0CBFEB3926A0E80029 /* Motion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DF444DA32A866740EBA4C1 /* Motion.swift */; };
 		3656BC92CE06C69A191974DB /* TopAppRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615B372A2A468709E0BBC18C /* TopAppRow.swift */; };
+		B58C012964184BE9A0A58095 /* Sparkline.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FC38EFE0C54EEC8FF3BA45 /* Sparkline.swift */; };
 		3DD9EF32A634699ECF1DC2BA /* FlowEventLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66EA996E092540300E7BCF83 /* FlowEventLog.swift */; };
 		3F550AA6829E925244A07938 /* OnboardingFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C495416D68ECE19D08558D /* OnboardingFlow.swift */; };
 		41635DD15768718FE4918421 /* HeroNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6280AC74BC598149CDB5E84 /* HeroNumber.swift */; };
@@ -161,6 +162,7 @@
 		5F77CE38DE5596BA9BCAA566 /* BillingCycleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillingCycleTests.swift; sourceTree = "<group>"; };
 		5F9C48FC6875ACDC7F3634C0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		615B372A2A468709E0BBC18C /* TopAppRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopAppRow.swift; sourceTree = "<group>"; };
+		B0FC38EFE0C54EEC8FF3BA45 /* Sparkline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sparkline.swift; sourceTree = "<group>"; };
 		6313E1517A7601E7FD5DD430 /* SystemExtensionActivator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemExtensionActivator.swift; sourceTree = "<group>"; };
 		66EA996E092540300E7BCF83 /* FlowEventLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowEventLog.swift; sourceTree = "<group>"; };
 		67F9FF76482271CA0C93AA59 /* OverviewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewScreen.swift; sourceTree = "<group>"; };
@@ -560,6 +562,7 @@
 				B5509A8D5F2AE6FBE37CBA01 /* CollectingPlaceholder.swift */,
 				A6280AC74BC598149CDB5E84 /* HeroNumber.swift */,
 				43E2891FBE36B71F1C9A8ADD /* NetworkLine.swift */,
+				B0FC38EFE0C54EEC8FF3BA45 /* Sparkline.swift */,
 				615B372A2A468709E0BBC18C /* TopAppRow.swift */,
 				ED04F850343EDD219725DE4B /* VisualEffectBackground.swift */,
 			);
@@ -762,6 +765,7 @@
 				8A5FEC1EB36CB31FC40B14E3 /* SidebarItem.swift in Sources */,
 				AC598828B4CD61264689A845 /* SidebarSelection.swift in Sources */,
 				0348D30FD7577943F76AAA2B /* Spacing.swift in Sources */,
+				B58C012964184BE9A0A58095 /* Sparkline.swift in Sources */,
 				D732573488FBA17FD40395C0 /* StatusLine.swift in Sources */,
 				C6A9DD9C2735A495A9C29EC8 /* SystemExtensionActivator.swift in Sources */,
 				1CA734978E8814D4EA9080D7 /* TallyApp.swift in Sources */,
