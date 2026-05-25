@@ -4,7 +4,7 @@ struct OverviewScreen: View {
     @Environment(AppState.self) private var appState
 
     var body: some View {
-        let store = appState.usageStore
+        @Bindable var store = appState.usageStore
         let totalBytes = store.monthToDateBytes.bytesIn + store.monthToDateBytes.bytesOut
 
         ScrollView(.vertical, showsIndicators: false) {
@@ -17,11 +17,27 @@ struct OverviewScreen: View {
 
                 StatusLine(connection: store.currentNetwork)
 
+                TodayCard(
+                    today: store.todayBytes,
+                    lastSampleTimestamp: store.lastSampleTimestamp
+                )
+
                 EstimateSentence(
                     monthToDateBytes: totalBytes,
                     monthlyCapBytes: store.monthlyCapBytes,
                     previousCycleTotalBytes: store.previousCycleTotalBytes,
                     currentCycle: store.currentCycle
+                )
+
+                WeekMonthSummary(
+                    today: store.todayBytes,
+                    week: store.weekBytes,
+                    month: store.monthToDateBytes
+                )
+
+                DailyTrendChart(
+                    trend: store.dailyTrend,
+                    window: $store.trendWindow
                 )
 
                 TopAppsSection(
