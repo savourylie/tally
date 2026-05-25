@@ -1,7 +1,7 @@
 # [TICKET-030] Wire data-viz components into the Overview screen
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #028 ✅, #029 ✅
@@ -12,11 +12,11 @@ With the components built (#028, #029) and the data published (#026, #027), this
 The existing stack (HeroCard → StatusLine → EstimateSentence → TopAppsSection) is preserved; the new views slot in around it. Because `UsageStore` is `@Observable`, no manual binding plumbing is needed beyond exposing `trendWindow` to the chart's picker.
 
 ## Acceptance Criteria
-- [ ] `OverviewScreen` inserts, in order: HeroCard (unchanged) → StatusLine (unchanged) → **TodayCard** → EstimateSentence (unchanged) → **WeekMonthSummary** → **DailyTrendChart** → TopAppsSection (unchanged)
-- [ ] New views read from `appState.usageStore` (`store.todayBytes`, `store.lastSampleTimestamp`, `store.weekBytes`, `store.dailyTrend`); the chart picker binds to `store.trendWindow` via `@Bindable`
-- [ ] The screen recomputes reactively as store state changes — no extra observers added to the view body
-- [ ] Spacing between the new and existing sections matches the existing inter-card rhythm (same `Spacing` value used between current cards)
-- [ ] HeroCard and TopAppsSection are visually unchanged (still combined totals)
+- [x] `OverviewScreen` inserts, in order: HeroCard (unchanged) → StatusLine (unchanged) → **TodayCard** → EstimateSentence (unchanged) → **WeekMonthSummary** → **DailyTrendChart** → TopAppsSection (unchanged)
+- [x] New views read from `appState.usageStore` (`store.todayBytes`, `store.lastSampleTimestamp`, `store.weekBytes`, `store.dailyTrend`); the chart picker binds to `store.trendWindow` via `@Bindable`
+- [x] The screen recomputes reactively as store state changes — no extra observers added to the view body
+- [x] Spacing between the new and existing sections matches the existing inter-card rhythm (same `Spacing` value used between current cards)
+- [x] HeroCard and TopAppsSection are visually unchanged (still combined totals)
 
 ## Design Reference
 - **Layout**: existing `OverviewScreen.swift` VStack; `docs/system-design/ui_kits/macos_app/OverviewScreen.jsx` for section rhythm
